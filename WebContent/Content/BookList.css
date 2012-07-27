@@ -1,0 +1,25 @@
+body 
+{
+	padding: 0px;
+	width: 800px;	
+}
+
+.BookFrame
+{
+	width: 100%;
+	background-color: #000000;
+}
+
+.BookList
+{
+	background: url("../Resource/book_background.png") repeat-x;	
+	height: 7em;
+}
+
+.bookImg
+{
+	width: 70px;
+	height: 90px;	
+	margin-left: 1em;
+	cursor: pointer;
+}

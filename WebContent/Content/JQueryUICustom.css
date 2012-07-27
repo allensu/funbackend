@@ -1,0 +1,33 @@
+﻿/* UI Custom Class */
+.gcms-ui-corner-all
+{
+    -moz-border-radius: 0 0 0 0;
+    margin-bottom: 2px;
+    width: 95%;
+    height: 25px;
+    text-align: left;
+}
+
+#tabs li .ui-icon-close
+{
+    float: left;
+    margin: 0.4em 0.2em 0 0;
+    cursor: pointer;
+}
+
+/* Over JQuery UI Class */
+.ui-button
+{
+    padding: 0;
+}
+
+.ui-accordion .ui-accordion-content
+{
+    padding: 5px;
+}
+
+.ui-tabs .ui-tabs-panel
+{
+    padding: 2px;
+}
+
