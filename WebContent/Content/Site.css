@@ -1,0 +1,174 @@
+/* Styles for validation helpers
+-----------------------------------------------------------*/
+body 
+{
+    background-color: #5c87b2;
+    font-size: .75em;
+    font-family: Verdana, Helvetica, Sans-Serif;
+    margin: 0;
+    padding: 0;
+    color: White;
+    height: 100%;
+}
+
+
+
+/*
+a:link
+{
+    color: #034af3;
+    text-decoration: underline;
+}
+a:visited
+{
+    color: #505abc;
+}
+a:hover
+{
+    color: #1d60ff;
+    text-decoration: none;
+}
+a:active
+{
+    color: #12eb87;
+}
+*/
+
+.field-validation-error
+{
+    color: #ff0000;
+}
+
+.field-validation-valid
+{
+    display: none;
+}
+
+.input-validation-error
+{
+    border: 1px solid #ff0000;
+    background-color: #ffeeee;
+}
+
+.validation-summary-errors
+{
+    font-weight: bold;
+    color: #ff0000;
+}
+
+.validation-summary-valid
+{
+    display: none;
+}
+
+#main
+{
+    /*
+    padding: 30px 30px 15px 30px;
+    background-color: #fff;
+    margin-bottom: 30px;
+    height: 100%;
+    */
+}
+
+#footer
+{
+    color: #999;
+    padding: 10px 0;
+    text-align: center;
+    line-height: normal;
+    margin: 0;
+    font-size: .9em;
+}
+
+#mainLayout
+{
+    width: 100%;   
+    height: 100%; 
+}
+
+#mainLeftLayout 
+{
+    width: 15%;   
+    height: 100%;
+}
+
+#mainCenterLayout
+{
+      width: 90%;
+      height: 100%;
+}
+
+#wrapper {
+    bottom: 0;
+    left: 0;
+    min-height: 500px;
+    min-width: 700px;
+    right: 0;
+    top: 0;
+}
+
+#desktop 
+{
+    bottom: 0px;
+    left: 0;
+    overflow: hidden;
+    right: 0;
+    top: 36px;  
+}
+
+#bar_top 
+{
+    /*background: url("../images/gui/bar_top.png") repeat-x scroll left bottom #FFFFFF;*/
+    border-bottom: 1px solid #333333;
+    /*color: #999999;*/
+    height: 32px;
+    line-height: 32px;
+    /*padding-right: 20px;*/
+    padding: 2px 2px;
+    width: 99.3%;
+    /*text-shadow: 0 1px 1px #FFFFFF;*/
+    top: 1px;
+    left: 3px;
+}
+
+#bar_bottom 
+{
+    /*
+    background: url("../images/gui/bar_bottom.png") repeat-x scroll 0 0 #333333;
+    border-top: 1px solid #FFFFFF;
+    bottom: 0;
+    color: #FFFFFF;
+    font-size: 13px;
+    height: 30px;
+    line-height: 30px;
+    opacity: 0.8;
+    overflow: hidden;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    text-shadow: 0 1px 1px #000000;
+    */
+}
+
+#bar_top, #bar_bottom 
+{
+    /*
+    font-weight: bold;
+    left: 0;
+    padding: 0 10px;
+    right: 0;
+    */
+}
+
+.float_right {
+  float:right;
+  margin-right: 5px;
+}
+
+.abs {
+    bottom: auto;
+    left: auto;
+    position: absolute;
+    right: auto;
+    top: auto;
+}

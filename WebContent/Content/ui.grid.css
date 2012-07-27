@@ -1,0 +1,93 @@
+﻿/* Grid
+	----------------------------------*/
+.ui-grid
+{
+    /*width: 600px;*/
+    width: 99%;
+    padding: .4em;
+    background-image: none;
+}
+.ui-grid .ui-grid-content
+{
+    width: 100%;
+    border-collapse: collapse;
+}
+.ui-grid table tbody td, .ui-grid .ui-grid-header, .ui-grid table thead a
+{
+    padding: .4em;
+}
+.ui-grid table tbody td
+{
+    text-align: right;
+    font-weight: normal;
+}
+.ui-grid .ui-grid-header, .ui-grid .ui-grid-footer
+{
+    padding: .8em .4em;
+    text-align: center;
+}
+.ui-grid .ui-grid-footer
+{
+    background-image: none;
+    font-weight: normal;
+    text-align: left;
+}
+.ui-grid table thead a
+{
+    display: block;
+}
+.ui-grid .ui-icon
+{
+    float: right;
+}
+.ui-grid .ui-grid-paging
+{
+    float: right;
+}
+.ui-grid .ui-grid-paging-prev
+{
+    float: left;
+    width: 16px;
+    height: 16px;
+}
+.ui-grid .ui-grid-paging-next
+{
+    float: right;
+    width: 16px;
+    height: 16px;
+}
+.ui-grid .ui-grid-results
+{
+}
+
+.ui-grid table tbody td.ui-state-hover
+{
+    font-weight: normal;
+}
+.ui-grid-pager
+{
+    /*width: 600px;*/
+    width: 99%;
+    clear: both;
+    float: left;
+    margin-top: 1em;
+}
+.ui-grid-icons
+{
+    margin: 0;
+    padding: 0;
+}
+.ui-grid-icons li
+{
+    margin: 0 1px 2px 1px;
+    position: relative;
+    padding: 1px 0;
+    cursor: pointer;
+    float: left;
+    list-style: none;
+}
+.ui-grid-icons span.ui-icon
+{
+    float: left;
+    margin: 0 1px;
+}

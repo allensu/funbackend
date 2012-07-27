@@ -1,0 +1,19 @@
+﻿#trash 
+{      
+    width: 64px;
+    height: 64px;
+    float: left;
+}
+
+#trashImg
+{
+    width: 64px;
+    height: 64px;
+}
+
+#trashdata
+{
+    background-color: Black;
+    width:32px;
+    height:32px;
+}
