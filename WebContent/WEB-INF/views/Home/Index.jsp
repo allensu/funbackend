@@ -60,7 +60,7 @@
         $(function () {
 
             //至 Server 端取得 Accordion 資料
-            $.getJSON('/funbackend/controller/Account/TestJson', function (data) {
+            $.getJSON('/funbackend/controller/Account/MenuList', function (data) {
 
                 $.each(data, function (k, v) {
 

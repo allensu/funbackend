@@ -29,7 +29,7 @@ public class HomeController {
 //	}
 	
 	@RequestMapping(value = "/Home/Index", method = RequestMethod.GET)
-	public ModelAndView Index(@ModelAttribute("userBean") UserBean userBean) {
+	public ModelAndView index(@ModelAttribute("userBean") UserBean userBean) {
 	//public ModelAndView Index(ModelMap modelMap) {
 		//UserBean userBean = (UserBean)modelMap.get("userBean");
 		
