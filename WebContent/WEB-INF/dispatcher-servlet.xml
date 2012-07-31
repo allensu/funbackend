@@ -67,7 +67,7 @@
 
 	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
 		<constructor-arg name="mongo" ref="mongo" />
-		<constructor-arg name="databaseName" value="FunBackend" />
+		<constructor-arg name="databaseName" value="partyon" />
 	</bean>
 	
 	<!-- 

@@ -1,9 +1,12 @@
 package tw.com.funbackend.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import tw.com.funbackend.model.AccountModel;
+import tw.com.funbackend.persistence.MenuGroup;
 import tw.com.funbackend.persistence.UserInfo;
 import tw.com.funbackend.pojo.UserBean;
 
@@ -32,5 +35,11 @@ public class AccountServiceImpl implements AccountService {
 		UserInfo userInfoResult = accountModel.createUser(userInfo);
 		
 		return userInfoResult;
+	}
+
+	@Override
+	public List<MenuGroup> getMenuList(String accountId) {
+			
+		return accountModel.getMenuList(accountId);
 	}
 }
