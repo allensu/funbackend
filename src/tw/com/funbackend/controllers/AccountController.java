@@ -1,9 +1,11 @@
 package tw.com.funbackend.controllers;
 
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -26,6 +28,8 @@ import org.springframework.web.servlet.view.json.JsonView;
 import com.mchange.v2.c3p0.stmt.GooGooStatementCache;
 
 import tw.com.funbackend.form.AccountLoginForm;
+import tw.com.funbackend.persistence.MenuGroup;
+import tw.com.funbackend.persistence.MenuItem;
 import tw.com.funbackend.persistence.UserInfo;
 import tw.com.funbackend.pojo.UserBean;
 import tw.com.funbackend.service.AccountService;
@@ -105,12 +109,13 @@ public class AccountController {
 	@RequestMapping(value = "/Account/MenuList")
 	public @ResponseBody ArrayList getMenuList(HttpServletResponse response)
 	{
-
-		
 		UserBean userBean = new UserBean(); 
 		userBean.setAccountId("allensu");
 		
 		
+		List<MenuGroup> menuGroupListResult = accountService.getMenuList(userBean.getAccountId());
+        
+        
 		ArrayList list = new ArrayList();
         ArrayList list1 = new ArrayList();
 
@@ -133,7 +138,7 @@ public class AccountController {
         list1.add(ht1_2);
         list1.add(ht1_3);
         ht1.put("content", list1);
-
+        
         ArrayList list2 = new ArrayList();
         Hashtable ht2 = new Hashtable();
         ht2.put("title", "分類群組二");
