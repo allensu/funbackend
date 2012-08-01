@@ -7,28 +7,42 @@
 <title>帳號管理</title>
 
 <link href="../../Content/Site.css" rel="stylesheet" type="text/css" />
-<link href="../../themes/redmond/jquery-ui-1.8.7.custom.css"
-	rel="stylesheet" type="text/css" />
-<link href="../../Content/JQueryUICustom.css" rel="stylesheet"
-	type="text/css" />
+<link href="../../themes/redmond/jquery-ui-1.8.7.custom.css" rel="stylesheet" type="text/css" />
+<link href="../../Content/JQueryUICustom.css" rel="stylesheet" type="text/css" />
+<link href="../../Content/ui.combobox.css" rel="stylesheet" type="text/css" />
 <script src="../../Script/jquery-1.4.1.js" type="text/javascript"></script>
-<script src="../../Script/jquery-ui-1.8.7.custom.min.js"
-	type="text/javascript"></script>
+<script src="../../Script/jquery-ui-1.8.7.custom.min.js" type="text/javascript"></script>
 <script src="../../Script/jquery.blockUI.js" type="text/javascript"></script>
 <script src="../../Script/jquery.gcms.js" type="text/javascript"></script>
+<script src="../../Script/jquery.combobox.js" type="text/javascript"></script>
 
+<script>
+	
+	$(function() {
+		$( "#combobox" ).combobox();
+	});
+	
+</script>
 </head>
 <body>
 	<fieldset>
 		<legend>帳戶資訊</legend>
 		<p />
 		<form action="CreateUser" method="post">
-			帳號 :<input id="accountId" name="accountId" type="text" value="" /><br />
-			密碼 :<input id="accountPass" name="accountPass" type="password" value="" /><br /> 
-			名稱 :<input id="accountName" name="accountName"type="text" value="" /><br /> 
-			<input type="submit" value="建立帳號" /><br />
-		</form>
+			<label>帳號 :</label><input id="accountId" name="accountId" type="text" value="" /><br />
+			<label>密碼 :</label><input id="accountPass" name="accountPass" type="password" value="" /><br /> 
+			<label>名稱 :</label><input id="accountName" name="accountName"type="text" value="" /><br /> 
+			<!-- <div class="ui-widget"> -->
+				<label>帳號類別:</label>
+				<select id="combobox">
+					<option value="">Select one...</option>
+					<option value="Normal">一般</option>
+					<option value="Guest">訪客</option>
+					<option value="Admin">管理者</option>
+				</select>
+			<!-- </div> -->
+			<input id="submit" name="submit" type="submit" value="建立帳號" /><br />
+		</form> 
 	</fieldset>
-
 </body>
 </html>

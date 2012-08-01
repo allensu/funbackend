@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;
 
 import tw.com.funbackend.config.FunBackendMongoConfig;
+import tw.com.funbackend.enumeration.UserInfoCategory;
 import tw.com.funbackend.persistence.MenuGroup;
 import tw.com.funbackend.persistence.MenuItem;
 import tw.com.funbackend.persistence.UserInfo;
@@ -40,6 +41,8 @@ public class AccountModelImple implements AccountModel {
 	@Override
 	public UserInfo createUser(UserInfo userInfo) {
 		
+		
+		
 		funBackendMongo.save(userInfo);
 	    
 		return userInfo;
@@ -51,10 +54,10 @@ public class AccountModelImple implements AccountModel {
 		List<MenuGroup> menuGroupListResult = new ArrayList<MenuGroup>();
 		MenuGroup menuGroup1 = new MenuGroup();
 		MenuGroup menuGroup2 = new MenuGroup();
-		MenuGroup accountManageGroup = new MenuGroup();
+		
 		List<MenuItem> menuItemList1 = new ArrayList<MenuItem>();
 		List<MenuItem> menuItemList2 = new ArrayList<MenuItem>();
-		List<MenuItem> accountManageItemList = new ArrayList<MenuItem>();
+		
 		
 		
 		MenuItem menuItem1_1 = new MenuItem();
@@ -86,24 +89,15 @@ public class AccountModelImple implements AccountModel {
         menuGroupListResult.add(menuGroup1);
         menuGroupListResult.add(menuGroup2);
         
-        accountManageGroup.setTitle("帳號管理");
-        MenuItem menuItem3_1 = new MenuItem();
-        menuItem3_1.setTitle("帳號管理");
-        menuItem3_1.setUrl("/funbackend/controller/Account/ManageUser");
-        accountManageItemList.add(menuItem3_1);
-        accountManageGroup.setContent(accountManageItemList);
-        
-        menuGroupListResult.add(accountManageGroup);
+
         
         funBackendMongo.save(menuItem1_1);
         funBackendMongo.save(menuItem1_2);
         funBackendMongo.save(menuItem1_3);
         funBackendMongo.save(menuItem2_1);
         funBackendMongo.save(menuItem2_2);
-        funBackendMongo.save(menuItem3_1);
         funBackendMongo.save(menuGroup1);
         funBackendMongo.save(menuGroup2);
-        funBackendMongo.save(accountManageGroup);
         
         return menuGroupListResult;
 	}
