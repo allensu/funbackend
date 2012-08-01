@@ -3,11 +3,13 @@ package tw.com.funbackend.controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EnumType;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +29,14 @@ import org.springframework.web.servlet.view.json.JsonView;
 
 import com.mchange.v2.c3p0.stmt.GooGooStatementCache;
 
+import tw.com.funbackend.enumeration.UserInfoCategory;
 import tw.com.funbackend.form.AccountLoginForm;
 import tw.com.funbackend.persistence.MenuGroup;
 import tw.com.funbackend.persistence.MenuItem;
 import tw.com.funbackend.persistence.UserInfo;
 import tw.com.funbackend.pojo.UserBean;
 import tw.com.funbackend.service.AccountService;
-
+import tw.com.funbackend.utility.Encrypt;
 
 
 @SessionAttributes("userBean")
@@ -81,6 +84,9 @@ public class AccountController {
 	public ModelAndView createUser(@ModelAttribute("userBean") UserBean userBean, @ModelAttribute UserInfo userInfo) {
 		
 		
+		userInfo.setAccountPass(Encrypt.encodePassword(userInfo.getAccountPass()));
+		userInfo.setCategory(UserInfoCategory.Admin);
+		userInfo.setCreateDateTime(new Date());
 		
 		UserInfo userInfoResult = accountService.createUser(userInfo);
 		
@@ -112,10 +118,25 @@ public class AccountController {
 		UserBean userBean = new UserBean(); 
 		userBean.setAccountId("allensu");
 		
-		
+		// 取得使用帳號的權限
 		List<MenuGroup> menuGroupListResult = accountService.getMenuList(userBean.getAccountId());
         
+		MenuGroup accountManageGroup = new MenuGroup();
+		List<MenuItem> accountManageItemList = new ArrayList<MenuItem>();
+		accountManageGroup.setTitle("帳號管理");
+        MenuItem menuItem3_1 = new MenuItem();
+        menuItem3_1.setTitle("帳號管理");
+        menuItem3_1.setUrl("/funbackend/controller/Account/ManageUser");
+        accountManageItemList.add(menuItem3_1);
+        accountManageGroup.setContent(accountManageItemList);
+		
+        menuGroupListResult.add(accountManageGroup);
         
+        
+        
+        
+        
+		
 		ArrayList list = new ArrayList();
         ArrayList list1 = new ArrayList();
 

@@ -5,6 +5,8 @@ import java.util.Date;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import tw.com.funbackend.enumeration.UserInfoCategory;
+
 @Document
 public class UserInfo {
 	
@@ -33,6 +35,10 @@ public class UserInfo {
 	 * 建立時間
 	 */
 	private Date createDateTime;
+	/**
+	 * 帳號身份
+	 */
+	private UserInfoCategory category;
 	
 	public String getId() {
 		return id;
@@ -69,5 +75,11 @@ public class UserInfo {
 	}
 	public void setAccountPass(String accountPass) {
 		this.accountPass = accountPass;
+	}
+	public UserInfoCategory getCategory() {
+		return category;
+	}
+	public void setCategory(UserInfoCategory category) {
+		this.category = category;
 	}	
 }

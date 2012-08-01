@@ -25,7 +25,6 @@
 
 </head>
 <body>
-	<button id="loginBtn">Login</button>
 	<center>
 		<div style="width: 300px; height: 300px;">
 			<h2>系統登入</h2>
