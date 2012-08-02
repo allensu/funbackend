@@ -1,4 +1,4 @@
-package tw.com.funbackend.Interceptor;
+package tw.com.funbackend.interceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

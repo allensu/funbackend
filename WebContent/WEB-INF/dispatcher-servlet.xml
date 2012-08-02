@@ -28,12 +28,10 @@
 	<anno:resources mapping="/Script/**" location="/Script/"/>
 	<anno:resources mapping="/themes/**" location="/themes/"/>
 	
-	<bean id="loginVerificationInterceptor" class="tw.com.funbackend.Interceptor.LoginVerificationInterceptor"></bean>
-	
 	<anno:interceptors>
 	    <anno:interceptor>
 	        <anno:mapping path="/**"/>
-	        <bean class="tw.com.funbackend.Interceptor.LoginVerificationInterceptor"></bean>
+	        <bean class="tw.com.funbackend.interceptor.LoginVerificationInterceptor"></bean>
 	    </anno:interceptor>
 	</anno:interceptors>
 	
