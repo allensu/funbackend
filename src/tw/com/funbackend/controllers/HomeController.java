@@ -14,19 +14,7 @@ import tw.com.funbackend.pojo.UserBean;
 @Controller
 public class HomeController {
 	
-	@ModelAttribute("userBean")
-	public UserBean initUserBean() {
-	   return new UserBean(); // populates form for the first time if its null
-	}
-	
-//	@RequestMapping(value = "/Home/IndexCreateSession", method = RequestMethod.GET)
-//	public ModelAndView IndexCreateSession(ModelMap model)
-//	{
-//		UserBean userBean = new UserBean(); 
-//		model.put("userBean", userBean);
-//		
-//		return new ModelAndView("redirect:/controller/Home/Index");	
-//	}
+
 	
 	@RequestMapping(value = "/Home/Index", method = RequestMethod.GET)
 	public ModelAndView index(@ModelAttribute("userBean") UserBean userBean) {

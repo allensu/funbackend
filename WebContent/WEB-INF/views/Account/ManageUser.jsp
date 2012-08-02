@@ -19,8 +19,11 @@
 <script>
 	
 	$(function() {
-		$( "#combobox" ).combobox();
+		$("#combobox").combobox();
+		$("#submit").button();
 	});
+	
+	
 	
 </script>
 </head>
@@ -33,13 +36,13 @@
 			<label>密碼 :</label><input id="accountPass" name="accountPass" type="password" value="" /><br /> 
 			<label>名稱 :</label><input id="accountName" name="accountName"type="text" value="" /><br /> 
 			<!-- <div class="ui-widget"> -->
-				<label>帳號類別:</label>
+				<label>帳號類別 :</label>
 				<select id="combobox">
 					<option value="">Select one...</option>
 					<option value="Normal">一般</option>
 					<option value="Guest">訪客</option>
 					<option value="Admin">管理者</option>
-				</select>
+				</select><br />
 			<!-- </div> -->
 			<input id="submit" name="submit" type="submit" value="建立帳號" /><br />
 		</form> 

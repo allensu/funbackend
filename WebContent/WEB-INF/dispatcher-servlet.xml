@@ -24,6 +24,18 @@
 	
 	</context:annotation-config>
 	
+	<anno:resources mapping="/Content/**" location="/Content/"/>
+	<anno:resources mapping="/Script/**" location="/Script/"/>
+	<anno:resources mapping="/themes/**" location="/themes/"/>
+	
+	<bean id="loginVerificationInterceptor" class="tw.com.funbackend.Interceptor.LoginVerificationInterceptor"></bean>
+	
+	<anno:interceptors>
+	    <anno:interceptor>
+	        <anno:mapping path="/**"/>
+	        <bean class="tw.com.funbackend.Interceptor.LoginVerificationInterceptor"></bean>
+	    </anno:interceptor>
+	</anno:interceptors>
 	
 	
 	<bean id="viewResolver"

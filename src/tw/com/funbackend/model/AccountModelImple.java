@@ -91,13 +91,13 @@ public class AccountModelImple implements AccountModel {
         
 
         
-        funBackendMongo.save(menuItem1_1);
-        funBackendMongo.save(menuItem1_2);
-        funBackendMongo.save(menuItem1_3);
-        funBackendMongo.save(menuItem2_1);
-        funBackendMongo.save(menuItem2_2);
-        funBackendMongo.save(menuGroup1);
-        funBackendMongo.save(menuGroup2);
+//        funBackendMongo.save(menuItem1_1);
+//        funBackendMongo.save(menuItem1_2);
+//        funBackendMongo.save(menuItem1_3);
+//        funBackendMongo.save(menuItem2_1);
+//        funBackendMongo.save(menuItem2_2);
+//        funBackendMongo.save(menuGroup1);
+//        funBackendMongo.save(menuGroup2);
         
         return menuGroupListResult;
 	}
