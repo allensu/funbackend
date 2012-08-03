@@ -36,6 +36,9 @@ public class AccountModelImple implements AccountModel {
 	public void userLogout(String accountId) {
 		// TODO Auto-generated method stub
 		
+		
+		
+		
 	}
 	
 	@Override

@@ -24,8 +24,8 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public void userLogout(String accountId) {
-		// TODO Auto-generated method stub
-		
+
+		accountModel.userLogout(accountId);
 	}
 
 	@Override

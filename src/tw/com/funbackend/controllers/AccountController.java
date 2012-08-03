@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.persistence.EnumType;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageNotWritableException;
@@ -40,7 +41,9 @@ import tw.com.funbackend.utility.Encrypt;
 @SessionAttributes("userBean")
 @Controller
 public class AccountController {
-
+	//Logger log = Logger.getLogger(AccountController.class);
+	protected Logger logger = Logger.getLogger("controller");
+	
 	@Autowired
 	private AccountService accountService;
 
@@ -70,12 +73,33 @@ public class AccountController {
 	public ModelAndView login(@ModelAttribute("userBean") UserBean userBean,
 			@ModelAttribute AccountLoginForm form) {
 
+		logger.info("Log4J Log Test");
+		
 		// UserBean userBean = new UserBean();
 		userBean.setAccountId(form.getAccount());
 		// modelMap.addAttribute("userBean", userBean);
 		// modelMap.put("userBean", userBean);
 
 		return new ModelAndView("redirect:/controller/Home/Index");
+	}
+	
+	/**
+	 * 使用者登出作業
+	 * @return
+	 */
+	@RequestMapping(value = "/Account/Logout", method = RequestMethod.GET)
+	public ModelAndView logout(@ModelAttribute("userBean") UserBean userBean)
+	{
+		try 
+		{
+			accountService.userLogout(userBean.getAccountId());
+		} 
+		catch(Exception ex)
+		{
+			
+		}
+				
+		return new ModelAndView("/Account/Login");
 	}
 
 	/**
@@ -131,35 +155,35 @@ public class AccountController {
 		ht1.put("title", "FunCube");
 		Hashtable ht1_1 = new Hashtable();
 		ht1_1.put("title", "會員基本資料查詢");
-		ht1_1.put("url", "/Member/MemberDataQuery");
+		ht1_1.put("url", "/funbackend/controller/Member/MemberDataQuery");
 		ht1_1.put("id", "MemberDataQuery");
 		Hashtable ht1_2 = new Hashtable();
 		ht1_2.put("title", "會員黑名單");
-		ht1_2.put("url", "/Member/BlackMember");
+		ht1_2.put("url", "/funbackend/controller/Member/BlackMember");
 		ht1_2.put("id", "BlackMember");
 		Hashtable ht1_3 = new Hashtable();
 		ht1_3.put("title", "會員登入/出時間");
-		ht1_3.put("url", "/Member/MemberLoginRecord");
+		ht1_3.put("url", "/funbackend/controller/Member/MemberLoginRecord");
 		ht1_3.put("id", "MemberLoginRecord");
 		Hashtable ht1_5 = new Hashtable();
 		ht1_5.put("title", "各地區會員數");
-		ht1_5.put("url", "/Member/MemberPlace");
+		ht1_5.put("url", "/funbackend/controller/Member/MemberPlace");
 		ht1_5.put("id", "MemberPlace");
 		Hashtable ht1_4 = new Hashtable();
 		ht1_4.put("title", "聊天室記錄查詢");
-		ht1_4.put("url", "/Chatroom/ChatroomMessageRecord");
+		ht1_4.put("url", "/funbackend/controller/Chatroom/ChatroomMessageRecord");
 		ht1_4.put("id", "ChatroomMessageRecord");
 		Hashtable ht1_6 = new Hashtable();
 		ht1_6.put("title", "最多贊會員排行");
-		ht1_6.put("url", "/Rank/LikeRank");
+		ht1_6.put("url", "/funbackend/controller/Rank/LikeRank");
 		ht1_6.put("id", "LikeRank");
 		Hashtable ht1_7 = new Hashtable();
 		ht1_7.put("title", "Po文排行");
-		ht1_7.put("url", "/Rank/ArticleRank");
+		ht1_7.put("url", "/funbackend/controller/Rank/ArticleRank");
 		ht1_7.put("id", "ArticleRank");
 		Hashtable ht1_8 = new Hashtable();
 		ht1_8.put("title", "上傳圖片排行");
-		ht1_8.put("url", "/Rank/UploadPicRank");
+		ht1_8.put("url", "/funbackend/controller/Rank/UploadPicRank");
 		ht1_8.put("id", "UploadPicRank");
 		list1.add(ht1_1);
 		list1.add(ht1_2);

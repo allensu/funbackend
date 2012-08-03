@@ -18,7 +18,7 @@
 
         $(function () {
             $('#logoutBtn').button().click(function () {                
-            	window.location.replace("Account/Logout");
+            	window.location.replace("/funbackend/controller/Account/Logout");
             });
         });
 </script>
