@@ -1,14 +1,20 @@
 package tw.com.funbackend.model;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import tw.com.funbackend.config.FunBackendMongoConfig;
@@ -19,7 +25,8 @@ import tw.com.funbackend.persistence.UserInfo;
 
 @Repository
 public class AccountModelImple implements AccountModel {
-
+	protected Logger logger = Logger.getLogger("model");
+	
 	ApplicationContext ctx = new AnnotationConfigApplicationContext(FunBackendMongoConfig.class);
     MongoOperations funBackendMongo = ctx.getBean(MongoOperations.class);
     
@@ -28,10 +35,41 @@ public class AccountModelImple implements AccountModel {
 
 	@Override
 	public UserInfo getUserInfo(String accountId) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		UserInfo userInfo = null;
+		
+		try {
+			userInfo = funBackendMongo.findOne(new Query(Criteria.where("accountId").is(accountId)), UserInfo.class);	
+			
+		} 
+		catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+		
+		return userInfo;
 	}
 
+	@Override
+	public void updateUserLoginTime(String accountId, Date loginTime) {
+
+		try {
+			funBackendMongo.updateFirst(new Query(Criteria.where("accountId").is(accountId)), Update.update("lastLoginDateTime", loginTime), UserInfo.class);
+			
+			
+			UserInfo userInfo = funBackendMongo.findOne(new Query(Criteria.where("accountId").is(accountId)), UserInfo.class);	
+			
+			
+			SimpleDateFormat nowdate1 = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+			String sdate1 = nowdate1.format(userInfo.getLastLoginDateTime());
+			logger.info(" model " + sdate1);
+		} 
+		catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+	}
+	
 	@Override
 	public void userLogout(String accountId) {
 		// TODO Auto-generated method stub
@@ -104,6 +142,7 @@ public class AccountModelImple implements AccountModel {
         
         return menuGroupListResult;
 	}
+
 	
 	
 	

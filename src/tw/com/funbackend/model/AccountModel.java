@@ -1,5 +1,6 @@
 package tw.com.funbackend.model;
 
+import java.util.Date;
 import java.util.List;
 
 import tw.com.funbackend.persistence.MenuGroup;
@@ -7,6 +8,7 @@ import tw.com.funbackend.persistence.UserInfo;
 import tw.com.funbackend.pojo.UserBean;
 
 public interface AccountModel {
+	
 	/**
 	 * 取得帳號資訊
 	 * @param accountId
@@ -31,4 +33,10 @@ public interface AccountModel {
 	 * @return
 	 */
 	List<MenuGroup> getMenuList(String accountId);
+	
+	/**
+	 * 記錄使用者登入時間
+	 * @param accountId
+	 */
+	void updateUserLoginTime(String accountId, Date loginTime);
 }

@@ -1,12 +1,14 @@
 package tw.com.funbackend.controllers;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import javax.persistence.EnumType;
 import javax.servlet.http.HttpServletResponse;
@@ -73,14 +75,18 @@ public class AccountController {
 	public ModelAndView login(@ModelAttribute("userBean") UserBean userBean,
 			@ModelAttribute AccountLoginForm form) {
 
-		logger.info("Log4J Log Test");
+		UserInfo userInfo = accountService.userLogin(form.getAccount(), form.getPassword());
 		
-		// UserBean userBean = new UserBean();
-		userBean.setAccountId(form.getAccount());
-		// modelMap.addAttribute("userBean", userBean);
-		// modelMap.put("userBean", userBean);
-
-		return new ModelAndView("redirect:/controller/Home/Index");
+		if(userInfo == null)
+		{
+			return new ModelAndView("/Account/Login");
+		} else {
+			userBean.setAccountId(userInfo.getAccountId());
+			userBean.setAccountName(userInfo.getAccountName());
+			userBean.setLoginDateTime(userInfo.getLastLoginDateTime());
+			return new ModelAndView("redirect:/controller/Home/Index");
+		}
+		
 	}
 	
 	/**
@@ -132,7 +138,7 @@ public class AccountController {
 	 * @return
 	 */
 	@RequestMapping(value = "/Account/ManageUser", method = RequestMethod.GET)
-	public ModelAndView manageUser(@ModelAttribute("userBean") UserBean userBean) {
+	public ModelAndView manageUser(@ModelAttribute("userBean") UserBean userBean) {    
 		return new ModelAndView("/Account/ManageUser");
 	}
 

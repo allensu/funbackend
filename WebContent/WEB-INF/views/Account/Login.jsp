@@ -40,7 +40,7 @@
 								<td>
 									<div class="editor-field">
 										<input class="ui-widget-content ui-corner-all" id="userName"
-											name="account" type="text" value="admin" /> <br />
+											name="account" type="text" value="" /> <br />
 									</div>
 								</td>
 							</tr>
@@ -49,7 +49,7 @@
 								<td>
 									<div class="editor-field">
 										<input class="ui-widget-content ui-corner-all" id="password"
-											name="password" type="text" value="admin" /> <br />
+											name="password" type="text" value="" /> <br />
 									</div>
 								</td>
 							</tr>
