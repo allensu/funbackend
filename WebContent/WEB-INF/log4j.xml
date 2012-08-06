@@ -19,6 +19,14 @@
         </layout>
     </appender>
 
+    <appender name="FilterLog" class="org.apache.log4j.FileAppender">
+        <param name="File" value="logs/FilterLog.log"/>
+        <param name="Append" value="true"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%p]: %d{yyyy.MM.dd - HH:mm:ss} %c%n"/>
+        </layout>
+    </appender>
+    
     <appender name="ControllerLog" class="org.apache.log4j.FileAppender">
         <param name="File" value="logs/ControllerLog.log"/>
         <param name="Append" value="true"/>
@@ -48,6 +56,12 @@
         <appender-ref ref="ConsoleAppender"/>
     </logger>
 
+    <logger name="filter">
+        <level value="debug"/>
+        <appender-ref ref="FilterLog"/>
+        <appender-ref ref="ConsoleAppender"/>
+    </logger>
+    
     <logger name="controller">
         <level value="debug"/>
         <appender-ref ref="ControllerLog"/>

@@ -5,6 +5,7 @@ import java.util.Date;
 public class UserBean {
 	private String accountId;
 	private String accountName;
+	private String theme;
 	private Date loginDateTime;
 	
 	
@@ -31,6 +32,14 @@ public class UserBean {
 
 	public void setLoginDateTime(Date loginDateTime) {
 		this.loginDateTime = loginDateTime;
+	}
+
+	public String getTheme() {
+		return theme;
+	}
+
+	public void setTheme(String theme) {
+		this.theme = theme;
 	}
 	
 	

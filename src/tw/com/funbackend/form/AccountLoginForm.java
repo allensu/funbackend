@@ -4,6 +4,7 @@ public class AccountLoginForm {
 
 	private String account;
 	private String password;
+	private String theme;
 	
 	public String getAccount() {
 		return account;
@@ -16,5 +17,11 @@ public class AccountLoginForm {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	public String getTheme() {
+		return theme;
+	}
+	public void setTheme(String theme) {
+		this.theme = theme;
 	}	
 }

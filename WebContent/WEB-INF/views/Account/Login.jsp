@@ -36,27 +36,27 @@
 						<p />
 						<table width="100%">
 							<tr>
-								<td>使用者名稱</td>
+								<td align="left">使用者名稱</td>
 								<td>
-									<div class="editor-field">
+									<div class="editor-field" align="left">
 										<input class="ui-widget-content ui-corner-all" id="userName"
 											name="account" type="text" value="" /> <br />
 									</div>
 								</td>
 							</tr>
 							<tr>
-								<td>密碼</td>
+								<td align="left">密碼</td>
 								<td>
-									<div class="editor-field">
+									<div class="editor-field" align="left">
 										<input class="ui-widget-content ui-corner-all" id="password"
-											name="password" type="text" value="" /> <br />
+											name="password" type="password" value="" /> <br />
 									</div>
 								</td>
 							</tr>
 							<tr>
-								<td>主題</td>
+								<td align="left">主題</td>
 								<td>
-									<div>
+									<div align="left">
 										<select id="Theme" name="Theme">
 											<%--<option value="base">Base</option>--%>
 											<option value="redmond">Redmond</option>

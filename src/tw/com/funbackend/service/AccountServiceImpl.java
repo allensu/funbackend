@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import tw.com.funbackend.enumeration.UserInfoCategory;
 import tw.com.funbackend.model.AccountModel;
 import tw.com.funbackend.persistence.MenuGroup;
 import tw.com.funbackend.persistence.UserInfo;
@@ -29,6 +30,7 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public UserInfo userLogin(String accountId, String accountPass) {
 		
+		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
 		UserInfo userInfo = null;
 		
 		try {
@@ -36,8 +38,20 @@ public class AccountServiceImpl implements AccountService {
 			
 			if(userInfo == null)
 			{
-				logger.info("無此帳號 : " + accountId);
-				return null;
+				if(accountId.equals("admin"))
+				{
+					logger.info("第一次登入 建立 admin 帳號 : " + accountId);
+					UserInfo adminUserInfo = new UserInfo();
+					adminUserInfo.setAccountId(accountId);
+					adminUserInfo.setAccountName(accountId);
+					adminUserInfo.setAccountPass(Encrypt.encodePassword(accountPass));
+					adminUserInfo.setCategory(UserInfoCategory.Admin);
+					
+					userInfo = createUser(adminUserInfo);					
+				} else {
+					logger.info("無此帳號 : " + accountId);
+					return null;
+				}
 			}
 			
 			String accountPassS = Encrypt.encodePassword(accountPass);
@@ -48,8 +62,6 @@ public class AccountServiceImpl implements AccountService {
 				return null;
 			}
 			
-			Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-			 
 			accountModel.updateUserLoginTime(accountId, cal.getTime());
 		}
 		catch (Exception ex)

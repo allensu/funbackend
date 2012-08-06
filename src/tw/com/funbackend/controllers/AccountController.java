@@ -83,6 +83,7 @@ public class AccountController {
 		} else {
 			userBean.setAccountId(userInfo.getAccountId());
 			userBean.setAccountName(userInfo.getAccountName());
+			userBean.setTheme(form.getTheme());
 			userBean.setLoginDateTime(userInfo.getLastLoginDateTime());
 			return new ModelAndView("redirect:/controller/Home/Index");
 		}
