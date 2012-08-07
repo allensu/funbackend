@@ -6,6 +6,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>帳號管理</title>
 
+<jsp:include page="../../views/Common/CommonResource.jsp"></jsp:include>
+<!-- 
 <link href="../../Content/Site.css" rel="stylesheet" type="text/css" />
 <link href="../../themes/${userBean.theme}/jquery-ui-1.8.7.custom.css" rel="stylesheet" type="text/css" />
 <link href="../../Content/JQueryUICustom.css" rel="stylesheet" type="text/css" />
@@ -15,7 +17,7 @@
 <script src="../../Script/jquery.blockUI.js" type="text/javascript"></script>
 <script src="../../Script/jquery.gcms.js" type="text/javascript"></script>
 <script src="../../Script/jquery.combobox.js" type="text/javascript"></script>
-
+ -->
 <script>
 	
 	$(function() {

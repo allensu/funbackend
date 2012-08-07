@@ -6,14 +6,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>會員管理系統</title>
 
-<link href="../../Content/Site.css" rel="stylesheet" type="text/css" />
-<link href="../../themes/${userBean.theme}/jquery-ui-1.8.7.custom.css" rel="stylesheet" type="text/css" />    
-<link href="../../Content/JQueryUICustom.css" rel="stylesheet" type="text/css" />
-<script src="../../Script/jquery-1.4.1.js" type="text/javascript"></script>
-<script src="../../Script/jquery-ui-1.8.7.custom.min.js" type="text/javascript"></script>
-<script src="../../Script/jquery.blockUI.js" type="text/javascript"></script>
-<script src="../../Script/jquery.gcms.js" type="text/javascript"></script>
-
+<jsp:include page="../../views/Common/CommonResource.jsp"></jsp:include>
+ 
 <script type="text/javascript" language="javascript">
 
         $(function () {

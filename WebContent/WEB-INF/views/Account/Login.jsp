@@ -6,6 +6,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>登入 GCMS</title>
 
+<jsp:include page="../../views/Common/CommonResource.jsp"></jsp:include>
+<!-- 
 <link href="../../Content/Site.css" rel="stylesheet" type="text/css" />
 <link href="../../themes/redmond/jquery-ui-1.8.7.custom.css"
 	rel="stylesheet" type="text/css" />
@@ -16,7 +18,8 @@
 	type="text/javascript"></script>
 <script src="../../Script/jquery.blockUI.js" type="text/javascript"></script>
 <script src="../../Script/jquery.gcms.js" type="text/javascript"></script>
-
+ -->
+ 
 <script type="text/javascript" language="javascript">
 	$(function() {
 		$("input:submit").button();

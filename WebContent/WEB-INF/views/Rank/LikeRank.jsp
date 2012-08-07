@@ -5,6 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<jsp:include page="../../views/Common/CommonResource.jsp"></jsp:include>
 </head>
 <body>
 最多贊會員排行
