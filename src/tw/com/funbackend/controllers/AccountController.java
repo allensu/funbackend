@@ -192,6 +192,13 @@ public class AccountController {
 		ht1_8.put("title", "上傳圖片排行");
 		ht1_8.put("url", "/funbackend/controller/Rank/UploadPicRank");
 		ht1_8.put("id", "UploadPicRank");
+		Hashtable ht1_9 = new Hashtable();
+		ht1_8.put("title", "MQTT資料管理");
+		ht1_8.put("url", "/funbackend/controller/Mqtt/MqttManage");
+		ht1_8.put("id", "MqttManage");
+		
+		
+		
 		list1.add(ht1_1);
 		list1.add(ht1_2);
 		list1.add(ht1_3);
