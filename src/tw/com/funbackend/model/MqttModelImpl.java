@@ -20,6 +20,7 @@ import tw.com.funbackend.config.GoPartyonMessageConfig;
 import tw.com.funbackend.persistence.MessageData;
 import tw.com.funbackend.persistence.UserInfo;
 import tw.com.funbackend.service.MqttService;
+import tw.com.gopartyon.mqtt.MessageMongoDB;
 @Repository
 public class MqttModelImpl implements MqttModel {
 	protected Logger logger = Logger.getLogger("model");
