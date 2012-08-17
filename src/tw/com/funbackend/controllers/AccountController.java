@@ -103,7 +103,7 @@ public class AccountController {
 		} 
 		catch(Exception ex)
 		{
-			
+			logger.error(ex.getMessage());
 		}
 				
 		return new ModelAndView("/Account/Login");
@@ -130,6 +130,21 @@ public class AccountController {
 
 		return new ModelAndView("/Account/ManageUser");
 	}
+	
+	@RequestMapping(value = "/Account/ReadUser")
+	public @ResponseBody List<UserInfo> readUser() {
+		List<UserInfo> userInfoList = new ArrayList<UserInfo>();
+		
+		try {
+			userInfoList = accountService.readUserAll();
+		} catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+		
+		return userInfoList;
+	}
+	
 
 	/**
 	 * 開啟使用者帳號管理頁面
@@ -150,8 +165,7 @@ public class AccountController {
 	 * @return
 	 */
 	@RequestMapping(value = "/Account/MenuList")
-	public @ResponseBody
-	ArrayList getMenuList(HttpServletResponse response) {
+	public @ResponseBody ArrayList getMenuList(HttpServletResponse response) {
 		UserBean userBean = new UserBean();
 		userBean.setAccountId("allensu");
 

@@ -11,4 +11,10 @@ public interface AccountService {
 	void userLogout(String accountId);
 	UserInfo createUser(UserInfo userInfo);
 	List<MenuGroup> getMenuList(String accountId);
+	
+	/**
+	 * 取得所有帳號
+	 * @return
+	 */
+	List<UserInfo> readUserAll();
 }

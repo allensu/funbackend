@@ -4,25 +4,24 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>登入 GCMS</title>
+<title>登入統計後台</title>
 
 <jsp:include page="../../views/Common/CommonResource.jsp"></jsp:include>
 <!-- 
 <link href="../../Content/Site.css" rel="stylesheet" type="text/css" />
-<link href="../../themes/redmond/jquery-ui-1.8.7.custom.css"
-	rel="stylesheet" type="text/css" />
-<link href="../../Content/JQueryUICustom.css" rel="stylesheet"
-	type="text/css" />
+<link href="../../themes/redmond/jquery-ui-1.8.7.custom.css" rel="stylesheet" type="text/css" />
+<link href="../../Content/JQueryUICustom.css" rel="stylesheet" type="text/css" />
+
 <script src="../../Script/jquery-1.4.1.js" type="text/javascript"></script>
-<script src="../../Script/jquery-ui-1.8.7.custom.min.js"
-	type="text/javascript"></script>
+<script src="../../Script/jquery-ui-1.8.7.custom.min.js" type="text/javascript"></script>
 <script src="../../Script/jquery.blockUI.js" type="text/javascript"></script>
 <script src="../../Script/jquery.gcms.js" type="text/javascript"></script>
- -->
+  -->
  
 <script type="text/javascript" language="javascript">
 	$(function() {
-		$("input:submit").button();
+		$("#loginBtn").button();
+		$("#Theme").combobox();
 	});
 </script>
 
@@ -43,7 +42,7 @@
 								<td>
 									<div class="editor-field" align="left">
 										<input class="ui-widget-content ui-corner-all" id="userName"
-											name="account" type="text" value="" /> <br />
+											name="account" type="text" value="admin" /> <br />
 									</div>
 								</td>
 							</tr>
@@ -52,7 +51,7 @@
 								<td>
 									<div class="editor-field" align="left">
 										<input class="ui-widget-content ui-corner-all" id="password"
-											name="password" type="password" value="" /> <br />
+											name="password" type="password" value="admin" /> <br />
 									</div>
 								</td>
 							</tr>
@@ -76,7 +75,7 @@
 							<tr>
 								<td colspan="2" align="right">
 									<p>
-										<input type="submit" value="登入" />
+										<input id="loginBtn" type="submit" value="登入" />
 									</p>
 								</td>
 							</tr>

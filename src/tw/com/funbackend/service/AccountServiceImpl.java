@@ -91,4 +91,10 @@ public class AccountServiceImpl implements AccountService {
 			
 		return accountModel.getMenuList(accountId);
 	}
+
+	@Override
+	public List<UserInfo> readUserAll() {
+		
+		return accountModel.readUserAll();
+	}
 }

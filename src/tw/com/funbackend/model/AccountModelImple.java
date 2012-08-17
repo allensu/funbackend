@@ -143,6 +143,23 @@ public class AccountModelImple implements AccountModel {
         return menuGroupListResult;
 	}
 
+	@Override
+	public List<UserInfo> readUserAll() {
+		
+		List<UserInfo> result = new ArrayList<UserInfo>();
+		
+		try {
+			result = funBackendMongo.findAll(UserInfo.class);						
+		} 
+		catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+		
+		
+		return result;
+	}
+
 	
 	
 	

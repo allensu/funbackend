@@ -39,4 +39,10 @@ public interface AccountModel {
 	 * @param accountId
 	 */
 	void updateUserLoginTime(String accountId, Date loginTime);
+	
+	/**
+	 * 取得所有帳號
+	 * @return
+	 */
+	List<UserInfo> readUserAll();
 }
