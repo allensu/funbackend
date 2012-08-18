@@ -35,6 +35,7 @@ import tw.com.funbackend.enumeration.UserInfoCategory;
 import tw.com.funbackend.form.AccountLoginForm;
 import tw.com.funbackend.persistence.MenuGroup;
 import tw.com.funbackend.persistence.MenuItem;
+import tw.com.funbackend.persistence.MessageData;
 import tw.com.funbackend.persistence.UserInfo;
 import tw.com.funbackend.pojo.UserBean;
 import tw.com.funbackend.service.AccountService;
@@ -127,7 +128,7 @@ public class AccountController {
 		userInfo.setCreateDateTime(new Date());
 
 		UserInfo userInfoResult = accountService.createUser(userInfo);
-
+		
 		return new ModelAndView("/Account/ManageUser");
 	}
 	
@@ -137,6 +138,11 @@ public class AccountController {
 		
 		try {
 			userInfoList = accountService.readUserAll();
+			
+			if(userInfoList == null || userInfoList.size() == 0)
+			{
+				userInfoList = new ArrayList<UserInfo>();
+			}
 		} catch(Exception ex)
 		{
 			logger.error(ex.getMessage());

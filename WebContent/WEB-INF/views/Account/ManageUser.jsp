@@ -18,24 +18,14 @@
 <script src="../../Script/jquery.gcms.js" type="text/javascript"></script>
 <script src="../../Script/jquery.combobox.js" type="text/javascript"></script>
  -->
-
+<!-- 
 <style>
 	#toolbar {
 		padding: 20px 8px;
 	}
 </style>
+ -->
 <script>
-/*
-var jsonDate2Format = function (srcDate, mask) {
-	//alert(srcDate);
-    var dateObj = new Date(srcDate);
-    //var dateObj = eval(srcDate.replace(/\/Date\((\d+)\)\//gi, "new Date($1)"));
-    alert('ooo');
-    //return dateObj.format(mask);
-    
-    return dateObj.toLocaleString();
-};
-*/
 	$.fx.speeds._default = 1000;
 	$(function() {
 		 // Form View
@@ -150,7 +140,7 @@ var jsonDate2Format = function (srcDate, mask) {
             //           //清空頁面上的資料
             //                    $('#jtable > tbody > tr').remove();
             $('#jtable').dataTable().fnClearTable(true);
-            alert('aaa');
+            
             $.each(data, function (k, v) {
             
                 $('#jtable').dataTable().fnAddData([

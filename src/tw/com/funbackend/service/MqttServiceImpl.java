@@ -1,5 +1,7 @@
 package tw.com.funbackend.service;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,10 +27,10 @@ public class MqttServiceImpl implements MqttService {
 			
 			if(lastMessageData != null)
 			{
-				newSerial = lastMessageData.getSerial() + 1;
+				newSerial = Integer.parseInt(lastMessageData.getSerial()) + 1;
 			}
 			
-			messageData.setSerial(newSerial);
+			messageData.setSerial(String.valueOf(newSerial));
 			
 			result = mqttModel.createMessage(messageData);
 		} catch(Exception ex)
@@ -37,6 +39,11 @@ public class MqttServiceImpl implements MqttService {
 		}
 		
 		return result;
+	}
+
+	@Override
+	public List<MessageData> readMessageAll() {
+		return mqttModel.readMessageAll();
 	}
 
 }

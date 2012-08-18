@@ -15,7 +15,7 @@ public class MessageData {
 	/** 
 	 * 流水號
 	 */
-	private int serial;
+	private String serial;
 	
 	/**
 	 * 發送目標
@@ -35,11 +35,11 @@ public class MessageData {
 		this.id = id;
 	}
 
-	public int getSerial() {
+	public String getSerial() {
 		return serial;
 	}
 
-	public void setSerial(int serial) {
+	public void setSerial(String serial) {
 		this.serial = serial;
 	}
 

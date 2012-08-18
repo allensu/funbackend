@@ -1,6 +1,8 @@
 package tw.com.funbackend.controllers;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -53,6 +56,26 @@ public class MqttController {
 		mqttService.createMessage(messageData);
 		
 		return new ModelAndView("/Mqtt/MqttManage");
+	}
+	
+	@RequestMapping(value = "/Mqtt/ReadMessage")
+	public @ResponseBody List<MessageData> readUser() {
+		List<MessageData> messageDataList = new ArrayList<MessageData>();
+		
+		try {
+			messageDataList = mqttService.readMessageAll();
+			
+			if(messageDataList == null || messageDataList.size() == 0)
+			{
+				messageDataList = new ArrayList<MessageData>();
+			}
+			
+		} catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+		
+		return messageDataList;
 	}
 	
 }

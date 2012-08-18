@@ -1,5 +1,8 @@
 package tw.com.funbackend.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 
 import org.springframework.context.ApplicationContext;
@@ -34,6 +37,15 @@ public class MqttModelImpl implements MqttModel {
 		
 		goPartyonMessageMongo.save(messageData);
 		
+//		MessageMongoDB mmdb = new MessageMongoDB();
+//		mmdb.start("118.233.100.117:27017", "gopartyon_message");
+//		boolean insertResult = mmdb.insert(messageData.getTarget(), messageData.getMessage());
+//		if(insertResult) {
+//			logger.info("success");
+//		} else {
+//			logger.info("fail");
+//		}
+		
 		return messageData;
 	}
 
@@ -52,10 +64,27 @@ public class MqttModelImpl implements MqttModel {
 		       
 		       result = new MessageData();
 		       result.setId(parameter.get("_id").toString());
-		       result.setSerial(Integer.valueOf(parameter.get("serial").toString()));
+		       result.setSerial(parameter.get("serial").toString());
 		       result.setTarget(parameter.get("target").toString());
 		       result.setMessage(parameter.get("message").toString());		       
 		    } 
+		} 
+		catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+		
+		return result;
+	}
+
+
+	@Override
+	public List<MessageData> readMessageAll() {
+		
+		List<MessageData> result = new ArrayList<MessageData>();
+		
+		try {
+			result = goPartyonMessageMongo.findAll(MessageData.class);						
 		} 
 		catch(Exception ex)
 		{
