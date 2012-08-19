@@ -22,7 +22,8 @@ public class GoPartyonMessageConfig extends AbstractMongoConfiguration {
 	
 	@Override
 	public Mongo mongo() throws Exception {
-		return new Mongo("118.233.100.117");
+		//return new Mongo("118.233.100.117");
+		return new Mongo("localhost");
 	}
 
 }
