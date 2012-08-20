@@ -6,17 +6,25 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>登入統計後台</title>
 
-<jsp:include page="../../views/Common/CommonResource.jsp"></jsp:include>
-<!-- 
-<link href="../../Content/Site.css" rel="stylesheet" type="text/css" />
-<link href="../../themes/redmond/jquery-ui-1.8.7.custom.css" rel="stylesheet" type="text/css" />
-<link href="../../Content/JQueryUICustom.css" rel="stylesheet" type="text/css" />
+<!-- <jsp:include page="../../views/Common/CommonResource.jsp"></jsp:include> -->
 
+<link href="../../Content/Site.css" rel="stylesheet" type="text/css" />
+<link href="../../themes/${userBean.theme}/jquery-ui-1.8.7.custom.css" rel="stylesheet" type="text/css" />
+<link href="../../Content/JQueryUICustom.css" rel="stylesheet" type="text/css" />
+<link href="../../Content/ui.combobox.css" rel="stylesheet" type="text/css" /> 
+<link href="../../Content/demo_page.css" rel="stylesheet" type="text/css" />
+<link href="../../Content/demo_table_jui.css" rel="stylesheet" type="text/css" />
+<link href="../../Content/function.css" rel="stylesheet" type="text/css" />
+    
 <script src="../../Script/jquery-1.4.1.js" type="text/javascript"></script>
 <script src="../../Script/jquery-ui-1.8.7.custom.min.js" type="text/javascript"></script>
 <script src="../../Script/jquery.blockUI.js" type="text/javascript"></script>
 <script src="../../Script/jquery.gcms.js" type="text/javascript"></script>
-  -->
+<script src="../../Script/jquery.combobox.js" type="text/javascript"></script>
+<script src="../../Script/jquery.dataTables.js" type="text/javascript"></script>
+<script src="../../Script/gcms.function.js" type="text/javascript"></script>
+<script src="../../Script/gcms.dateformat.js" type="text/javascript"></script>
+
  
 <script type="text/javascript" language="javascript">
 	$(function() {

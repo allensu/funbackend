@@ -59,7 +59,7 @@ public class MqttController {
 	}
 	
 	@RequestMapping(value = "/Mqtt/ReadMessage")
-	public @ResponseBody List<MessageData> readUser() {
+	public @ResponseBody List<MessageData> readMessage() {
 		List<MessageData> messageDataList = new ArrayList<MessageData>();
 		
 		try {
