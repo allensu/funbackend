@@ -1,31 +1,21 @@
 package tw.com.funbackend.persistence.gopartyon;
 
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
-
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 import org.springframework.data.mongodb.core.index.Indexed;
-
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import tw.com.funbackend.persistence.gopartyon.vo.MobileToken;
 
-import com.gofunfriend.gofuncube.partyon.vo.MobileToken;
-
-import flexjson.JSON;
-import flexjson.JSONDeserializer;
-import flexjson.JSONSerializer;
 
 @Document
-// @JsonIgnoreProperties(value = {"password","mobileToken","username"})
-// @JsonIgnoreProperties(value = {"id","username"})
 public class User {
 	@Transient
 	public static final String PHOTO_ALBUM = "albumPhoto";
@@ -38,82 +28,182 @@ public class User {
 	
 	@Id
 	private String id;
+	
+	/**
+	 * 帳號名稱
+	 */
 	@Indexed
 	private String userName;
+	
+	/**
+	 * 電子信箱
+	 */
 	@Indexed
 	private String email;
+	
+	/**
+	 * 密碼
+	 */
 	private String password;
+	
+	/**
+	 * 國別
+	 */
 	@Indexed
 	private String countryCode;
+	
+	/**
+	 * 手機號碼
+	 */
 	@Indexed
 	private String phoneNo;
+	
+	/**
+	 * 性別
+	 */
 	private String gender;
+	
+	/**
+	 * 顯示名稱
+	 */
 	private String displayName;
+	
+	
 	private int filenameCount;
 
-	// @Transient
+	
 	private MobileToken mobileToken;
 	
+	/**
+	 * 想做什麼事
+	 */
 	private String wantTo;
 	
+	/**
+	 * 想做什麼事的記錄時間
+	 */
 	private Date wantToDateTime;
 	
+	/**
+	 * 生日
+	 */
 	private String birthday;
+	
 	
 	private int numOfLikes;
 	
+	
 	private String album;
 	
+	/**
+	 * 上傳的照片
+	 */
 	@Indexed
 	private List<Map<String, String>> photos = new ArrayList<Map<String, String>>();
 	
+	/**
+	 * 上傳照片數量
+	 */
 	private int numOfPic;
 	
+	/**
+	 * 排行名次
+	 */
 	@Indexed
 	private int ranking;
 	
+	/**
+	 * 給其它Users贊
+	 */
 	@Indexed
 	private List<Map<String, Object>> likeUsers = new ArrayList<Map<String, Object>>();
 	
+	/**
+	 * 拜訪者
+	 */
 	@Indexed
 	private List<Map<String, Object>> visitors = new ArrayList<Map<String, Object>>();
+	
 	
 	@Indexed
 	private List<Map<String, Object>> blockUsers = new ArrayList<Map<String, Object>>();
 	
+	/**
+	 * 大頭照
+	 */
 	@Indexed
 	private String pic;
 	
+	/**
+	 * 最後定位點
+	 */
 	@GeoSpatialIndexed
 	private Map<String, Double> location = new HashMap<String, Double>();
 	
+	/**
+	 * 地址
+	 */
 	private String address;
 	
+	/**
+	 * 最後定位時間
+	 */
 	private Date locationDateTime;
 	
+	/**
+	 * 註冊碼
+	 */
 	private String registerId;
-	
+
+	/**
+	 * 最後打卡地點名稱
+	 */
 	private String placeName;
 	
+	/**
+	 * 興趣
+	 */
 	private String interest;
 	
+	/**
+	 * 專長
+	 */
 	private String profession;
 	
+	/**
+	 * 學校
+	 */
 	private String school;
 	
 	private String description;
 	
+	/**
+	 * 更新時間
+	 */
 	private Date updateTime;
 	
+	/**
+	 * 月得分
+	 */
 	@Indexed
 	private int monthScore;
 
+	/**
+	 * 總得分
+	 */
 	@Indexed
 	private int totalScore;
 	
+	/**
+	 * 最後計算排行榜時間
+	 */
 	public Date latestCalculatedRankingTime;
 	
+	/**
+	 * 排行榜上升或下降
+	 */
 	public String rankingCompare;
+	
 	
 	private String wantToAddress;
 	
@@ -122,6 +212,11 @@ public class User {
 	@Indexed
 	private Date keepAliveDateTime;
 	
+	private Map<String, Double> wantToLocation = new HashMap<String, Double>(); 		
+	
+	/**
+	 * 是否在線上
+	 */
 	@Indexed
 	private boolean isOnline;
 	
@@ -149,8 +244,7 @@ public class User {
 		this.lastBroadcastDateTime = lastBroadcastDateTime;
 	}
 
-	private Map<String, Double> wantToLocation = new HashMap<String, Double>(); 		
-	
+
 	public Map<String, Double> getWantToLocation() {
 		return wantToLocation;
 	}
@@ -255,7 +349,6 @@ public class User {
 		this.registerId = registerId;
 	}
 
-	@JSON(include=false)
 	public String getEmail() {
 		return email;
 	}
@@ -271,7 +364,7 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	@JSON(include=false)
+
 	public String getPassword() {
 		return password;
 	}
@@ -292,7 +385,6 @@ public class User {
 		this.address = address;
 	}
 
-	@JSON(include=false)
 	public String getId() {
 		return id;
 	}
@@ -404,44 +496,6 @@ public class User {
 		this.blockUsers = blockUsers;
 	}
 
-	@Override
-	public String toString() {
-		return "User [Id=" + id + ", email=" + email + ", username=" + userName
-				+ "]";
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result
-				+ ((userName == null) ? 0 : userName.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		User other = (User) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (userName == null) {
-			if (other.userName != null)
-				return false;
-		} else if (!userName.equals(other.userName))
-			return false;
-		return true;
-	}
-
 	public void setMobileToken(MobileToken mobileToken) {
 		this.mobileToken = mobileToken;
 	}
@@ -461,7 +515,7 @@ public class User {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	@JSON(include=false)
+
 	public String getCountryCode() {
 		return countryCode;
 	}
@@ -470,7 +524,7 @@ public class User {
 		this.countryCode = countryCode;
 	}
 	
-	@JSON(include=false)
+
 	public String getPhoneNo() {
 		return phoneNo;
 	}
@@ -489,15 +543,6 @@ public class User {
 
 	public String getDisplayName() {
 		return displayName;
-	}
-
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static User fromJsonToUser(String json) {
-		return new JSONDeserializer<User>().use(null, User.class)
-				.deserialize(json, User.class);
 	}
 
 	public int getFilenameCount() {

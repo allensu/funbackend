@@ -24,7 +24,7 @@ import tw.com.funbackend.persistence.MenuItem;
 import tw.com.funbackend.persistence.UserInfo;
 
 @Repository
-public class AccountModelImple implements AccountModel {
+public class AccountModelImpl implements AccountModel {
 	protected Logger logger = Logger.getLogger("model");
 	
 	ApplicationContext ctx = new AnnotationConfigApplicationContext(FunBackendMongoConfig.class);

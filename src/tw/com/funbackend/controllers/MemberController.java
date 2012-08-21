@@ -3,6 +3,8 @@ package tw.com.funbackend.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,11 +14,18 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import tw.com.funbackend.persistence.MessageData;
+import tw.com.funbackend.persistence.gopartyon.User;
 import tw.com.funbackend.pojo.UserBean;
+import tw.com.funbackend.service.AccountService;
+import tw.com.funbackend.service.MemberService;
 
 @SessionAttributes("userBean")
 @Controller
 public class MemberController {
+	protected Logger logger = Logger.getLogger("controller");
+		
+	@Autowired
+	private MemberService memberService;
 	
 	/**
 	 * 會員黑名單
@@ -39,24 +48,23 @@ public class MemberController {
 	}
 
 	@RequestMapping(value = "/Member/MemberDataQuery/Read")
-	public @ResponseBody List<MessageData> readMember() {
-//		List<MessageData> messageDataList = new ArrayList<MessageData>();
-//		
-//		try {
-//			messageDataList = mqttService.readMessageAll();
-//			
-//			if(messageDataList == null || messageDataList.size() == 0)
-//			{
-//				messageDataList = new ArrayList<MessageData>();
-//			}
-//			
-//		} catch(Exception ex)
-//		{
-//			logger.error(ex.getMessage());
-//		}
-//		
-//		return messageDataList;
-		return null;
+	public @ResponseBody List<User> readMember() {
+		List<User> userDataList = new ArrayList<User>();
+		
+		try {
+			userDataList = memberService.readUserAll();
+			
+			if(userDataList == null || userDataList.size() == 0)
+			{
+				userDataList = new ArrayList<User>();
+			}
+			
+		} catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+		
+		return userDataList;
 	}
 	
 	/**

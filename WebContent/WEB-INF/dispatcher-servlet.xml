@@ -53,6 +53,9 @@
 		<property name="location" value="/WEB-INF/mongo.properties"/>
 	</bean>
 
+	<mongo:mongo id="mongo" replica-set="${mongo.replicationset}" write-concern="REPLICA_SAFE">
+    	<mongo:options slave-ok="true"/>
+	</mongo:mongo>
 
 	<mongo:mongo host="${mongo.host}" port="${mongo.port}">
 		<mongo:options 
