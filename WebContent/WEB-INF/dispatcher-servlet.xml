@@ -76,12 +76,14 @@
 	
 	<bean id="mongo"
 		class="org.springframework.data.mongodb.core.MongoFactoryBean">
-		<property name="host" value="${mongo.host}" />
+		<property name="host" value="${mongo.host}"/>
+		<property name="port" value="${mongo.port}"/>
 	</bean>
 
 	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
 		<constructor-arg name="mongo" ref="mongo" />
-		<constructor-arg name="databaseName" value="production_partyon" />
+		<!-- <constructor-arg name="databaseName" value="production_partyon" /> -->
+		<constructor-arg name="databaseName" value="dev_partyon" />
 	</bean>
 	
 	<bean
