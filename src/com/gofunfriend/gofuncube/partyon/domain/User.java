@@ -1,4 +1,4 @@
-package tw.com.funbackend.persistence.gopartyon;
+package com.gofunfriend.gofuncube.partyon.domain;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,7 +12,8 @@ import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-import tw.com.funbackend.persistence.gopartyon.vo.MobileToken;
+
+import com.gofunfriend.gofuncube.partyon.vo.MobileToken;
 
 
 @Document
@@ -219,6 +220,8 @@ public class User {
 	 */
 	@Indexed
 	private boolean isOnline;
+	
+	private boolean isFake;
 	
 	public boolean isOnline() {
 		return isOnline;
@@ -551,5 +554,13 @@ public class User {
 
 	public void setFilenameCount(int filenameCount) {
 		this.filenameCount = filenameCount;
+	}
+
+	public boolean isFake() {
+		return isFake;
+	}
+
+	public void setFake(boolean isFake) {
+		this.isFake = isFake;
 	}
 }

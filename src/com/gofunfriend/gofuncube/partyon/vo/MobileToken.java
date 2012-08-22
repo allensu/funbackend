@@ -1,4 +1,4 @@
-package tw.com.funbackend.persistence.gopartyon.vo;
+package com.gofunfriend.gofuncube.partyon.vo;
 
 import java.util.Date;
 

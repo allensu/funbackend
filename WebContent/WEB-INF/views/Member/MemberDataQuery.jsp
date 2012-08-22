@@ -47,6 +47,15 @@
             readData();
         });
 		
+		// Update Btn
+		$("#updateBtn").button({
+            icons: {
+                primary: "ui-icon-wrench"
+            }
+        }).click(function () {
+
+        });
+		
 		// Delete Btn
 		$("#deleteBtn").button({
             icons: {
@@ -70,7 +79,7 @@
 	
     function readData() {
 
-        $.getJSON('/funbackend/controller/Mqtt/ReadMessage', function (data) {
+        $.getJSON('/funbackend/controller/Member/MemberDataQuery/Read', function (data) {
 
             $('#jtable').dataTable().fnClearTable(true);
             
@@ -103,7 +112,13 @@
 			<br />
 		</form>
 	</fieldset>
-
+	<span id="toolbar" class="ui-widget-header ui-corner-all">
+		<button id="createBtn" name="createBtn">新增</button>	
+	    <button id="readBtn" name="readBtn">查詢</button>
+	    <button id="updateBtn" name="updateBtn">修改</button>
+	    <button id="deleteBtn" name="deleteBtn">刪除</button>
+	</span>
+    <br/>
 
 
 

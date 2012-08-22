@@ -6,8 +6,9 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.gofunfriend.gofuncube.partyon.domain.User;
+
 import tw.com.funbackend.model.MemberModel;
-import tw.com.funbackend.persistence.gopartyon.User;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -18,7 +19,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public List<User> readUserAll() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return memberModel.readUserAll();
 	}
 }
