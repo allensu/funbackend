@@ -2,7 +2,7 @@ package tw.com.funbackend.model;
 
 import java.util.List;
 
-import com.gofunfriend.gofuncube.partyon.domain.User;
+import tw.com.funbackend.persistence.gopartyon.User;
 
 import tw.com.funbackend.persistence.MessageData;
 

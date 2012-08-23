@@ -1,4 +1,4 @@
-package com.gofunfriend.gofuncube.partyon.domain;
+package tw.com.funbackend.persistence.gopartyon;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,7 +13,8 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.gofunfriend.gofuncube.partyon.vo.MobileToken;
+import tw.com.funbackend.persistence.gopartyon.vo.MobileToken;
+
 
 
 @Document

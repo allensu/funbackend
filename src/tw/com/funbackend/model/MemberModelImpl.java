@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Repository;
 
-import com.gofunfriend.gofuncube.partyon.domain.User;
+import tw.com.funbackend.persistence.gopartyon.User;
 
 
 @Repository
@@ -24,7 +24,11 @@ public class MemberModelImpl implements MemberModel {
 		List<User> result = new ArrayList<User>();
 		
 		try {
-			result = partyonMongo.findAll(User.class); 	
+			if(partyonMongo.collectionExists(User.class))
+			{
+				result = partyonMongo.findAll(User.class);	
+			}
+			 	
 			
 			
 		} catch(Exception ex)

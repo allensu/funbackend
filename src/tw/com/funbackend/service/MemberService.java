@@ -2,7 +2,7 @@ package tw.com.funbackend.service;
 
 import java.util.List;
 
-import com.gofunfriend.gofuncube.partyon.domain.User;
+import tw.com.funbackend.persistence.gopartyon.User;
 
 
 public interface MemberService {

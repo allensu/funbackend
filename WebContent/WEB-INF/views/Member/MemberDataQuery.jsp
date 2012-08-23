@@ -73,7 +73,7 @@
             "sPaginationType": "full_numbers"
         });
 		
-		readData();
+		
 	});
 	
 	
@@ -86,9 +86,11 @@
             $.each(data, function (k, v) {
             
                 $('#jtable').dataTable().fnAddData([
-	                v.serial,
-	                v.target,
-	                v.message 
+                    v.userName,
+                    v.displayName,
+	                v.countryCode,
+	                v.online,
+	                v.totalScore 
                 ]);
             });
 
@@ -112,6 +114,7 @@
 			<br />
 		</form>
 	</fieldset>
+	<br/>
 	<span id="toolbar" class="ui-widget-header ui-corner-all">
 		<button id="createBtn" name="createBtn">新增</button>	
 	    <button id="readBtn" name="readBtn">查詢</button>
@@ -119,7 +122,26 @@
 	    <button id="deleteBtn" name="deleteBtn">刪除</button>
 	</span>
     <br/>
-
+	<table id="jtable"  cellpadding="0" cellspacing="0" border="0" class="display" >
+        <thead>
+            <tr>
+                <th>userName</th>
+                <th>displayName</th>
+                <th>countryCode</th>
+                <th>isOnline</th>
+                <th>totalScore</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="row">
+                <td></td>
+                <td></td>
+                <td></td> 
+                <td></td> 
+                <td></td>                
+            </tr>
+        </tbody>
+    </table>
 
 
 </body>

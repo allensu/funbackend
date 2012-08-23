@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.gofunfriend.gofuncube.partyon.domain.User;
+import tw.com.funbackend.persistence.gopartyon.User;
 
 import tw.com.funbackend.persistence.MessageData;
 import tw.com.funbackend.pojo.UserBean;
