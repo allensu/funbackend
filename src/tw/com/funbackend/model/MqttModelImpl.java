@@ -1,5 +1,7 @@
 package tw.com.funbackend.model;
 
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +33,7 @@ public class MqttModelImpl implements MqttModel {
 	ApplicationContext ctx = new AnnotationConfigApplicationContext(GoPartyonMessageConfig.class);
     MongoOperations goPartyonMessageMongo = ctx.getBean(MongoOperations.class);
 
+    
     
 	@Override
 	public MessageData createMessage(MessageData messageData) {
@@ -92,6 +95,44 @@ public class MqttModelImpl implements MqttModel {
 		}
 		
 		return result;
+	}
+
+
+	@Override
+	public boolean removeMessage(String id) {
+		
+		try {
+			Query query = new Query(where("id").is(id));
+			
+			goPartyonMessageMongo.remove(query, MessageData.class);
+			
+		}
+		catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+		
+		
+		return true;
+	}
+
+
+	@Override
+	public boolean removeMessage(List<String> ids) {
+
+		try {
+			for(String currId : ids)
+			{
+				Query query = new Query(where("id").is(currId));
+				goPartyonMessageMongo.remove(query, MessageData.class);
+			}
+		}
+		catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+
+		return true;
 	}
 
 }

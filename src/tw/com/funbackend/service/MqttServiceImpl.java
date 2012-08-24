@@ -46,4 +46,16 @@ public class MqttServiceImpl implements MqttService {
 		return mqttModel.readMessageAll();
 	}
 
+	@Override
+	public boolean removeMessage(String id) {
+		
+		return mqttModel.removeMessage(id);
+	}
+
+	@Override
+	public boolean removeMessage(List<String> ids) {
+		
+		return mqttModel.removeMessage(ids);
+	}
+
 }

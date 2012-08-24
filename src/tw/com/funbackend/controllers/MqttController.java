@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
@@ -63,6 +64,32 @@ public class MqttController {
 		List<MessageData> messageDataList = new ArrayList<MessageData>();
 		
 		try {
+			messageDataList = mqttService.readMessageAll();
+			
+			if(messageDataList == null || messageDataList.size() == 0)
+			{
+				messageDataList = new ArrayList<MessageData>();
+			}
+			
+		} catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+		
+		return messageDataList;
+	}
+	
+	@RequestMapping(value = "/Mqtt/DeleteMessage", method = RequestMethod.POST)
+	public @ResponseBody List<MessageData> deleteMessage(
+			@RequestParam(value="ids") List<String> ids) {
+		List<MessageData> messageDataList = new ArrayList<MessageData>();
+		
+		try {
+			// 刪除資料
+			mqttService.removeMessage(ids);
+			//logger.info(ids.);
+			
+			// 重新查詢
 			messageDataList = mqttService.readMessageAll();
 			
 			if(messageDataList == null || messageDataList.size() == 0)

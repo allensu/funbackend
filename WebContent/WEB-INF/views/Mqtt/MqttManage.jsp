@@ -42,7 +42,7 @@
         }).click(function () {
             $.blockUI({ message: $('#question'), css: { width: '275px'} });
             
-            
+            //deleteData();
         });
 		
 		var oTable = $('#jtable').dataTable({
@@ -54,7 +54,19 @@
 		readData();
 	});
 	
-	
+
+	$('#yes').click(function () {
+
+        $.blockUI({ message: '<div>刪除資料中...</div>', overlayCSS: { backgroundColor: '#4297D7'} });
+
+        deleteData();
+    });
+
+    $('#no').click(function () {
+        $.unblockUI();
+        return false;
+    });
+    
     function readData() {
 
         $.getJSON('/funbackend/controller/Mqtt/ReadMessage', function (data) {
@@ -64,6 +76,7 @@
             $.each(data, function (k, v) {
             
                 $('#jtable').dataTable().fnAddData([
+                    "<input id='id' name='id' type='checkbox' value='" + v.id + "'/>",                                
 	                v.serial,
 	                v.target,
 	                v.message 
@@ -73,7 +86,47 @@
             $.unblockUI();
         });
     }
-	
+    
+    function deleteData() {
+    	
+		var idsArray = new Array();
+
+		$('#jtable input:checked').each(function() {
+			idsArray.push(this.value);
+		});
+
+		var postData = {
+			ids : idsArray
+		};
+
+		$.ajax({
+			type : "POST",
+			url : "/funbackend/controller/Mqtt/DeleteMessage",
+			data : postData,
+			success : function(data) {
+				//alert(data);
+				
+				$('#jtable').dataTable().fnClearTable(true);
+	            
+	            $.each(data, function (k, v) {
+	            
+	                $('#jtable').dataTable().fnAddData([
+	                    "<input id='id' name='id' type='checkbox' value='" + v.id + "'/>",                                
+		                v.serial,
+		                v.target,
+		                v.message 
+	                ]);
+	            });
+
+	            $.unblockUI();
+				
+				
+				//$.unblockUI();
+			},
+			dataType : "json",
+			traditional : true
+		});
+	}
 </script>
 </head>
 <body>
@@ -100,6 +153,7 @@
 	<table id="jtable"  cellpadding="0" cellspacing="0" border="0" class="display" >
         <thead>
             <tr>
+                <th></th>
                 <th>序號</th>
                 <th>目標</th>
                 <th>訊息</th>
@@ -107,6 +161,7 @@
         </thead>
         <tbody>
             <tr class="row">
+            	<td></td>
                 <td></td>
                 <td></td>
                 <td></td> 
@@ -115,8 +170,7 @@
     </table>
     
     <div id="question" style="display: none; cursor: default">
-        <h1 id="msgCnt">
-            確定要刪除此筆資料?</h1>
+        <h1 id="msgCnt">確定要刪除資料?</h1>
         <input type="button" id="yes" value="Yes" />
         <input type="button" id="no" value="No" />
     </div>

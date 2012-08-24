@@ -24,4 +24,17 @@ public interface MqttModel {
 	 */
 	List<MessageData> readMessageAll();
 	
+	/**
+	 * 移除訊息
+	 * @param id
+	 * @return
+	 */
+	boolean removeMessage(String id);
+	
+	/**
+	 * 移除多筆訊息
+	 * @param ids
+	 * @return
+	 */
+	boolean removeMessage(List<String> ids);
 }
