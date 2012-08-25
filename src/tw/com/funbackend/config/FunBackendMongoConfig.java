@@ -12,7 +12,7 @@ public class FunBackendMongoConfig extends AbstractMongoConfiguration {
 	@Override
 	public Mongo mongo() throws Exception {
 		//return new Mongo("118.233.100.117");
-		return new Mongo("localhost");
+		return new Mongo("dev2.gopartyon.com");
 	}
 
 	@Override

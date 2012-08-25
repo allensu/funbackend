@@ -19,9 +19,7 @@
             }
         }).click(function () {
 
-			
-        	
-        	
+        	createData();
         });
 		
 		// Read Btn
@@ -40,11 +38,22 @@
                 primary: "ui-icon-circle-close"
             }
         }).click(function () {
-            $.blockUI({ message: $('#question'), css: { width: '275px'} });
-            
-            //deleteData();
+        	var checkedCount = $('#jtable input:checked').length;
+        	
+        	if(checkedCount > 0)
+            	$.blockUI({ message: $('#question'), css: { width: '275px'} });            
         });
 		
+		$('#yes').button().click(function () {
+	        $.blockUI({ message: '<div>刪除資料中...</div>', overlayCSS: { backgroundColor: '#4297D7'} });
+	        deleteData();
+	    });
+
+	    $('#no').button().click(function () {
+	        $.unblockUI();
+	        return false;
+	    });
+	    
 		var oTable = $('#jtable').dataTable({
             //"sScrollY":  '100%',
             "bJQueryUI": true,
@@ -55,17 +64,7 @@
 	});
 	
 
-	$('#yes').click(function () {
-
-        $.blockUI({ message: '<div>刪除資料中...</div>', overlayCSS: { backgroundColor: '#4297D7'} });
-
-        deleteData();
-    });
-
-    $('#no').click(function () {
-        $.unblockUI();
-        return false;
-    });
+	
     
     function readData() {
 
@@ -85,6 +84,40 @@
 
             $.unblockUI();
         });
+    }
+    
+    function createData() {
+    	var postData = {
+    			target : $('#target').val(),
+    			message : $('#message').val()
+    	};
+    	
+    	$.ajax({
+			type : "POST",
+			url : "/funbackend/controller/Mqtt/CreateMessage",
+			data : postData,
+			success : function(data) {
+								
+				$('#jtable').dataTable().fnClearTable(true);
+	            
+	            $.each(data, function (k, v) {
+	            
+	                $('#jtable').dataTable().fnAddData([
+	                    "<input id='id' name='id' type='checkbox' value='" + v.id + "'/>",                                
+		                v.serial,
+		                v.target,
+		                v.message 
+	                ]);
+	            });
+
+	            $.unblockUI();
+
+	            $('#target').val("");
+	            $('#message').val("");
+			},
+			dataType : "json",
+			traditional : true
+		});
     }
     
     function deleteData() {
@@ -119,9 +152,7 @@
 	            });
 
 	            $.unblockUI();
-				
-				
-				//$.unblockUI();
+
 			},
 			dataType : "json",
 			traditional : true
@@ -137,16 +168,15 @@
 		<form action="CreateMessage" method="post">
 			<label>發送目標:</label><input id="target" name="target" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" /><br /><br />
 			<label>發送訊息:</label><input id="message" name="message" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" /><br /><br /> 			
-			<input id="submit" name="submit" type="submit" value="發送" /><br /><br />
 		</form>
 	</fieldset>
 	
 	<br/>
-	<span id="toolbar" class="ui-widget-header ui-corner-all">
+	<!-- <span id="toolbar" class="ui-widget-header ui-corner-all"> -->
 		<button id="createBtn" name="createBtn">新增</button>	
 	    <button id="readBtn" name="readBtn">查詢</button>
 	    <button id="deleteBtn" name="deleteBtn">刪除</button>
-	</span>
+	<!-- </span> -->
     
 	<br/>
 	
@@ -171,8 +201,8 @@
     
     <div id="question" style="display: none; cursor: default">
         <h1 id="msgCnt">確定要刪除資料?</h1>
-        <input type="button" id="yes" value="Yes" />
-        <input type="button" id="no" value="No" />
+        <input type="button" id="yes" name="yes" value="Yes" />
+        <input type="button" id="no" name="no" value="No" />
     </div>
 </body>
 </html>

@@ -50,13 +50,32 @@ public class MqttController {
 	 * @return
 	 */
 	@RequestMapping(value = "/Mqtt/CreateMessage", method = RequestMethod.POST)
-	public ModelAndView createMessage(
+	public @ResponseBody List<MessageData> createMessage(
 			@ModelAttribute("userBean") UserBean userBean,
 			@ModelAttribute MessageData messageData) {
 		
-		mqttService.createMessage(messageData);
+		List<MessageData> messageDataList = new ArrayList<MessageData>();
 		
-		return new ModelAndView("/Mqtt/MqttManage");
+		try {
+			// 新增資料
+			mqttService.createMessage(messageData);
+			
+			// 重新查詢
+			messageDataList = mqttService.readMessageAll();
+			
+			if(messageDataList == null || messageDataList.size() == 0)
+			{
+				messageDataList = new ArrayList<MessageData>();
+			}
+			
+		} catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+		
+		return messageDataList;
+		
+		//return new ModelAndView("/Mqtt/MqttManage");
 	}
 	
 	@RequestMapping(value = "/Mqtt/ReadMessage")
