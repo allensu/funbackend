@@ -6,161 +6,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>MQTT資料管理</title>
 <jsp:include page="../../views/Common/CommonResource.jsp"></jsp:include>
-<script>
-	
-	$.fx.speeds._default = 1000;
-	$(function() {
-		$("#submit").button();
-		
-		// Create Btn
-		$("#createBtn").button({
-            icons: {
-                primary: "ui-icon-circle-plus"
-            }
-        }).click(function () {
-
-        	createData();
-        });
-		
-		// Read Btn
-		$("#readBtn").button({
-            icons: {
-                primary: "ui-icon-search"
-            }
-        }).click(function () {
-            $.blockUI({ message: '<div>載入資料中...</div>', overlayCSS: { backgroundColor: '#4297D7'} });
-            readData();
-        });
-		
-		// Delete Btn
-		$("#deleteBtn").button({
-            icons: {
-                primary: "ui-icon-circle-close"
-            }
-        }).click(function () {
-        	var checkedCount = $('#jtable input:checked').length;
-        	
-        	if(checkedCount > 0)
-            	$.blockUI({ message: $('#question'), css: { width: '275px'} });            
-        });
-		
-		$('#yes').button().click(function () {
-	        $.blockUI({ message: '<div>刪除資料中...</div>', overlayCSS: { backgroundColor: '#4297D7'} });
-	        deleteData();
-	    });
-
-	    $('#no').button().click(function () {
-	        $.unblockUI();
-	        return false;
-	    });
-	    
-		var oTable = $('#jtable').dataTable({
-            //"sScrollY":  '100%',
-            "bJQueryUI": true,
-            "sPaginationType": "full_numbers"
-        });
-		
-		readData();
-	});
-	
-
-	
-    
-    function readData() {
-
-        $.getJSON('/funbackend/controller/Mqtt/ReadMessage', function (data) {
-
-            $('#jtable').dataTable().fnClearTable(true);
-            
-            $.each(data, function (k, v) {
-            
-                $('#jtable').dataTable().fnAddData([
-                    "<input id='id' name='id' type='checkbox' value='" + v.id + "'/>",                                
-	                v.serial,
-	                v.target,
-	                v.message 
-                ]);
-            });
-
-            $.unblockUI();
-        });
-    }
-    
-    function createData() {
-    	var postData = {
-    			target : $('#target').val(),
-    			message : $('#message').val()
-    	};
-    	
-    	$.ajax({
-			type : "POST",
-			url : "/funbackend/controller/Mqtt/CreateMessage",
-			data : postData,
-			success : function(data) {
-								
-				$('#jtable').dataTable().fnClearTable(true);
-	            
-	            $.each(data, function (k, v) {
-	            
-	                $('#jtable').dataTable().fnAddData([
-	                    "<input id='id' name='id' type='checkbox' value='" + v.id + "'/>",                                
-		                v.serial,
-		                v.target,
-		                v.message 
-	                ]);
-	            });
-
-	            $.unblockUI();
-
-	            $('#target').val("");
-	            $('#message').val("");
-			},
-			dataType : "json",
-			traditional : true
-		});
-    }
-    
-    function deleteData() {
-    	
-		var idsArray = new Array();
-
-		$('#jtable input:checked').each(function() {
-			idsArray.push(this.value);
-		});
-
-		var postData = {
-			ids : idsArray
-		};
-
-		$.ajax({
-			type : "POST",
-			url : "/funbackend/controller/Mqtt/DeleteMessage",
-			data : postData,
-			success : function(data) {
-				//alert(data);
-				
-				$('#jtable').dataTable().fnClearTable(true);
-	            
-	            $.each(data, function (k, v) {
-	            
-	                $('#jtable').dataTable().fnAddData([
-	                    "<input id='id' name='id' type='checkbox' value='" + v.id + "'/>",                                
-		                v.serial,
-		                v.target,
-		                v.message 
-	                ]);
-	            });
-
-	            $.unblockUI();
-
-			},
-			dataType : "json",
-			traditional : true
-		});
-	}
-</script>
+<script src="../../ViewScript/MqttManageScript.js" type="text/javascript"></script>
 </head>
-<body>
+<body onload="readData()">
 
 <fieldset>
 		<legend>MQTT資料管理</legend>
@@ -170,8 +18,7 @@
 			<label>發送訊息:</label><input id="message" name="message" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" /><br /><br /> 			
 		</form>
 	</fieldset>
-	
-	<br/>
+
 	<!-- <span id="toolbar" class="ui-widget-header ui-corner-all"> -->
 		<button id="createBtn" name="createBtn">新增</button>	
 	    <button id="readBtn" name="readBtn">查詢</button>
@@ -183,7 +30,7 @@
 	<table id="jtable"  cellpadding="0" cellspacing="0" border="0" class="display" >
         <thead>
             <tr>
-                <th></th>
+                <th align="left"><input type="checkbox" id="selectAll" /></th>
                 <th>序號</th>
                 <th>目標</th>
                 <th>訊息</th>
@@ -199,6 +46,10 @@
         </tbody>
     </table>
     
+    <div id="dialog-message" title="訊息">
+		<p>請輸入必要資料</p>
+	</div>
+
     <div id="question" style="display: none; cursor: default">
         <h1 id="msgCnt">確定要刪除資料?</h1>
         <input type="button" id="yes" name="yes" value="Yes" />
