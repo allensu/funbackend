@@ -24,6 +24,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
@@ -151,6 +152,35 @@ public class AccountController {
 		return userInfoList;
 	}
 	
+	/**
+	 * 刪除資料
+	 * @param ids
+	 * @return
+	 */
+	@RequestMapping(value = "/Account/DeleteAccount", method = RequestMethod.POST)
+	public @ResponseBody List<UserInfo> deleteAccount(
+			@RequestParam(value="ids") List<String> ids) {
+		List<UserInfo> userInfoDataList = new ArrayList<UserInfo>();
+		
+		try {
+			// 刪除資料
+			accountService.removeUserInfo(ids);
+			
+			// 重新查詢
+			userInfoDataList = accountService.readUserAll();
+			
+			if(userInfoDataList == null || userInfoDataList.size() == 0)
+			{
+				userInfoDataList = new ArrayList<UserInfo>();
+			}
+			
+		} catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+		
+		return userInfoDataList;
+	}
 
 	/**
 	 * 開啟使用者帳號管理頁面

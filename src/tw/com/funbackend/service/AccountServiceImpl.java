@@ -82,7 +82,6 @@ public class AccountServiceImpl implements AccountService {
 	public UserInfo createUser(UserInfo userInfo) {
 		
 		UserInfo userInfoResult = accountModel.createUser(userInfo);
-		
 		return userInfoResult;
 	}
 
@@ -96,5 +95,11 @@ public class AccountServiceImpl implements AccountService {
 	public List<UserInfo> readUserAll() {
 		
 		return accountModel.readUserAll();
+	}
+
+	@Override
+	public boolean removeUserInfo(List<String> ids) {
+	
+		return accountModel.removeUserInfo(ids);
 	}
 }

@@ -1,5 +1,7 @@
 package tw.com.funbackend.model;
 
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,6 +23,7 @@ import tw.com.funbackend.config.FunBackendMongoConfig;
 import tw.com.funbackend.enumeration.UserInfoCategory;
 import tw.com.funbackend.persistence.MenuGroup;
 import tw.com.funbackend.persistence.MenuItem;
+import tw.com.funbackend.persistence.MessageData;
 import tw.com.funbackend.persistence.UserInfo;
 
 @Repository
@@ -158,6 +161,25 @@ public class AccountModelImpl implements AccountModel {
 		
 		
 		return result;
+	}
+
+	@Override
+	public boolean removeUserInfo(List<String> ids) {
+		
+		try {
+			for(String currId : ids)
+			{
+				Query query = new Query(where("id").is(currId));
+				//Query query = new Query(where("accountId").is("allensu"));
+				funBackendMongo.remove(query, UserInfo.class);
+			}
+		}
+		catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+
+		return true;
 	}
 
 	

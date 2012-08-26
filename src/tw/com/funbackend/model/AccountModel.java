@@ -45,4 +45,11 @@ public interface AccountModel {
 	 * @return
 	 */
 	List<UserInfo> readUserAll();
+	
+	/**
+	 * 移除多筆帳號訊息
+	 * @param ids
+	 * @return
+	 */
+	boolean removeUserInfo(List<String> ids);
 }

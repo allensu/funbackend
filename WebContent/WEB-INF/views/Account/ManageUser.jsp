@@ -52,6 +52,7 @@
 	<table id="jtable"  cellpadding="0" cellspacing="0" border="0" class="display" >
         <thead>
             <tr>
+            	<th align="left"><input type="checkbox" id="selectAll" /></th>
                 <th>帳號 </th>
                 <th>名稱</th>
                 <th>類別</th>
@@ -61,6 +62,7 @@
         </thead>
         <tbody>
             <tr class="row">
+            	<td></td>
                 <td></td>
                 <td></td>
                 <td></td> 

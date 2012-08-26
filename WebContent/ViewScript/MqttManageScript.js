@@ -101,20 +101,25 @@ $(function() {
 	});
 });
 
+function dataEachRowAdd(data)
+{
+	$('#jtable').dataTable().fnClearTable(true);
+	
+	$.each(data, function(k, v) {
+		
+		$('#jtable').dataTable().fnAddData([
+						"<input id='dataId' name='dataId' type='checkbox' value='" + v.id + "'/>", 
+						v.serial, 
+						v.target,
+						v.message ]);			
+	});
+}
+
 function readData() {
 
 	$.getJSON('/funbackend/controller/Mqtt/ReadMessage', function(data) {
 
-		$('#jtable').dataTable().fnClearTable(true);
-
-		$.each(data, function(k, v) {
-			
-			$('#jtable').dataTable().fnAddData([
-							"<input id='dataId' name='dataId' type='checkbox' value='" + v.id + "'/>", 
-							v.serial, 
-							v.target,
-							v.message ]);			
-		});
+		dataEachRowAdd(data);
 
 		$.unblockUI();
 	});
@@ -147,16 +152,9 @@ function createData() {
 		data : postData,
 		success : function(data) {
 
-			$('#jtable').dataTable().fnClearTable(true);
+			
 
-			$.each(data, function(k, v) {
-
-				$('#jtable').dataTable().fnAddData([
-								"<input id='dataId' name='dataId' type='checkbox' value='" + v.id + "'/>", 
-								v.serial, 
-								v.target,
-								v.message ]);
-			});
+			dataEachRowAdd(data);
 
 			$.unblockUI();
 
@@ -185,18 +183,8 @@ function deleteData() {
 		url : "/funbackend/controller/Mqtt/DeleteMessage",
 		data : postData,
 		success : function(data) {
-			// alert(data);
 
-			$('#jtable').dataTable().fnClearTable(true);
-
-			$.each(data, function(k, v) {
-
-				$('#jtable').dataTable().fnAddData([
-								"<input id='dataId' name='dataId' type='checkbox' value='" + v.id + "'/>", 
-								v.serial, 
-								v.target,
-								v.message ]);
-			});
+			dataEachRowAdd(data);
 
 			$.unblockUI();
 

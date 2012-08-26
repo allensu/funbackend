@@ -17,4 +17,11 @@ public interface AccountService {
 	 * @return
 	 */
 	List<UserInfo> readUserAll();
+	
+	/**
+	 * 刪除帳號資料
+	 * @param ids
+	 * @return
+	 */
+	boolean removeUserInfo(List<String> ids);
 }

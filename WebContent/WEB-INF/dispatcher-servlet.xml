@@ -89,7 +89,7 @@
 	<bean
 		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
 
-	<!-- <bean
-		class="org.springframework.data.mongodb.core.mapping.event.LoggingEventListener" /> -->
+	 <bean
+		class="org.springframework.data.mongodb.core.mapping.event.LoggingEventListener" />
 	   
 </beans>
