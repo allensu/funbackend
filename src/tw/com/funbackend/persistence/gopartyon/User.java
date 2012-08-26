@@ -16,7 +16,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import tw.com.funbackend.persistence.gopartyon.vo.MobileToken;
 
 
-
+/**
+ * 使用者資料
+ * @author allensu
+ *
+ */
 @Document
 public class User {
 	@Transient
@@ -73,7 +77,9 @@ public class User {
 	
 	private int filenameCount;
 
-	
+	/**
+	 * 認證碼
+	 */
 	private MobileToken mobileToken;
 	
 	/**
@@ -91,7 +97,9 @@ public class User {
 	 */
 	private String birthday;
 	
-	
+	/**
+	 * 被按贊數
+	 */
 	private int numOfLikes;
 	
 	
@@ -126,7 +134,9 @@ public class User {
 	@Indexed
 	private List<Map<String, Object>> visitors = new ArrayList<Map<String, Object>>();
 	
-	
+	/**
+	 * 黑名單列表
+	 */
 	@Indexed
 	private List<Map<String, Object>> blockUsers = new ArrayList<Map<String, Object>>();
 	
