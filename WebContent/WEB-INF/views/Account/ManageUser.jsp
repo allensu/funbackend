@@ -20,7 +20,7 @@
 <script src="../../Script/jquery.combobox.js" type="text/javascript"></script>
  -->
 </head>
-<body>
+<body onload="readData()">
 	<!-- 
 	<fieldset>
 		<legend>帳戶資訊</legend>

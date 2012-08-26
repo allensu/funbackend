@@ -3,9 +3,9 @@
 		 // Form View
 		  $("#dialog-form").dialog({
 	            autoOpen: false,
-	            show: "blind",
+	            show: "scale",
 	            modal: true,
-	            hide: "explode"
+	            hide: "scale"
 	        });
 		  
 		$("#combobox").combobox();

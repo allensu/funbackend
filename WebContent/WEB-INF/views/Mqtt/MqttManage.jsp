@@ -46,7 +46,7 @@
         </tbody>
     </table>
     
-    <div id="dialog-message" title="訊息">
+    <div id="dialog-message" title="訊息" style="display: none;">
 		<p>請輸入必要資料</p>
 	</div>
 
