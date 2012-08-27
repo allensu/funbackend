@@ -231,7 +231,7 @@ function deleteData() {
 	<div id="toolBar">
 		<button id="createBtn" name="createBtn">新增</button>	
 	    <button id="readBtn" name="readBtn">查詢</button>
-	    <button id="updateBtn" name="updateBtn">修改</button>
+	    <button id="updateBtn" name="updateBtn" disabled="disabled">修改</button>
 	    <button id="deleteBtn" name="deleteBtn">刪除</button>
 	</div>	
     <br/>
