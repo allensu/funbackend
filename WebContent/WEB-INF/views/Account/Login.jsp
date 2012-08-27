@@ -9,7 +9,7 @@
 <!-- <jsp:include page="../../views/Common/CommonResource.jsp"></jsp:include> -->
 
 <link href="../../Content/Site.css" rel="stylesheet" type="text/css" />
-<link href="../../themes/${userBean.theme}/jquery-ui-1.8.7.custom.css" rel="stylesheet" type="text/css" />
+<link href="../../themes/redmond/jquery-ui-1.8.7.custom.css" rel="stylesheet" type="text/css" />
 <link href="../../Content/JQueryUICustom.css" rel="stylesheet" type="text/css" />
 <link href="../../Content/ui.combobox.css" rel="stylesheet" type="text/css" /> 
 <link href="../../Content/demo_page.css" rel="stylesheet" type="text/css" />

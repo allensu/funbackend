@@ -234,6 +234,11 @@ public class User {
 	
 	private boolean isFake;
 	
+	/**
+	 * 封存
+	 */
+	private boolean isDeleted;
+	
 	public boolean isOnline() {
 		return isOnline;
 	}
@@ -573,5 +578,13 @@ public class User {
 
 	public void setFake(boolean isFake) {
 		this.isFake = isFake;
+	}
+
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 }

@@ -19,7 +19,7 @@ public class LoginVerificationInterceptor extends HandlerInterceptorAdapter {
 			HttpServletResponse response, Object handler) throws Exception {
 
 		String pathInfo = request.getPathInfo();
-
+		
 		if (pathInfo.equals("/Account/Index")
 				|| pathInfo.equals("/Account/Login")) {
 			return super.preHandle(request, response, handler);

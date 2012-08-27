@@ -1,6 +1,7 @@
 package tw.com.funbackend.controllers;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -9,16 +10,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import tw.com.funbackend.enumeration.UserInfoCategory;
 import tw.com.funbackend.persistence.gopartyon.User;
 
 import tw.com.funbackend.persistence.MessageData;
+import tw.com.funbackend.persistence.UserInfo;
 import tw.com.funbackend.pojo.UserBean;
 import tw.com.funbackend.service.AccountService;
 import tw.com.funbackend.service.MemberService;
+import tw.com.funbackend.utility.Encrypt;
 
 @SessionAttributes("userBean")
 @Controller
@@ -48,6 +53,10 @@ public class MemberController {
 		return new ModelAndView("/Member/MemberDataQuery");	
 	}
 
+	/**
+	 * 取得所有User資料
+	 * @return
+	 */
 	@RequestMapping(value = "/Member/MemberDataQuery/Read")
 	public @ResponseBody List<User> readMember() {
 		List<User> userDataList = new ArrayList<User>();
@@ -66,6 +75,39 @@ public class MemberController {
 		}
 		
 		return userDataList;
+	}
+	
+	/**
+	 * 取得特定User資料
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value = "/Member/MemberDataQuery/Read/Id")
+	public @ResponseBody User readMemberById(@RequestParam(value="id") String id) {
+		User userData = new User();
+		
+		try {
+			userData = memberService.readUser(id);
+		} catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+		
+		return userData;
+	}
+	
+	@RequestMapping(value = "/Member/MemberDataQuery/Update", method = RequestMethod.POST)
+	public @ResponseBody User updateUser(
+			@ModelAttribute("userBean") UserBean userBean,
+			@ModelAttribute User user) {
+
+		
+		
+		
+		
+
+		
+		return user;
 	}
 	
 	/**

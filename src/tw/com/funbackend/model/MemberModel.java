@@ -12,4 +12,11 @@ public interface MemberModel {
 	 * @return
 	 */
 	List<User> readUserAll();
+	
+	/**
+	 * 取得特定的 User
+	 * @param id
+	 * @return
+	 */
+	User readUser(String id);
 }

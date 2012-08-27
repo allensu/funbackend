@@ -2,6 +2,10 @@
 	$(function() {
 		$("#submit").button();
 		
+		$( "#toolBar" ).buttonset();
+
+		
+		
 		// Create Btn
 		$("#createBtn").button({
             icons: {
@@ -58,20 +62,28 @@
 
         $.getJSON('/funbackend/controller/Member/MemberDataQuery/Read', function (data) {
 
-            $('#jtable').dataTable().fnClearTable(true);
-            
-            $.each(data, function (k, v) {
-            
-                $('#jtable').dataTable().fnAddData([
-                    v.userName,
-                    v.displayName,
-	                v.countryCode,
-	                v.online,
-	                v.totalScore 
-                ]);
-            });
-
+        	//alert('aa');
+        	dataEachRowAdd(data);
+        	//alert(data);
             $.unblockUI();
         });
     }
 	
+    
+    function dataEachRowAdd(data)
+    {    	 
+    	//alert('dataEachRowAdd');
+    	$('#jtable').dataTable().fnClearTable(true);
+        //alert(data);
+        $.each(data, function (k, v) {
+        
+            $('#jtable').dataTable().fnAddData([
+                v.userName,
+                v.displayName,
+                v.countryCode,
+                v.online,
+                v.fake,
+                v.totalScore 
+            ]);
+        });	    
+    }

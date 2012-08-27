@@ -22,4 +22,10 @@ public class MemberServiceImpl implements MemberService {
 		
 		return memberModel.readUserAll();
 	}
+
+	@Override
+	public User readUser(String id) {
+		
+		return memberModel.readUser(id);
+	}
 }
