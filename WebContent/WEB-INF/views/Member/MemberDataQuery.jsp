@@ -158,11 +158,10 @@ function showDetailEvent(id)
 				$('#userName').val(data.userName);
 				$('#displayName').val(data.displayName);
 				
-				alert(data.fake.toString());
-				alert($("#fake option:selected").text());
+				//alert(data.fake.toString());
+				//alert($("#fake option:selected").text());
 				$("#fake").val(data.fake.toString());
-				//$("#fake [value='2']").attr("selected", true);
-				alert($("#fake option:selected").text());
+				//alert($("#fake option:selected").text());
 				//$("#fake")
 				
 				
