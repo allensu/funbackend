@@ -52,11 +52,8 @@
 	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" >
 		<property name="location" value="/WEB-INF/mongo.properties"/>
 	</bean>
-<!-- 
-	<mongo:mongo id="mongo" replica-set="${mongo.replicationset}" write-concern="REPLICA_SAFE">
-    	<mongo:options slave-ok="true"/>
-	</mongo:mongo>
- -->
+
+ <!--
 	<mongo:mongo host="${mongo.host}" port="${mongo.port}">
 		<mongo:options 
 			connections-per-host="${mongo.connectionsPerHost}"
@@ -79,11 +76,17 @@
 		<property name="host" value="${mongo.host}"/>
 		<property name="port" value="${mongo.port}"/>
 	</bean>
+-->
 
+	<mongo:mongo id="mongo" replica-set="${mongo.replicationset}" write-concern="REPLICA_SAFE">
+    	<mongo:options slave-ok="true"/>
+	</mongo:mongo>
+
+	<mongo:db-factory dbname="database" mongo-ref="mongo" />
+	
 	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
 		<constructor-arg name="mongo" ref="mongo" />
-		<!-- <constructor-arg name="databaseName" value="production_partyon" /> -->
-		<constructor-arg name="databaseName" value="dev_partyon" />
+		<constructor-arg name="databaseName" value="${mongo.databaseName}" />
 	</bean>
 	
 	<bean
