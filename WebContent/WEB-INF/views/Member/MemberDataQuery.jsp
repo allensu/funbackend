@@ -116,7 +116,8 @@ $(function() {
 	// Form View
 	$("#dialog-form").dialog({
 		autoOpen : false,
-		modal : true
+		modal : true,
+		width : 600
 	});
 	
 	// Form Control Define
@@ -164,9 +165,26 @@ function showDetailEvent(id)
 				$("#email").val(data.email);
 				$("#phoneNo").val(data.phoneNo);
 				$("#countryCode").val(data.countryCode);
-				//$("#gender").val(data.gender);
-				//$("#gender").val(data.gender);
 				
+				
+				$("#address").val(data.address);
+				$("#numOfLikes").val(data.numOfLikes);
+				$("#ranking").val(data.ranking);
+				//$("#likeUsers").val(data.likeUsers);
+				//$("#visitors").val(data.visitors);
+				//$("#blockUsers").val(data.blockUsers);
+				//$("#location").val(data.location);
+				$("#locationDateTime").val(data.locationDateTime);
+				$("#placeName").val(data.placeName);
+				$("#interest").val(data.interest);
+				$("#profession").val(data.profession);
+				$("#school").val(data.school);
+				$("#description").val(data.description);
+				$("#updateTime").val(data.updateTime);
+				$("#monthScore").val(data.monthScore);
+				$("#totalScore").val(data.totalScore);
+				$("#rankingCompare").val(data.rankingCompare);
+
 				
 				
 				$("#gender").val(data.gender);
@@ -266,16 +284,16 @@ function dataEachRowAdd(data)
     <div id="dialog-form" title="詳細資料">
     
     	<form action="UpdateUser" method="post">
-        	<table style="border: 1px">
+        	<table style="border: 1px;" >
         		<thead>
 	        		<tr>
-	        			<th class=" ui-state-default" style="width:100%">欄位名稱</th><th  class=" ui-state-default" style="width:100%">欄位資料</th>
+	        			<th class=" ui-state-default" style="width:150px">欄位名稱</th><th  class=" ui-state-default" style="width:450px">欄位資料</th>
 	        		</tr>
         		</thead>
         		<tbody>
         			<tr>
         				<td>大頭照</td>
-        				<td>nbsp;pic</td>
+        				<td>&nbsp;pic</td>
         			</tr>    		
         			<tr>
         				<td>帳號名稱</td>
@@ -315,7 +333,7 @@ function dataEachRowAdd(data)
         			
         			<tr>
         				<td>地址</td>
-        				<td>nbsp;address</td>
+        				<td><input id="address" name="address" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" /></td>
         			</tr>
         			<tr>
         				<td>贊</td>
@@ -323,7 +341,7 @@ function dataEachRowAdd(data)
         			</tr>
         			<tr>
         				<td>上傳的照片</td>
-        				<td>nbsp;</td>
+        				<td>&nbsp;</td>
         			</tr>
         			<tr>
         				<td>排行名次</td>
@@ -331,45 +349,49 @@ function dataEachRowAdd(data)
         			</tr>
         			<tr>
         				<td>給其它Users贊</td>
-        				<td>nbsp;likeUsers</td>
+        				<td>&nbsp;likeUsers</td>
         			</tr>
         			<tr>
         				<td>拜訪者</td>
-        				<td>nbsp;visitors</td>
+        				<td>&nbsp;visitors</td>
         			</tr>
         			<tr>
         				<td>黑名單列表</td>
-        				<td>nbsp;blockUsers</td>
+        				<td>&nbsp;blockUsers</td>
         			</tr>
         			
         			<tr>
         				<td>最後定位點</td>
-        				<td>nbsp;location</td>
+        				<td>&nbsp;location</td>
         			</tr>
         			
         			<tr>
         				<td>最後定位時間</td>
-        				<td>nbsp;locationDateTime</td>
+        				<td><input id="locationDateTime" name="locationDateTime" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" /></td>
         			</tr>
         			<tr>
         				<td>最後打卡地點名稱</td>
-        				<td>nbsp;placeName</td>
+        				<td><input id="placeName" name="placeName" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" /></td>
         			</tr>
         			<tr>
         				<td>興趣</td>
-        				<td>nbsp;interest</td>
+        				<td><input id="interest" name="interest" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" /></td>
         			</tr>
         			<tr>
         				<td>專長</td>
-        				<td>nbsp;profession</td>
+        				<td><input id="profession" name="profession" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" /></td>
         			</tr>
         			<tr>
         				<td>學校</td>
-        				<td>nbsp;school</td>
+        				<td><input id="school" name="school" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" /></td>
         			</tr>
         			<tr>
         				<td>說明</td>
-        				<td>nbsp;description</td>
+        				<td>
+        					<textarea id="description" name="description" rows="5" cols="20" class="text ui-widget-content ui-corner-all" >
+        					
+        					</textarea>
+        				</td>
         			</tr>
         			
         			<tr>
@@ -393,21 +415,21 @@ function dataEachRowAdd(data)
         			
         			<tr>
         				<td>更新時間</td>
-        				<td>nbsp;updateTime</td>
+        				<td><input id="updateTime" name="updateTime" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" /></td>
         			</tr>
         			<tr>
         				<td>月得分</td>
-        				<td>nbsp;monthScore</td>
+        				<td><input id="monthScore" name="monthScore" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" /></td>
         			</tr>
         			
         			<tr>
         				<td>總得分</td>
-        				<td>nbsp;totalScore</td>
+        				<td><input id="totalScore" name="totalScore" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" /></td>
         			</tr>
         			
         			<tr>
-        				<td>說明</td>
-        				<td>nbsp;排行榜上升或下降</td>
+        				<td>排行榜上升或下降</td>
+        				<td><input id="rankingCompare" name="rankingCompare" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" /></td>
         			</tr>
         			
         			
