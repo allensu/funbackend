@@ -120,8 +120,8 @@ $(function() {
 	});
 	
 	// Form Control Define
-	$("#fake").combobox();
-	$("#deleted").combobox();
+	//$("#fake").combobox();
+	//$("#deleted").combobox();
 	$("#updateSubmitBtn").button();
 	
 });
@@ -158,17 +158,19 @@ function showDetailEvent(id)
 				$('#userName').val(data.userName);
 				$('#displayName').val(data.displayName);
 				
-				//alert(data.fake.toString());
-				//alert($("#fake option:selected").text());
-				$("#fake").val(data.fake.toString());
-				//alert($("#fake option:selected").text());
-				//$("#fake")
+				$("#fake").val(data.fake);
+				
+				$("#birthday").val(data.birthday);
+				$("#email").val(data.email);
+				$("#phoneNo").val(data.phoneNo);
+				$("#countryCode").val(data.countryCode);
+				//$("#gender").val(data.gender);
+				//$("#gender").val(data.gender);
 				
 				
 				
-				
+				$("#gender").val(data.gender);
 				$('#deleted').val(data.deleted);
-				
 				$("#dialog-form").dialog("open");
 			},
 			dataType : "json",
@@ -264,31 +266,157 @@ function dataEachRowAdd(data)
     <div id="dialog-form" title="詳細資料">
     
     	<form action="UpdateUser" method="post">
-        <fieldset>
-            <div class="editor-label">帳號名稱</div>
-            <div class="editor-field">
-            	<input id="userName" name="userName" readonly="readonly" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" />                
-            </div>
-            <div class="editor-label">顯示名稱</div>
-            <div class="editor-field">
-            	<input id="displayName" name="displayName" readonly="readonly" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" />                
-            </div>
-            <div class="editor-label">假帳號</div>
-            <div class="editor-field">
-            	<select id="fake">
-					<option value="false">否</option>
-					<option value="true">是</option>
-				</select>
-			</div>
-            <div class="editor-label">封存</div>
-            <div class="editor-field">
-                <select id="deleted">
-					<option value="false">否</option>
-					<option value="true">是</option>
-				</select>
-            </div><br />
-            <input id="updateSubmitBtn" type="submit" value="存檔" />
-        </fieldset>
+        	<table style="border: 1px">
+        		<thead>
+	        		<tr>
+	        			<th class=" ui-state-default" style="width:100%">欄位名稱</th><th  class=" ui-state-default" style="width:100%">欄位資料</th>
+	        		</tr>
+        		</thead>
+        		<tbody>
+        			<tr>
+        				<td>大頭照</td>
+        				<td>nbsp;pic</td>
+        			</tr>    		
+        			<tr>
+        				<td>帳號名稱</td>
+        				<td><input id="userName" name="userName" readonly="readonly" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" /></td>
+        			</tr>
+        			<tr>
+        				<td>顯示名稱</td>
+        				<td><input id="displayName" name="displayName" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" /></td>
+        			</tr>
+        			
+        			<tr>
+        				<td>性別</td>
+        				<td>
+        					<select id="gender">
+        						<option value="">未設定</option>
+								<option value="M">男</option>
+								<option value="F">女</option>					
+							</select>
+        				</td>
+        			</tr>
+        			<tr>
+        				<td>生日</td>
+        				<td><input id="birthday" name="birthday" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" /></td>
+        			</tr>
+        			<tr>
+        				<td>信箱</td>
+        				<td><input id="email" name="email" type="text" value="" size="20" maxlength="50" class="text ui-widget-content ui-corner-all" /></td>
+        			</tr>
+        			<tr>
+        				<td>手機號碼</td>
+        				<td><input id="phoneNo" name="phoneNo" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" /></td>
+        			</tr>
+        			<tr>
+        				<td>國碼</td>
+        				<td><input id="countryCode" name="countryCode" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" /></td>
+        			</tr>
+        			
+        			<tr>
+        				<td>地址</td>
+        				<td>nbsp;address</td>
+        			</tr>
+        			<tr>
+        				<td>贊</td>
+        				<td><input id="numOfLikes" name="numOfLikes" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" /></td>
+        			</tr>
+        			<tr>
+        				<td>上傳的照片</td>
+        				<td>nbsp;</td>
+        			</tr>
+        			<tr>
+        				<td>排行名次</td>
+        				<td><input id="ranking" name="ranking" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" /></td>
+        			</tr>
+        			<tr>
+        				<td>給其它Users贊</td>
+        				<td>nbsp;likeUsers</td>
+        			</tr>
+        			<tr>
+        				<td>拜訪者</td>
+        				<td>nbsp;visitors</td>
+        			</tr>
+        			<tr>
+        				<td>黑名單列表</td>
+        				<td>nbsp;blockUsers</td>
+        			</tr>
+        			
+        			<tr>
+        				<td>最後定位點</td>
+        				<td>nbsp;location</td>
+        			</tr>
+        			
+        			<tr>
+        				<td>最後定位時間</td>
+        				<td>nbsp;locationDateTime</td>
+        			</tr>
+        			<tr>
+        				<td>最後打卡地點名稱</td>
+        				<td>nbsp;placeName</td>
+        			</tr>
+        			<tr>
+        				<td>興趣</td>
+        				<td>nbsp;interest</td>
+        			</tr>
+        			<tr>
+        				<td>專長</td>
+        				<td>nbsp;profession</td>
+        			</tr>
+        			<tr>
+        				<td>學校</td>
+        				<td>nbsp;school</td>
+        			</tr>
+        			<tr>
+        				<td>說明</td>
+        				<td>nbsp;description</td>
+        			</tr>
+        			
+        			<tr>
+        				<td>假帳號</td>
+        				<td>
+        					<select id="fake">
+								<option value="false">否</option>
+								<option value="true">是</option>
+							</select>
+        				</td>
+        			</tr>
+        			<tr>
+        				<td>封存</td>
+        				<td>
+        				<select id="deleted">
+							<option value="false">否</option>
+							<option value="true">是</option>
+						</select>
+        				</td>
+        			</tr>
+        			
+        			<tr>
+        				<td>更新時間</td>
+        				<td>nbsp;updateTime</td>
+        			</tr>
+        			<tr>
+        				<td>月得分</td>
+        				<td>nbsp;monthScore</td>
+        			</tr>
+        			
+        			<tr>
+        				<td>總得分</td>
+        				<td>nbsp;totalScore</td>
+        			</tr>
+        			
+        			<tr>
+        				<td>說明</td>
+        				<td>nbsp;排行榜上升或下降</td>
+        			</tr>
+        			
+        			
+        			
+        			<tr>
+        				<td colspan="2" align="right"><input id="updateSubmitBtn" type="submit" value="存檔" /></td>
+        			</tr>
+        		</tbody>
+        	</table>
         </form>
     </div>
 </body>
