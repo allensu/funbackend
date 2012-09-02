@@ -297,7 +297,7 @@ function dataEachRowAdd(data)
         			</tr>    		
         			<tr>
         				<td>帳號名稱</td>
-        				<td><input id="userName" name="userName" readonly="readonly" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" /></td>
+        				<td><input id="userName" name="userName" readonly="readonly" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" style="border: 0px" /></td>
         			</tr>
         			<tr>
         				<td>顯示名稱</td>
