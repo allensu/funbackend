@@ -74,6 +74,7 @@ public class MemberController {
 			logger.error(ex.getMessage());
 		}
 		
+		logger.info("return readMember");
 		return userDataList;
 	}
 	
