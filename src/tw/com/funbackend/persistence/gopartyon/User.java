@@ -187,6 +187,9 @@ public class User {
 	 */
 	private String school;
 	
+	/**
+	 * 自我介紹
+	 */
 	private String description;
 	
 	/**

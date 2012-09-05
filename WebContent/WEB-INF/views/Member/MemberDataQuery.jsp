@@ -123,10 +123,46 @@ $(function() {
 	// Form Control Define
 	//$("#fake").combobox();
 	//$("#deleted").combobox();
-	$("#updateSubmitBtn").button();
+	$("#updateFrameBtn").button({
+        icons: {
+            primary: "ui-icon-wrench"
+        }
+    }).click(function () {
+    	$.blockUI({ message: $('#question'), css: { width: '275px'} });
+    	updateData(); 
+    });
 	
 });
 
+function updateData() {
+	
+	var postData = {
+			userName : $('#userName').val(),
+			
+			
+			
+			
+			
+			//message : $('#message').val()
+	};
+
+	$.ajax({
+		type : "POST",
+		url : "/funbackend/controller/Member/Update",
+		data : postData,
+		success : function(data) {
+
+				
+
+			
+
+			$.unblockUI();
+			
+		},
+		dataType : "json",
+		traditional : true
+	});
+}
 
 function readData() {
 
@@ -156,44 +192,104 @@ function showDetailEvent(id)
 			success : function(data) {
 
 				// Form Control Value Setting
-				$('#userName').val(data.userName);
-				$('#displayName').val(data.displayName);
 				
-				$("#fake").val(data.fake);
+				//記錄原值
+				$('#userName').attr("orgVal", data.userName); //使用者名稱
+				$('#displayName').attr("orgVal", data.displayName); //顯示名稱			
+				$("#fake").attr("orgVal", data.fake); //假帳號				
+				$("#birthday").attr("orgVal", data.birthday); //生日
+				$("#email").attr("orgVal", data.email); //信箱
+				$("#phoneNo").attr("orgVal", data.phoneNo); //電話號碼
+				$("#countryCode").attr("orgVal", data.countryCode); //國碼				
+				$("#address").attr("orgVal", data.address); //地址
+				$("#numOfLikes").attr("orgVal", data.numOfLikes); //贊數量
+				$("#ranking").attr("orgVal", data.ranking); //排名
+				//$("#likeUsers").val(data.likeUsers); //給其它Users贊
+				//$("#visitors").val(data.visitors); //拜訪者
+				//$("#blockUsers").val(data.blockUsers); //黑名單列表
+				//$("#location").val(data.location); //最後定位點
+				$("#locationDateTime").attr("orgVal", data.locationDateTime); //最後定位時間
+				$("#placeName").attr("orgVal", data.userplaceNameName); //最後打卡地點名稱
+				$("#interest").attr("orgVal", data.interest); //興趣
+				$("#profession").attr("orgVal", data.profession); //專長
+				$("#school").attr("orgVal", data.school); //學校
+				$("#description").attr("orgVal", data.description); //自我介紹
+				$("#updateTime").attr("orgVal", data.updateTime); //更新時間
+				$("#monthScore").attr("orgVal", data.monthScore); //月得分
+				$("#totalScore").attr("orgVal", data.totalScore); //總得分
+				$("#rankingCompare").attr("orgVal", data.rankingCompare); //排行榜上升或下降
+				$("#gender").attr("orgVal", data.gender); //性別
+				$('#deleted').attr("orgVal", data.deleted); //封存
 				
-				$("#birthday").val(data.birthday);
-				$("#email").val(data.email);
-				$("#phoneNo").val(data.phoneNo);
-				$("#countryCode").val(data.countryCode);
+				
+				// 記錄值
+				$('#userName').val(data.userName); //使用者名稱
+				$('#displayName').val(data.displayName); //顯示名稱			
+				$("#fake").val(data.fake); //假帳號				
+				$("#birthday").val(data.birthday); //生日
+				$("#email").val(data.email); //信箱
+				$("#phoneNo").val(data.phoneNo); //電話號碼
+				$("#countryCode").val(data.countryCode); //國碼				
+				$("#address").val(data.address); //地址
+				$("#numOfLikes").val(data.numOfLikes); //贊數量
+				$("#ranking").val(data.ranking); //排名
+				//$("#likeUsers").val(data.likeUsers); //給其它Users贊
+				//$("#visitors").val(data.visitors); //拜訪者
+				//$("#blockUsers").val(data.blockUsers); //黑名單列表
+				//$("#location").val(data.location); //最後定位點
+				$("#locationDateTime").val(data.locationDateTime); //最後定位時間
+				$("#placeName").val(data.placeName); //最後打卡地點名稱
+				$("#interest").val(data.interest); //興趣
+				$("#profession").val(data.profession); //專長
+				$("#school").val(data.school); //學校
+				$("#description").val(data.description); //自我介紹
+				$("#updateTime").val(data.updateTime); //更新時間
+				$("#monthScore").val(data.monthScore); //月得分
+				$("#totalScore").val(data.totalScore); //總得分
+				$("#rankingCompare").val(data.rankingCompare); //排行榜上升或下降
+				$("#gender").val(data.gender); //性別
+				$('#deleted').val(data.deleted); //封存
 				
 				
-				$("#address").val(data.address);
-				$("#numOfLikes").val(data.numOfLikes);
-				$("#ranking").val(data.ranking);
-				//$("#likeUsers").val(data.likeUsers);
-				//$("#visitors").val(data.visitors);
-				//$("#blockUsers").val(data.blockUsers);
-				//$("#location").val(data.location);
-				$("#locationDateTime").val(data.locationDateTime);
-				$("#placeName").val(data.placeName);
-				$("#interest").val(data.interest);
-				$("#profession").val(data.profession);
-				$("#school").val(data.school);
-				$("#description").val(data.description);
-				$("#updateTime").val(data.updateTime);
-				$("#monthScore").val(data.monthScore);
-				$("#totalScore").val(data.totalScore);
-				$("#rankingCompare").val(data.rankingCompare);
-
+				//$('#gender').blur(function() {
+				    
+					//inputOnBlurValid(this);
+				
+				//});
+					
+				var dfGroupElem = $('input[groupval=df]');
+				
+				$.each(dfGroupElem, function() {
+					
+					alert($(this).val());
+				
+				});
+				
+				//.blur(function() {
+				    
+				//	inputOnBlurValid(this);
+				
+				//});
 				
 				
-				$("#gender").val(data.gender);
-				$('#deleted').val(data.deleted);
 				$("#dialog-form").dialog("open");
 			},
 			dataType : "json",
 			traditional : true
 		});
+}
+	
+	
+function inputOnBlurValid(thisObj)
+{
+	if ($(thisObj).val() != $(thisObj).attr("orgVal"))
+	{   
+		alert($(thisObj).val() + " " + $(thisObj).attr("orgVal"));
+		
+		//$(thisObj).css({'background-color' : '#a2d1e7'});
+	} else {
+		//$(thisObj).css({'background-color' : ''});
+	}
 }
 	
 function dataEachRowAdd(data)
@@ -297,17 +393,17 @@ function dataEachRowAdd(data)
         			</tr>    		
         			<tr>
         				<td>帳號名稱</td>
-        				<td><input id="userName" name="userName" readonly="readonly" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" style="border: 0px" /></td>
+        				<td><input groupval="df" id="userName" name="userName" readonly="readonly" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" style="border: 0px" /></td>
         			</tr>
         			<tr>
         				<td>顯示名稱</td>
-        				<td><input id="displayName" name="displayName" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" /></td>
+        				<td><input groupval="df" id="displayName" name="displayName" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" /></td>
         			</tr>
         			
         			<tr>
         				<td>性別</td>
         				<td>
-        					<select id="gender">
+        					<select groupVal="df" id="gender">
         						<option value="">未設定</option>
 								<option value="M">男</option>
 								<option value="F">女</option>					
@@ -435,7 +531,7 @@ function dataEachRowAdd(data)
         			
         			
         			<tr>
-        				<td colspan="2" align="right"><input id="updateSubmitBtn" type="submit" value="存檔" /></td>
+        				<td colspan="2" align="right"><input id="updateFrameBtn" type="button" value="存檔" /></td>
         			</tr>
         		</tbody>
         	</table>
