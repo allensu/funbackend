@@ -102,7 +102,7 @@ public class MemberController {
 			@ModelAttribute("userBean") UserBean userBean,
 			@ModelAttribute User user) {
 
-		
+		System.out.println(user.getUserName());
 		
 		
 		
