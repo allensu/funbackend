@@ -148,9 +148,9 @@ function updateData() {
 		{   
 			//alert('aa');
 			//alert($(thisObj).val() + " " + $(thisObj).attr("orgVal"));
-			alert($(this).attr("id"));
+			//alert($(this).attr("id"));
 			//postData['displayName'] = $('#displayName').val();
-			
+			postData[$(this).attr("id")] = $(this).val();
 		}
 	});
 	
@@ -476,7 +476,7 @@ function inputOnBlurValid(thisObj)
 {
 	if ($(thisObj).val() != $(thisObj).attr("orgVal"))
 	{   
-		alert($(thisObj).val() + " " + $(thisObj).attr("orgVal"));
+		//alert($(thisObj).val() + " " + $(thisObj).attr("orgVal"));
 		
 		//$(thisObj).css({'background-color' : '#a2d1e7'});
 	} else {
