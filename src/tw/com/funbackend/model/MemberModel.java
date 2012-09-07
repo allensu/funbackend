@@ -19,4 +19,11 @@ public interface MemberModel {
 	 * @return
 	 */
 	User readUser(String id);
+	
+	/**
+	 * 更新 User 資料
+	 * @param user
+	 * @return
+	 */
+	User updateUser(User user);
 }

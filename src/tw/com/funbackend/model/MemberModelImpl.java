@@ -59,6 +59,25 @@ public class MemberModelImpl implements MemberModel {
 		
 		return result;
 	}
+
+	@Override
+	public User updateUser(User user) {
+		
+		try {
+			
+			
+			
+			
+			
+			
+		} 
+		catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+		
+		return user;
+	}
 	
 	
 	

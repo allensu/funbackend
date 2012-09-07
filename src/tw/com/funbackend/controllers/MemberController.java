@@ -97,18 +97,122 @@ public class MemberController {
 		return userData;
 	}
 	
+	/**
+	 * 更新User資料
+	 * @param userBean
+	 * @param user
+	 * @return
+	 */
 	@RequestMapping(value = "/Member/MemberDataQuery/Update", method = RequestMethod.POST)
 	public @ResponseBody User updateUser(
 			@ModelAttribute("userBean") UserBean userBean,
-			@ModelAttribute User user) {
+			@ModelAttribute User userP, @RequestParam(value="updateFiald") String updateFiald) {
 
-		System.out.println(user.getUserName());
+		System.out.println("Update Fiald:" + updateFiald);
 		
+		User userData = new User();
 		
+		try {
+			// 取得原本的 User 資料
+			userData = memberService.readUser(userP.getId());
+			
+			//顯示名稱
+			if("displayName".equals(updateFiald))
+				userData.setDisplayName(userP.getDisplayName());
+			
+			//假帳號
+			if("fake".equals(updateFiald))
+				userData.setFake(userP.isFake());
+			
+			//生日
+			if("birthday".equals(updateFiald))
+				userData.setBirthday(userP.getBirthday());
+			
+			//信箱
+			if("email".equals(updateFiald))
+				userData.setEmail(userP.getEmail());
+			
+			//電話號碼
+			if("phoneNo".equals(updateFiald))
+				userData.setPhoneNo(userP.getPhoneNo());
+			
+			//國碼
+			if("countryCode".equals(updateFiald))
+				userData.setCountryCode(userP.getCountryCode());
+			
+			//地址
+			if("address".equals(updateFiald))
+				userData.setAddress(userP.getAddress());
+			
+			//贊數量
+			if("numOfLikes".equals(updateFiald))
+				userData.setNumOfLikes(userP.getNumOfLikes());
+			
+			//排名
+			if("ranking".equals(updateFiald))
+				userData.setRanking(userP.getRanking());
 		
+			//最後定位時間
+			if("locationDateTime".equals(updateFiald))
+				userData.setLocationDateTime(userP.getLocationDateTime());
+			
+			//最後打卡地點名稱
+			if("placeName".equals(updateFiald))
+				userData.setPlaceName(userP.getPlaceName());
+			
+			//興趣
+			if("interest".equals(updateFiald))
+				userData.setInterest(userP.getInterest());
+			
+			//專長
+			if("profession".equals(updateFiald))
+				userData.setProfession(userP.getProfession());
+			
+			//學校
+			if("school".equals(updateFiald))
+				userData.setSchool(userP.getSchool());
+			
+			//自我介紹
+			if("description".equals(updateFiald))
+				userData.setDescription(userP.getDescription());
+			
+			//更新時間
+			if("updateTime".equals(updateFiald))
+				userData.setUpdateTime(userP.getUpdateTime());
+			
+			//月得分
+			if("monthScore".equals(updateFiald))
+				userData.setMonthScore(userP.getMonthScore());
+			
+			//總得分
+			if("totalScore".equals(updateFiald))
+				userData.setTotalScore(userP.getTotalScore());
+			
+			//排行榜上升或下降
+			if("rankingCompare".equals(updateFiald))
+				userData.setRankingCompare(userP.getRankingCompare());
+			
+			//性別
+			if("gender".equals(updateFiald))
+				userData.setGender(userP.getGender());
 
+			//封存
+			if("deleted".equals(updateFiald))
+				userData.setDeleted(userP.isDeleted());
+			
+			
+			
+			
+			
+			
+			
+			
+		} catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
 		
-		return user;
+		return userData;
 	}
 	
 	/**

@@ -137,6 +137,7 @@ $(function() {
 function updateData() {
 	var dfGroupElem = $('[groupval=df]');
 	
+	var updateFiald = "";
 	var postData = {
 			'id' : $('#id').val(),
 			'userName' : $('#userName').val()
@@ -151,9 +152,11 @@ function updateData() {
 			//alert($(this).attr("id"));
 			//postData['displayName'] = $('#displayName').val();
 			postData[$(this).attr("id")] = $(this).val();
-		}
+			updateFiald = updateFiald + $(this).attr("id") + ":";
+		}		
 	});
 	
+	postData["updateFiald"] = updateFiald;
 	
 	
 	$.ajax({
