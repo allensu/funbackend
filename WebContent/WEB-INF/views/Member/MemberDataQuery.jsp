@@ -446,7 +446,21 @@ function showDetailEvent(id)
 				//$("#likeUsers").val(data.likeUsers); //給其它Users贊
 				//$("#visitors").val(data.visitors); //拜訪者
 				//$("#blockUsers").val(data.blockUsers); //黑名單列表
-				//$("#location").val(data.location); //最後定位點
+				
+				alert('aa');
+				alert(data.location["lat"]);
+				if(data.location == null)
+				{
+					//最後定位點
+					$("#location.lat").attr("orgVal", "");
+					$('#location.lat').val(""); 
+				}
+				else 
+				{
+					$("#location.lat").attr("orgVal", data.location.lat);
+					$('#location.lat').val(data.location.lat); 
+				}
+				
 			
 				//$("#likeUsers").val(data.likeUsers); //給其它Users贊
 				//$("#visitors").val(data.visitors); //拜訪者
@@ -655,7 +669,10 @@ function dataEachRowAdd(data)
         			
         			<tr>
         				<td>最後定位點</td>
-        				<td>&nbsp;location</td>
+        				<td>
+        					<input id="location.lat" name="location" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" readonly="readonly" style="border: 0px" />
+        					<input id="location.lon" name="location" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" readonly="readonly" style="border: 0px" />
+        				</td>
         			</tr>
         			
         			<tr>
