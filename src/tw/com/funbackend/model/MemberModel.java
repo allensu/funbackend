@@ -25,5 +25,5 @@ public interface MemberModel {
 	 * @param user
 	 * @return
 	 */
-	User updateUser(User user);
+	void updateUser(User user);
 }

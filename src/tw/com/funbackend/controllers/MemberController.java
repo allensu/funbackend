@@ -117,95 +117,92 @@ public class MemberController {
 			userData = memberService.readUser(userP.getId());
 			
 			//顯示名稱
-			if("displayName".equals(updateFiald))
+			if(updateFiald.contains("displayName"))
 				userData.setDisplayName(userP.getDisplayName());
 			
 			//假帳號
-			if("fake".equals(updateFiald))
+			if(updateFiald.contains("fake"))
 				userData.setFake(userP.isFake());
 			
 			//生日
-			if("birthday".equals(updateFiald))
+			if(updateFiald.contains("birthday"))
 				userData.setBirthday(userP.getBirthday());
 			
 			//信箱
-			if("email".equals(updateFiald))
+			if(updateFiald.contains("email"))
 				userData.setEmail(userP.getEmail());
 			
 			//電話號碼
-			if("phoneNo".equals(updateFiald))
+			if(updateFiald.contains("phoneNo"))
 				userData.setPhoneNo(userP.getPhoneNo());
 			
 			//國碼
-			if("countryCode".equals(updateFiald))
+			if(updateFiald.contains("countryCode"))
 				userData.setCountryCode(userP.getCountryCode());
 			
 			//地址
-			if("address".equals(updateFiald))
+			if(updateFiald.contains("address"))
 				userData.setAddress(userP.getAddress());
 			
 			//贊數量
-			if("numOfLikes".equals(updateFiald))
+			if(updateFiald.contains("numOfLikes"))
 				userData.setNumOfLikes(userP.getNumOfLikes());
 			
 			//排名
-			if("ranking".equals(updateFiald))
+			if(updateFiald.contains("ranking"))
 				userData.setRanking(userP.getRanking());
 		
 			//最後定位時間
-			if("locationDateTime".equals(updateFiald))
+			if(updateFiald.contains("locationDateTime"))
 				userData.setLocationDateTime(userP.getLocationDateTime());
 			
 			//最後打卡地點名稱
-			if("placeName".equals(updateFiald))
+			if(updateFiald.contains("placeName"))
 				userData.setPlaceName(userP.getPlaceName());
 			
 			//興趣
-			if("interest".equals(updateFiald))
+			if(updateFiald.contains("interest"))
 				userData.setInterest(userP.getInterest());
 			
 			//專長
-			if("profession".equals(updateFiald))
+			if(updateFiald.contains("profession"))
 				userData.setProfession(userP.getProfession());
 			
 			//學校
-			if("school".equals(updateFiald))
+			if(updateFiald.contains("school"))
 				userData.setSchool(userP.getSchool());
 			
 			//自我介紹
-			if("description".equals(updateFiald))
+			if(updateFiald.contains("description"))
 				userData.setDescription(userP.getDescription());
 			
 			//更新時間
-			if("updateTime".equals(updateFiald))
+			if(updateFiald.contains("updateTime"))
 				userData.setUpdateTime(userP.getUpdateTime());
 			
 			//月得分
-			if("monthScore".equals(updateFiald))
+			if(updateFiald.contains("monthScore"))
 				userData.setMonthScore(userP.getMonthScore());
 			
 			//總得分
-			if("totalScore".equals(updateFiald))
+			if(updateFiald.contains("totalScore"))
 				userData.setTotalScore(userP.getTotalScore());
 			
 			//排行榜上升或下降
-			if("rankingCompare".equals(updateFiald))
+			if(updateFiald.contains("rankingCompare"))
 				userData.setRankingCompare(userP.getRankingCompare());
 			
 			//性別
-			if("gender".equals(updateFiald))
+			if(updateFiald.contains("gender"))
 				userData.setGender(userP.getGender());
 
 			//封存
-			if("deleted".equals(updateFiald))
+			if(updateFiald.contains("deleted"))
 				userData.setDeleted(userP.isDeleted());
 			
 			
 			
-			
-			
-			
-			
+			memberService.updateUser(userData);
 			
 		} catch(Exception ex)
 		{

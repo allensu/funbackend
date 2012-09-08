@@ -28,4 +28,10 @@ public class MemberServiceImpl implements MemberService {
 		
 		return memberModel.readUser(id);
 	}
+
+	@Override
+	public void updateUser(User user) {
+		
+		memberModel.updateUser(user);
+	}
 }

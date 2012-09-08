@@ -61,22 +61,16 @@ public class MemberModelImpl implements MemberModel {
 	}
 
 	@Override
-	public User updateUser(User user) {
+	public void updateUser(User user) {
 		
 		try {
-			
-			
-			
-			
-			
-			
+			partyonMongo.save(user);
 		} 
 		catch(Exception ex)
 		{
 			logger.error(ex.getMessage());
 		}
-		
-		return user;
+
 	}
 	
 	

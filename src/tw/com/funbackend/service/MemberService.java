@@ -18,4 +18,10 @@ public interface MemberService {
 	 * @return
 	 */
 	User readUser(String id);
+	
+	/**
+	 * 更新 User 資料
+	 * @param user
+	 */
+	void updateUser(User user);
 }
