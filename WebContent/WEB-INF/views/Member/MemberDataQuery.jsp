@@ -10,9 +10,10 @@
 <jsp:include page="../../views/Common/CommonResource.jsp"></jsp:include>
 <!-- <script src="../../ViewScript/MemberDataQueryScript.js" type="text/javascript"></script> -->
 <script type="text/javascript">
-
+var disTable; //保留被DataTables enhanced 過的變數
 $.fx.speeds._default = 1000;
 $(function() {
+	
 	$("#toolBar").buttonset();
 	
 	// 全選
@@ -55,7 +56,7 @@ $(function() {
             primary: "ui-icon-search"
         }
     }).click(function () {
-        $.blockUI({ message: '<div>載入資料中...</div>', overlayCSS: { backgroundColor: '#4297D7'} });
+        //$.blockUI({ message: '<div>載入資料中...</div>', overlayCSS: { backgroundColor: '#4297D7'} });
         readData();
     });
 	
@@ -81,23 +82,43 @@ $(function() {
 	
 	
 	
-	var oTable = $('#jtable').dataTable({
+	disTable = $('#jtable').dataTable({
         //"sScrollY":  '100%',
         "bJQueryUI": true,
-        "sPaginationType": "full_numbers",
-        "aoColumns": [
-		              { "bSortable": false },
-		              null,
-		              null,
-		              null,
-		              null,
-		              null,
-		              null,
-		              null,
-		              null,
-		              null,
-		              null,
-		              { "bSortable": false },
+        //"bPaginate": true,
+        //"bDeferRender": true,
+        "bServerSide":true,
+        "sPaginationType":"full_numbers",
+        "bProcessing": true, 
+        "sAjaxSource": '/funbackend/controller/Member/MemberDataQuery/ReadPages',
+        "fnServerParams": function ( aoData ) {
+        	$.merge(aoData, $("#queryform").serializeArray());
+        },
+        "aoColumns": [{ "mDataProp": "itemCheckCol", "bSortable": false,
+		            	"fnRender": function(oObj)
+		            	{ 
+		            		return "<input id='dataId' name='dataId' type='checkbox' value='" + oObj.aData.id + "'/>";
+		            		//return "<input type='checkbox' name='id' value='"+oObj.aData.id+"'>"
+		            	}},
+		              { "mDataProp": "userName" },
+		              { "mDataProp": "displayName" },
+		              { "mDataProp": "gender" },
+		              { "mDataProp": "countryCode" },
+		              { "mDataProp": "online" },
+		              { "mDataProp": "fake" },
+		              { "mDataProp": "numOfLikes" },
+		              { "mDataProp": "monthScore" },
+		              { "mDataProp": "monthScore" },
+		              { "mDataProp": "ranking" },
+		              { "mDataProp": "detailBtnCol", "bSortable": false,
+		            	"fnRender": function(oObj)
+		            	{ 
+		            		//\"" + oObj.aData.id + "\"
+		            		//alert(oObj.aData.id);
+		            		var obj = "<input name='showDetail' type='button' value='詳細資料' class='gcms-ui-corner-all ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' onclick='showDetailEvent(\"" + oObj.aData.id + "\")'/>";
+		            		//alert(obj);
+		            		return obj;
+		            	}}
 		              ],
 		"fnDrawCallback" : function() {
 			
@@ -108,8 +129,6 @@ $(function() {
 					$(this).attr('checked', false);
 				}
 			});
-			
-		 	
 		}
     });
 	
@@ -179,12 +198,13 @@ function updateData() {
 
 function readData() {
 
-    $.getJSON('/funbackend/controller/Member/MemberDataQuery/Read', function (data) {
-
+	disTable.fnDraw();
+    //$.getJSON('/funbackend/controller/Member/MemberDataQuery/Read', function (data) {
+	/* $.getJSON('/funbackend/controller/Member/MemberDataQuery/ReadPages?startIndex=0&length=50', function (data) {
     	dataEachRowAdd(data);
 
         $.unblockUI();
-    });
+    }); */
 }
 
 
@@ -447,18 +467,21 @@ function showDetailEvent(id)
 				//$("#visitors").val(data.visitors); //拜訪者
 				//$("#blockUsers").val(data.blockUsers); //黑名單列表
 				
-				alert('aa');
-				alert(data.location["lat"]);
+				
 				if(data.location == null)
 				{
 					//最後定位點
 					$("#location.lat").attr("orgVal", "");
 					$('#location.lat').val(""); 
+					$("#location.lon").attr("orgVal", "");
+					$('#location.lon').val(""); 
 				}
 				else 
 				{
-					$("#location.lat").attr("orgVal", data.location.lat);
-					$('#location.lat').val(data.location.lat); 
+					$("#location\\.lat").attr("orgVal", data.location["lat"]);
+					$("#location\\.lat").val(data.location["lat"]); 
+					$("#location\\.lon").attr("orgVal", data.location["lon"]);
+					$("#location\\.lon").val(data.location["lon"]); 
 				}
 				
 			
@@ -528,10 +551,16 @@ function dataEachRowAdd(data)
 </script>
 </head>
 <body>
-
+	<div id="toolBar">
+		<button id="createBtn" name="createBtn" disabled="disabled">新增</button>	
+	    <button id="readBtn" name="readBtn">查詢</button>
+	    <button id="updateBtn" name="updateBtn">修改</button>
+	    <button id="deleteBtn" name="deleteBtn" disabled="disabled">刪除</button>
+	</div>
 	<fieldset>
 		<legend>會員基本資料查詢</legend>
 		<p />
+		<form id="queryform">
 			<label>帳號名稱:</label><input id="userNameQ" name="userNameQ" type="text" value="" size="20" class="text ui-widget-content ui-corner-all"/><br /><br /> 
 			<label>顯示名稱:</label><input id="displayNameQ" name="displayNameQ" type="text" value="" size="20" class="text ui-widget-content ui-corner-all"/><br /><br />
 			<label>性別 :</label>
@@ -539,16 +568,11 @@ function dataEachRowAdd(data)
 					<option value="">全部</option>
 					<option value="M">男</option>
 					<option value="F">女</option>					
-				</select><br /><br /><br />	
+				</select><br />
+		</form>	
 	</fieldset>
 
 	<br/>
-	<div id="toolBar">
-		<button id="createBtn" name="createBtn" disabled="disabled">新增</button>	
-	    <button id="readBtn" name="readBtn">查詢</button>
-	    <button id="updateBtn" name="updateBtn">修改</button>
-	    <button id="deleteBtn" name="deleteBtn" disabled="disabled">刪除</button>
-	</div>
     <br/>
     
 	<table id="jtable"  cellpadding="0" cellspacing="0" border="0" class="display" >
@@ -668,10 +692,10 @@ function dataEachRowAdd(data)
         			</tr>
         			
         			<tr>
-        				<td>最後定位點</td>
+        				<td valign="top">最後定位點</td>
         				<td>
-        					<input id="location.lat" name="location" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" readonly="readonly" style="border: 0px" />
-        					<input id="location.lon" name="location" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" readonly="readonly" style="border: 0px" />
+        					lat:<input id="location.lat" name="location.lat" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" readonly="readonly" style="border: 0px" /><br/>
+        					lon:<input id="location.lon" name="location.lon" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" readonly="readonly" style="border: 0px" /><br/>
         				</td>
         			</tr>
         			

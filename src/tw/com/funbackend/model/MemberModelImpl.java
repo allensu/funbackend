@@ -11,6 +11,11 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
+
 import tw.com.funbackend.persistence.MessageData;
 import tw.com.funbackend.persistence.gopartyon.User;
 
@@ -72,7 +77,39 @@ public class MemberModelImpl implements MemberModel {
 		}
 
 	}
-	
-	
-	
+
+	@Override
+	public int readUserCount() {
+		int count = 0;
+		
+		try 
+		{
+			DBCollection personColl = partyonMongo.getCollection(partyonMongo.getCollectionName(User.class));  
+			BasicDBObject parameter = new BasicDBObject();  
+			count = (int) personColl.count(parameter);
+		} 
+		catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+		
+		return count;
+	}
+
+	@Override
+	public List<User> readUserPage(int startIndex, int length) {
+		
+		List<User> result = new ArrayList<User>();
+		
+		try 
+		{
+			result = partyonMongo.find(new Query().skip(startIndex).limit(length), User.class);
+		} 
+		catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+		
+		return result;
+	}
 }

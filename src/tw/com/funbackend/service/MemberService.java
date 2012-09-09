@@ -13,6 +13,20 @@ public interface MemberService {
 	List<User> readUserAll();
 	
 	/**
+	 * 取得總 User 筆數
+	 * @return
+	 */
+	int readUserCount();
+	
+	/**
+	 * 取得分頁 User 
+	 * @param startIndex
+	 * @param lengthIndex
+	 * @return
+	 */
+	List<User> readUserPage(int startIndex, int length);
+	
+	/**
 	 * 取得特定的 User
 	 * @param id
 	 * @return

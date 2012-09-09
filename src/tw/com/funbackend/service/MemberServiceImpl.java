@@ -34,4 +34,16 @@ public class MemberServiceImpl implements MemberService {
 		
 		memberModel.updateUser(user);
 	}
+
+	@Override
+	public int readUserCount() { 
+	
+		return memberModel.readUserCount();
+	}
+
+	@Override
+	public List<User> readUserPage(int startIndex, int length) {
+
+		return memberModel.readUserPage(startIndex, length);
+	}
 }

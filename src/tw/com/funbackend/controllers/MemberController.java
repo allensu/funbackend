@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import tw.com.funbackend.enumeration.UserInfoCategory;
+import tw.com.funbackend.form.MemberDataQueryDataTable;
+import tw.com.funbackend.form.MemberToDataTable;
 import tw.com.funbackend.persistence.gopartyon.User;
 
 import tw.com.funbackend.persistence.MessageData;
@@ -76,6 +78,62 @@ public class MemberController {
 		
 		logger.info("return readMember");
 		return userDataList;
+	}
+	
+	/**
+	 * 取得分頁 User 資料
+	 * @return
+	 */
+	@RequestMapping(value = "/Member/MemberDataQuery/ReadPages")
+	public @ResponseBody MemberToDataTable readPagesMember(
+			@RequestParam(value="sEcho") String sEcho,
+			@RequestParam(value="iDisplayStart") int iDisplayStart,
+			@RequestParam(value="iDisplayLength") int iDisplayLength) {
+		
+		MemberToDataTable result = new MemberToDataTable();
+		List<User> userDataList = new ArrayList<User>();
+		
+		try {
+			userDataList = memberService.readUserPage(iDisplayStart, iDisplayLength);
+			
+			if(userDataList == null || userDataList.size() == 0)
+			{
+				userDataList = new ArrayList<User>();
+			}
+			
+			int totalCount = memberService.readUserCount();
+			
+			List<MemberDataQueryDataTable> memberDataTable = new ArrayList<MemberDataQueryDataTable>();
+			
+			for(User currData : userDataList)
+			{
+				MemberDataQueryDataTable data = new MemberDataQueryDataTable();
+				data.setId(currData.getId());
+				data.setUserName(currData.getUserName());
+				data.setDisplayName(currData.getDisplayName());
+				data.setGender(currData.getGender());
+				data.setCountryCode(currData.getCountryCode());
+				data.setOnline(currData.isOnline());
+				data.setFake(currData.isFake());
+				data.setNumOfLikes(currData.getNumOfLikes());
+				data.setMonthScore(currData.getMonthScore());
+				data.setTotalScore(currData.getTotalScore());
+				data.setRanking(currData.getRanking());
+				memberDataTable.add(data);
+			}
+			
+			result.setAaData(memberDataTable);
+			result.setsEcho(sEcho);
+			result.setiTotalDisplayRecords(totalCount);
+			result.setiTotalRecords(totalCount);
+		} catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+		
+		logger.info("return readMember");
+		
+		return result;
 	}
 	
 	/**
