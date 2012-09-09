@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import tw.com.funbackend.enumeration.UserInfoCategory;
 import tw.com.funbackend.form.MemberDataQueryDataTable;
 import tw.com.funbackend.form.MemberToDataTable;
+import tw.com.funbackend.form.querycond.MemberDataQueryCondition;
 import tw.com.funbackend.persistence.gopartyon.User;
 
 import tw.com.funbackend.persistence.MessageData;
@@ -86,22 +87,24 @@ public class MemberController {
 	 */
 	@RequestMapping(value = "/Member/MemberDataQuery/ReadPages")
 	public @ResponseBody MemberToDataTable readPagesMember(
+			@ModelAttribute MemberDataQueryCondition qCondition,
 			@RequestParam(value="sEcho") String sEcho,
 			@RequestParam(value="iDisplayStart") int iDisplayStart,
-			@RequestParam(value="iDisplayLength") int iDisplayLength) {
+			@RequestParam(value="iDisplayLength") int iDisplayLength,
+			@RequestParam(value="iSortingCols") int iSortingCols) {
 		
 		MemberToDataTable result = new MemberToDataTable();
 		List<User> userDataList = new ArrayList<User>();
 		
 		try {
-			userDataList = memberService.readUserPage(iDisplayStart, iDisplayLength);
+			userDataList = memberService.readUserPageByCond(qCondition, iDisplayStart, iDisplayLength);
 			
 			if(userDataList == null || userDataList.size() == 0)
 			{
 				userDataList = new ArrayList<User>();
 			}
 			
-			int totalCount = memberService.readUserCount();
+			int totalCount = memberService.readUserCountByCond(qCondition);
 			
 			List<MemberDataQueryDataTable> memberDataTable = new ArrayList<MemberDataQueryDataTable>();
 			
@@ -257,8 +260,6 @@ public class MemberController {
 			//封存
 			if(updateFiald.contains("deleted"))
 				userData.setDeleted(userP.isDeleted());
-			
-			
 			
 			memberService.updateUser(userData);
 			

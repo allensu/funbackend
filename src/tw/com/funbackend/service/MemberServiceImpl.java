@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import tw.com.funbackend.persistence.gopartyon.User;
 
+import tw.com.funbackend.form.querycond.MemberDataQueryCondition;
 import tw.com.funbackend.model.MemberModel;
 
 @Service
@@ -45,5 +46,18 @@ public class MemberServiceImpl implements MemberService {
 	public List<User> readUserPage(int startIndex, int length) {
 
 		return memberModel.readUserPage(startIndex, length);
+	}
+
+	@Override
+	public int readUserCountByCond(MemberDataQueryCondition cond) {
+
+		return memberModel.readUserCountByCond(cond);
+	}
+
+	@Override
+	public List<User> readUserPageByCond(MemberDataQueryCondition cond,
+			int startIndex, int length) {
+
+		return memberModel.readUserPageByCond(cond, startIndex, length);
 	}
 }

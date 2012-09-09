@@ -2,6 +2,7 @@ package tw.com.funbackend.service;
 
 import java.util.List;
 
+import tw.com.funbackend.form.querycond.MemberDataQueryCondition;
 import tw.com.funbackend.persistence.gopartyon.User;
 
 
@@ -25,6 +26,22 @@ public interface MemberService {
 	 * @return
 	 */
 	List<User> readUserPage(int startIndex, int length);
+	
+	/**
+	 * 取得條件下的總 User 筆數
+	 * @param cond
+	 * @return
+	 */
+	int readUserCountByCond(MemberDataQueryCondition cond);
+	
+	/**
+	 * 取得條件下分頁 User 
+	 * @param cond
+	 * @param startIndex
+	 * @param length
+	 * @return
+	 */
+	List<User> readUserPageByCond(MemberDataQueryCondition cond, int startIndex, int length);
 	
 	/**
 	 * 取得特定的 User

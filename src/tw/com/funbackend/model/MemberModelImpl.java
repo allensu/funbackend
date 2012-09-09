@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
@@ -16,8 +17,10 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
+import tw.com.funbackend.form.querycond.MemberDataQueryCondition;
 import tw.com.funbackend.persistence.MessageData;
 import tw.com.funbackend.persistence.gopartyon.User;
+import tw.com.funbackend.utility.StringUtility;
 
 
 @Repository
@@ -104,6 +107,87 @@ public class MemberModelImpl implements MemberModel {
 		try 
 		{
 			result = partyonMongo.find(new Query().skip(startIndex).limit(length), User.class);
+		} 
+		catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int readUserCountByCond(MemberDataQueryCondition cond) {
+				
+		int count = 0;
+		
+		try 
+		{
+			DBCollection personColl = partyonMongo.getCollection(partyonMongo.getCollectionName(User.class));  
+			BasicDBObject parameter = new BasicDBObject();  
+			
+			if(StringUtility.isNotEmpty(cond.getUserNameQ()))
+				parameter.put("userName", cond.getUserNameQ());
+			
+			if(StringUtility.isNotEmpty(cond.getDisplayNameQ()))
+				parameter.put("displayName", cond.getDisplayNameQ());
+			
+			if(StringUtility.isNotEmpty(cond.getGenderQ()))
+			{
+				if("All".equals(cond.getGenderQ()) == false)
+					parameter.put("gender", cond.getGenderQ());
+			}
+				
+			count = (int) personColl.count(parameter);
+		} 
+		catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+		
+		return count;
+		
+	}
+
+	@Override
+	public List<User> readUserPageByCond(MemberDataQueryCondition cond,
+			int startIndex, int length) {		
+
+		List<User> result = new ArrayList<User>();
+		
+		try 
+		{
+			Criteria criteria = null;
+	
+			if(StringUtility.isNotEmpty(cond.getUserNameQ()))
+				criteria = Criteria.where("userName").is(cond.getUserNameQ());
+			
+			if(StringUtility.isNotEmpty(cond.getDisplayNameQ()))
+			{	
+				if(criteria == null)
+					criteria = Criteria.where("displayName").is(cond.getDisplayNameQ());
+				else 
+					criteria = criteria.and("displayName").is(cond.getDisplayNameQ());
+			}
+			
+			if(StringUtility.isNotEmpty(cond.getGenderQ()))
+			{
+				if("All".equals(cond.getGenderQ()) == false)
+				{
+					if(criteria == null)
+						criteria = Criteria.where("gender").is(cond.getGenderQ());
+					else
+						criteria = criteria.and("gender").is(cond.getGenderQ());	
+				}
+			}
+			
+			Query query = null;
+			if(criteria != null)
+				query = new Query(criteria).skip(startIndex).limit(length);
+			else
+				query = new Query().skip(startIndex).limit(length);
+			
+			result = partyonMongo.find(query, User.class);
 		} 
 		catch(Exception ex)
 		{

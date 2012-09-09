@@ -34,7 +34,7 @@ $(function() {
 				}
 			});
 		}
-	});
+	}); 
 	
 	$("#genderQ").combobox();
 		
@@ -136,7 +136,8 @@ $(function() {
 	$("#dialog-form").dialog({
 		autoOpen : false,
 		modal : true,
-		width : 600
+		width : 600,
+		height : 600
 	});
 	
 	// Form Control Define
@@ -564,8 +565,8 @@ function dataEachRowAdd(data)
 			<label>帳號名稱:</label><input id="userNameQ" name="userNameQ" type="text" value="" size="20" class="text ui-widget-content ui-corner-all"/><br /><br /> 
 			<label>顯示名稱:</label><input id="displayNameQ" name="displayNameQ" type="text" value="" size="20" class="text ui-widget-content ui-corner-all"/><br /><br />
 			<label>性別 :</label>
-				<select id="genderQ">
-					<option value="">全部</option>
+				<select id="genderQ" name="genderQ" >
+					<option value="All">全部</option>
 					<option value="M">男</option>
 					<option value="F">女</option>					
 				</select><br />

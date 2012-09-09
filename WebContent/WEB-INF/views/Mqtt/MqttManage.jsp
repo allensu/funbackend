@@ -209,8 +209,13 @@ function deleteData() {
 </script>
 </head>
 <body onload="readData()">
-
-<fieldset>
+	<div id="toolBar">
+		<button id="createBtn" name="createBtn">新增</button>	
+	    <button id="readBtn" name="readBtn">查詢</button>
+	    <button id="updateBtn" name="updateBtn">修改</button>
+	    <button id="deleteBtn" name="deleteBtn">刪除</button>
+	</div>
+	<fieldset>
 		<legend>MQTT資料管理</legend>
 		<p />
 		<form action="CreateMessage" method="post">
@@ -219,13 +224,6 @@ function deleteData() {
 		</form>
 	</fieldset>
 	<br/>
-	<div id="toolBar">
-		<button id="createBtn" name="createBtn">新增</button>	
-	    <button id="readBtn" name="readBtn">查詢</button>
-	    <button id="updateBtn" name="updateBtn">修改</button>
-	    <button id="deleteBtn" name="deleteBtn">刪除</button>
-	</div>
-    
 	<br/>
 	
 	<table id="jtable"  cellpadding="0" cellspacing="0" border="0" class="display" >
