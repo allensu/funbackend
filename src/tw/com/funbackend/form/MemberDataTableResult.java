@@ -4,16 +4,16 @@ import java.util.List;
 
 import tw.com.funbackend.persistence.gopartyon.User;
 
-public class MemberToDataTable {
-	private List<MemberDataQueryDataTable> aaData;
+public class MemberDataTableResult {
+	private List<MemberDataTableSchema> aaData;
 	private String sEcho;
 	private Integer iTotalRecords;
 	private Integer iTotalDisplayRecords;
 	
-	public List<MemberDataQueryDataTable> getAaData() {
+	public List<MemberDataTableSchema> getAaData() {
 		return aaData;
 	}
-	public void setAaData(List<MemberDataQueryDataTable> aaData) {
+	public void setAaData(List<MemberDataTableSchema> aaData) {
 		this.aaData = aaData;
 	}
 	public String getsEcho() {

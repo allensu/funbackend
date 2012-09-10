@@ -60,4 +60,11 @@ public class MemberServiceImpl implements MemberService {
 
 		return memberModel.readUserPageByCond(cond, startIndex, length);
 	}
+
+	@Override
+	public List<User> readUserPageByCondSort(MemberDataQueryCondition cond,
+			int startIndex, int length, String sortColName, int sortDir) {
+				
+		return memberModel.readUserPageByCondSort(cond, startIndex, length, sortColName, sortDir);
+	}
 }

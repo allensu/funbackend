@@ -1,7 +1,13 @@
 package tw.com.funbackend.form;
 
-public class MemberDataQueryDataTable {
+public class MemberDataTableSchema {
 
+	static public String[] MapColumns = {
+		"","userName","displayName","gender",
+		"countryCode","isOnline","isFake","numOfLikes",
+		"monthScore","totalScore","ranking",""
+		};
+	
 	private String itemCheckCol;
 	
 	/**

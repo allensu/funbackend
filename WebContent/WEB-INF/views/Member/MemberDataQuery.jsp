@@ -108,7 +108,7 @@ $(function() {
 		              { "mDataProp": "fake" },
 		              { "mDataProp": "numOfLikes" },
 		              { "mDataProp": "monthScore" },
-		              { "mDataProp": "monthScore" },
+		              { "mDataProp": "totalScore" },
 		              { "mDataProp": "ranking" },
 		              { "mDataProp": "detailBtnCol", "bSortable": false,
 		            	"fnRender": function(oObj)

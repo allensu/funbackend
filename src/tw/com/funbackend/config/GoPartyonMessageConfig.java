@@ -28,8 +28,8 @@ public class GoPartyonMessageConfig extends AbstractMongoConfiguration {
 		
 		ArrayList<ServerAddress> addr = new ArrayList<ServerAddress>();
 		addr.add(new ServerAddress("tpe01.gofuncube.com.tw:30000"));
-		//addr.add(new ServerAddress("dev.gopartyon.com:30001"));
-		//addr.add(new ServerAddress("dev2.gopartyon.com:30002"));
+		addr.add(new ServerAddress("dev.gopartyon.com:30001"));
+		addr.add(new ServerAddress("dev2.gopartyon.com:30002"));
 		//addr.add(new ServerAddress("dev.gopartyon.com:27017"));
 		//addr.add(new ServerAddress("dev2.gopartyon.com:27017"));
 		

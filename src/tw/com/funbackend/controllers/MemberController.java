@@ -1,7 +1,6 @@
 package tw.com.funbackend.controllers;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -15,18 +14,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
-import tw.com.funbackend.enumeration.UserInfoCategory;
-import tw.com.funbackend.form.MemberDataQueryDataTable;
-import tw.com.funbackend.form.MemberToDataTable;
+import tw.com.funbackend.enumeration.OrderDirection;
+import tw.com.funbackend.form.MemberDataTableQueryParam;
+import tw.com.funbackend.form.MemberDataTableSchema;
+import tw.com.funbackend.form.MemberDataTableResult;
 import tw.com.funbackend.form.querycond.MemberDataQueryCondition;
 import tw.com.funbackend.persistence.gopartyon.User;
-
-import tw.com.funbackend.persistence.MessageData;
-import tw.com.funbackend.persistence.UserInfo;
 import tw.com.funbackend.pojo.UserBean;
-import tw.com.funbackend.service.AccountService;
 import tw.com.funbackend.service.MemberService;
-import tw.com.funbackend.utility.Encrypt;
 
 @SessionAttributes("userBean")
 @Controller
@@ -86,18 +81,29 @@ public class MemberController {
 	 * @return
 	 */
 	@RequestMapping(value = "/Member/MemberDataQuery/ReadPages")
-	public @ResponseBody MemberToDataTable readPagesMember(
+	public @ResponseBody MemberDataTableResult readPagesMember(
 			@ModelAttribute MemberDataQueryCondition qCondition,
-			@RequestParam(value="sEcho") String sEcho,
-			@RequestParam(value="iDisplayStart") int iDisplayStart,
-			@RequestParam(value="iDisplayLength") int iDisplayLength,
-			@RequestParam(value="iSortingCols") int iSortingCols) {
+			@ModelAttribute MemberDataTableQueryParam tableParm) {
+//			@RequestParam(value="sEcho") String sEcho,
+//			@RequestParam(value="iDisplayStart") int iDisplayStart,
+//			@RequestParam(value="iDisplayLength") int iDisplayLength,
+//			@RequestParam(value="iSortCol_0") int iSortCol_0,
+//			@RequestParam(value="iSortingCols") int iSortingCols,
+//			@RequestParam(value="sSortDir_0") String sSortDir_0) {
 		
-		MemberToDataTable result = new MemberToDataTable();
+		MemberDataTableResult result = new MemberDataTableResult();
 		List<User> userDataList = new ArrayList<User>();
 		
 		try {
-			userDataList = memberService.readUserPageByCond(qCondition, iDisplayStart, iDisplayLength);
+			// 排序處理
+			String orderColName = MemberDataTableSchema.MapColumns[tableParm.getiSortCol_0()];
+			int sortDir = OrderDirection.asc.toString().equals(tableParm.getsSortDir_0()) ? 1 : -1;
+					
+			
+			if("".equals(orderColName))
+				userDataList = memberService.readUserPageByCond(qCondition, tableParm.getiDisplayStart(), tableParm.getiDisplayLength());
+			else 
+				userDataList = memberService.readUserPageByCondSort(qCondition, tableParm.getiDisplayStart(), tableParm.getiDisplayLength(), orderColName, sortDir);
 			
 			if(userDataList == null || userDataList.size() == 0)
 			{
@@ -106,11 +112,11 @@ public class MemberController {
 			
 			int totalCount = memberService.readUserCountByCond(qCondition);
 			
-			List<MemberDataQueryDataTable> memberDataTable = new ArrayList<MemberDataQueryDataTable>();
+			List<MemberDataTableSchema> memberDataTable = new ArrayList<MemberDataTableSchema>();
 			
 			for(User currData : userDataList)
 			{
-				MemberDataQueryDataTable data = new MemberDataQueryDataTable();
+				MemberDataTableSchema data = new MemberDataTableSchema();
 				data.setId(currData.getId());
 				data.setUserName(currData.getUserName());
 				data.setDisplayName(currData.getDisplayName());
@@ -126,7 +132,7 @@ public class MemberController {
 			}
 			
 			result.setAaData(memberDataTable);
-			result.setsEcho(sEcho);
+			result.setsEcho(tableParm.getsEcho());
 			result.setiTotalDisplayRecords(totalCount);
 			result.setiTotalRecords(totalCount);
 		} catch(Exception ex)

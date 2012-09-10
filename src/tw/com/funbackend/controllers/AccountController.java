@@ -218,6 +218,10 @@ public class AccountController {
 		ht1_2.put("title", "會員黑名單");
 		ht1_2.put("url", "/funbackend/controller/Member/BlackMember");
 		ht1_2.put("id", "BlackMember");
+		Hashtable ht1_10 = new Hashtable();
+		ht1_10.put("title", "會員照片管理");
+		ht1_10.put("url", "/funbackend/controller/Member/PhotosMember");
+		ht1_10.put("id", "PhotosMember");
 		Hashtable ht1_3 = new Hashtable();
 		ht1_3.put("title", "會員登入/出時間");
 		ht1_3.put("url", "/funbackend/controller/Member/MemberLoginRecord");
