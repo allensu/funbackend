@@ -115,7 +115,7 @@ $(function() {
 		            	{ 
 		            		//\"" + oObj.aData.id + "\"
 		            		//alert(oObj.aData.id);
-		            		var obj = "<input name='showDetail' type='button' value='詳細資料' class='gcms-ui-corner-all ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' onclick='showDetailEvent(\"" + oObj.aData.id + "\")'/>";
+		            		var obj = "<input name='showDetail' type='button' value='修改' class='gcms-ui-corner-all ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' onclick='showDetailEvent(\"" + oObj.aData.id + "\")'/>";
 		            		//alert(obj);
 		            		return obj;
 		            	}}
@@ -555,7 +555,7 @@ function dataEachRowAdd(data)
 	<div id="toolBar">
 		<button id="createBtn" name="createBtn" disabled="disabled">新增</button>	
 	    <button id="readBtn" name="readBtn">查詢</button>
-	    <button id="updateBtn" name="updateBtn">修改</button>
+	    <button id="updateBtn" name="updateBtn" disabled="disabled">修改</button>
 	    <button id="deleteBtn" name="deleteBtn" disabled="disabled">刪除</button>
 	</div>
 	<fieldset>
@@ -652,11 +652,11 @@ function dataEachRowAdd(data)
         			</tr>
         			<tr>
         				<td>信箱</td>
-        				<td><input groupval="df" id="email" name="email" type="text" value="" size="20" maxlength="50" class="text ui-widget-content ui-corner-all" /></td>
+        				<td><input groupval="df" id="email" name="email" type="text" value="" size="20" maxlength="50" class="text ui-widget-content ui-corner-all"  readonly="readonly" style="border: 0px" /></td>
         			</tr>
         			<tr>
         				<td>手機號碼</td>
-        				<td><input groupval="df" id="phoneNo" name="phoneNo" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" /></td>
+        				<td><input groupval="df" id="phoneNo" name="phoneNo" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" readonly="readonly" style="border: 0px" /></td>
         			</tr>
         			<tr>
         				<td>國碼</td>
