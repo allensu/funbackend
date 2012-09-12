@@ -20,7 +20,7 @@
 
 <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
   function initialize() {
     var latlng = new google.maps.LatLng(-34.397, 150.644);
     var myOptions = {
@@ -31,8 +31,7 @@
     var map = new google.maps.Map(document.getElementById("map_canvas"),
         myOptions);
   }
-
-</script>
+</script> -->
 <script type="text/javascript">
 var disTable; //保留被DataTables enhanced 過的變數
 $.fx.speeds._default = 1000;
@@ -80,8 +79,7 @@ $(function() {
             primary: "ui-icon-search"
         }
     }).click(function () {
-        //$.blockUI({ message: '<div>載入資料中...</div>', overlayCSS: { backgroundColor: '#4297D7'} });
-        readData();
+    	changeField("queryFormField");
     });
 	
 	// Update Btn
@@ -100,10 +98,38 @@ $(function() {
         }
     }).click(function () {
         $.blockUI({ message: $('#question'), css: { width: '275px'} });
-        
-        
+                
     });
 	
+	$("#readSendBtn").button({
+        icons: {
+            primary: "ui-icon-search"
+        }
+    }).click(function () {
+        //$.blockUI({ message: '<div>載入資料中...</div>', overlayCSS: { backgroundColor: '#4297D7'} });
+        readData();
+    });
+	
+	// Form Control Define
+	$("#updateFrameBtn").button({
+        icons: {
+            primary: "ui-icon-wrench"
+        }
+    }).click(function () {
+    	$.blockUI({ message: '<div>儲存資料中...</div>', overlayCSS: { backgroundColor: '#4297D7'} });
+    	updateData(); 
+    });
+	
+	$("#photosBtn").button();
+	$("#likeUsersBtn").button().click(function() {
+		$("#likeUsers-dialog-form").dialog("open");
+	});
+	$("#visitorsBtn").button().click(function() {
+		$("#visitors-dialog-form").dialog("open");
+	});
+	$("#blockUsersBtn").button().click(function() {
+		//$("#block-dialog-form").dialog("open");
+	});
 	
 	
 	disTable = $('#jtable').dataTable({
@@ -156,29 +182,58 @@ $(function() {
 		}
     });
 	
-	// Form View
-	
-	$("#dialog-form").dialog({
-		autoOpen : false,
-		modal : true,
-		width : 600,
-		height : 600
+	var likeUsersTable = $('#likeUsersTable').dataTable({
+        //"sScrollY":  '100%',
+        "bJQueryUI": true,
+        "bPaginate": true,
+        "bDeferRender": true
 	});
 	
+	//visitorsTable
+	var visitorsTable = $('#visitorsTable').dataTable({
+        //"sScrollY":  '100%',
+        "bJQueryUI": true,
+        "bPaginate": true,
+        "bDeferRender": true
+	});
 	
-	// Form Control Define
-	//$("#fake").combobox();
-	//$("#deleted").combobox();
-	$("#updateFrameBtn").button({
-        icons: {
-            primary: "ui-icon-wrench"
-        }
-    }).click(function () {
-    	$.blockUI({ message: '<div>儲存資料中...</div>', overlayCSS: { backgroundColor: '#4297D7'} });
-    	updateData(); 
-    });
+	// Form View	
+ 	$("#dialog-form").dialog({
+ 		autoOpen : false,
+ 		//modal : true,
+ 		width : 820,
+ 		height : 650
+ 	});
 	
+	//likeUsers-dialog-form
+	$("#likeUsers-dialog-form").dialog({
+ 		autoOpen : false,
+ 		modal : true,
+ 		width : 400,
+ 		height : 600
+ 	});
+	
+	//visitors-dialog-form
+	$("#visitors-dialog-form").dialog({
+ 		autoOpen : false,
+ 		modal : true,
+ 		width : 400,
+ 		height : 600
+ 	});
+	
+
+	
+	
+	changeField("queryFormField");
 });
+
+function changeField(fieldName)
+{
+	$("#queryFormField").hide();
+	//$("#updateFormField").hide();
+	
+	$("#" + fieldName).show();
+}
 
 function updateData() {
 	var dfGroupElem = $('[groupval=df]');
@@ -226,19 +281,13 @@ function updateData() {
 function readData() {
 
 	disTable.fnDraw();
-    //$.getJSON('/funbackend/controller/Member/MemberDataQuery/Read', function (data) {
-	/* $.getJSON('/funbackend/controller/Member/MemberDataQuery/ReadPages?startIndex=0&length=50', function (data) {
-    	dataEachRowAdd(data);
-
-        $.unblockUI();
-    }); */
 }
 
 
 
 function showDetailEvent(id)
 {
-	$("#dialog:ui-dialog").dialog( "destroy" );
+	//$("#dialog:ui-dialog").dialog( "destroy" );
 	
 	var postData = {
 			id : id,
@@ -249,7 +298,9 @@ function showDetailEvent(id)
 			url : "/funbackend/controller/Member/MemberDataQuery/Read/Id",
 			data : postData,
 			success : function(data) {
-
+				//changeField("updateFormField");
+				$("#dialog-form").dialog("open");
+				
 				// Form Control Value Setting
 				
 				//記錄原值與值
@@ -491,9 +542,29 @@ function showDetailEvent(id)
 					$('#deleted').val(data.deleted.toString()); //封存
 				}
 			
-				//$("#likeUsers").val(data.likeUsers); //給其它Users贊
-				//$("#visitors").val(data.visitors); //拜訪者
 				//$("#blockUsers").val(data.blockUsers); //黑名單列表
+				
+				//拜訪者
+				$('#visitorsTable').dataTable().fnClearTable(true);
+				$.each(data.visitors, function (k, v) {
+					
+					$('#visitorsTable').dataTable().fnAddData([                             					    
+					    v.createDateTime,
+					    v.userName
+					]); 
+					
+				});
+				
+				//給其它Users贊
+				$('#likeUsersTable').dataTable().fnClearTable(true);
+				$.each(data.likeUsers, function (k, v) {
+					
+					$('#likeUsersTable').dataTable().fnAddData([                             					    
+					    v.createDateTime,
+					    v.userName
+					]); 
+					
+				});
 				
 				
 				if(data.location == null)
@@ -513,7 +584,7 @@ function showDetailEvent(id)
 					
 					 var latlng = new google.maps.LatLng(data.location["lat"], data.location["lon"]);
 					    var myOptions = {
-					      zoom: 8,
+					      zoom: 12,
 					      center: latlng,
 					      mapTypeId: google.maps.MapTypeId.ROADMAP
 					    };
@@ -529,20 +600,11 @@ function showDetailEvent(id)
 						var mapMarker = new google.maps.Marker(optionOfMarker);
 						mapMarker.setAnimation(google.maps.Animation.DROP);
 				}
-				
-			
-				//$("#likeUsers").val(data.likeUsers); //給其它Users贊
-				//$("#visitors").val(data.visitors); //拜訪者
-				//$("#blockUsers").val(data.blockUsers); //黑名單列表
-				//$("#location").val(data.location); //最後定位點
-				
-
-				
+						
 				var dfGroupElem = $('[groupval=df]');
 				
 				$.each(dfGroupElem, function() {
 					
-					//alert($(this).val());
 					$(this).blur(function() {
 					    
 						inputOnBlurValid(this);
@@ -550,7 +612,9 @@ function showDetailEvent(id)
 					});
 				});
 				
-				$("#dialog-form").dialog("open");
+				
+				
+				
 			},
 			dataType : "json",
 			traditional : true
@@ -596,7 +660,7 @@ function dataEachRowAdd(data)
 
 </script>
 </head>
-<body onload="initialize()">
+<body>
 
 	<div id="toolBar">
 		<button id="createBtn" name="createBtn" disabled="disabled">新增</button>	
@@ -604,7 +668,7 @@ function dataEachRowAdd(data)
 	    <button id="updateBtn" name="updateBtn" disabled="disabled">修改</button>
 	    <button id="deleteBtn" name="deleteBtn" disabled="disabled">刪除</button>
 	</div>
-	<fieldset>
+	<fieldset id="queryFormField" style="display: none">
 		<legend>會員基本資料查詢</legend>
 		<p />
 		<form id="queryform">
@@ -616,10 +680,20 @@ function dataEachRowAdd(data)
 					<option value="M">男</option>
 					<option value="F">女</option>					
 				</select><br />
-		</form>	
+			
+		</form>			
+		<button id="readSendBtn" name="readSendBtn">送出</button>
+	</fieldset>
+	
+	<fieldset id="updateFormField" style="display: none">
+		<legend>會員基本資料更新</legend>
+		<p />
+		
+		
 		
 	</fieldset>
 
+	
 	<br/>
     <br/>
     
@@ -658,32 +732,71 @@ function dataEachRowAdd(data)
         </tbody>
     </table>
 
+	<div id="likeUsers-dialog-form" title="給其它Users贊">
+		<table id="likeUsersTable"  cellpadding="0" cellspacing="0" border="0" class="display" >
+	        <thead>
+	            <tr>	         
+	            	<th>日期時間</th>    	
+	                <th>帳號名稱</th>	                              
+	            </tr>
+	        </thead>
+	        <tbody>
+	            <tr class="row">
+	                <td></td>
+	                <td></td>
+	            </tr>
+	        </tbody>
+    	</table>
+	</div>
+	
+	<div id="visitors-dialog-form" title="拜訪者清單">
+		<table id="visitorsTable"  cellpadding="0" cellspacing="0" border="0" class="display" >
+	        <thead>
+	            <tr>	         
+	            	<th>日期時間</th>    	
+	                <th>帳號名稱</th>	                              
+	            </tr>
+	        </thead>
+	        <tbody>
+	            <tr class="row">
+	                <td></td>
+	                <td></td>
+	            </tr>
+	        </tbody>
+    	</table>
+	</div>
     <div id="dialog-form" title="詳細資料">
-    	
     	<form action="UpdateUser" method="post">
         	<table style="border: 1px;" >
-        		<thead>
+        		<!-- <thead>
 	        		<tr>
-	        			<th class=" ui-state-default" style="width:150px">欄位名稱</th><th  class=" ui-state-default" style="width:100%">欄位資料</th>
+	        			<th class=" ui-state-default" style="width:200px">欄位名稱</th><th  class=" ui-state-default" style="width:100%">欄位資料</th>
 	        		</tr>
-        		</thead>
+	        		<tr>
+	        			<th class=" ui-state-default" style="width:200px">欄位名稱</th><th  class=" ui-state-default" style="width:100%">欄位資料</th>
+	        		</tr>
+        		</thead> -->
         		<tbody>
-        			<tr>
-        				<td>大頭照</td>
-        				<td><img id="pic" name="pic" src="" style="width:100px; height: 100px" /></td>
-        			</tr>    		
-        			<tr>
+        			<tr>        				
+        				<td rowspan="16" valign="top"><img id="pic" name="pic" src="" style="width:100px; height: 100px" /></td>
         				<td>帳號名稱</td>
         				<td>
         					<input id="id" name="id" type="hidden" value="" />
         					<input id="userName" name="userName" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" readonly="readonly" style="border: 0px" />
         				</td>
+        				<td>生日</td>
+        				<td><input groupval="df" id="birthday" name="birthday" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" /></td>
+        				<td>興趣</td>
+        				<td><input groupval="df" id="interest" name="interest" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" /></td>
         			</tr>
-        			<tr>
+        			<tr>        				
         				<td>顯示名稱</td>
         				<td><input groupval="df" id="displayName" name="displayName" type="text" value="" size="20" class="text ui-widget-content ui-corner-all"/></td>
-        			</tr>
-        			
+        				<td>信箱</td>
+        				<td><input groupval="df" id="email" name="email" type="text" value="" size="20" maxlength="50" class="text ui-widget-content ui-corner-all"  readonly="readonly" style="border: 0px" /></td>
+        				<td>專長</td>
+        				<td><input groupval="df" id="profession" name="profession" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" /></td>        		        		
+        			</tr>        			
         			<tr>
         				<td>性別</td>
         				<td>
@@ -692,92 +805,16 @@ function dataEachRowAdd(data)
 								<option value="F">女</option>					
 							</select>
         				</td>
-        			</tr>
-        			<tr>
-        				<td>生日</td>
-        				<td><input groupval="df" id="birthday" name="birthday" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" /></td>
-        			</tr>
-        			<tr>
-        				<td>信箱</td>
-        				<td><input groupval="df" id="email" name="email" type="text" value="" size="20" maxlength="50" class="text ui-widget-content ui-corner-all"  readonly="readonly" style="border: 0px" /></td>
-        			</tr>
-        			<tr>
         				<td>手機號碼</td>
         				<td><input groupval="df" id="phoneNo" name="phoneNo" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" readonly="readonly" style="border: 0px" /></td>
+        				<td>學校</td>
+        				<td><input groupval="df" id="school" name="school" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" /></td>        				
         			</tr>
         			<tr>
         				<td>國碼</td>
         				<td><input groupval="df" id="countryCode" name="countryCode" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" /></td>
-        			</tr>
-        			
-        			<tr>
         				<td>地址</td>
         				<td><input groupval="df" id="address" name="address" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" /></td>
-        			</tr>
-        			<tr>
-        				<td>贊</td>
-        				<td><input id="numOfLikes" name="numOfLikes" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" readonly="readonly" style="border: 0px" /></td>
-        			</tr>
-        			<tr>
-        				<td>上傳的照片</td>
-        				<td>&nbsp;</td>
-        			</tr>
-        			<tr>
-        				<td>排行名次</td>
-        				<td><input id="ranking" name="ranking" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" readonly="readonly" style="border: 0px" /></td>
-        			</tr>
-        			<tr>
-        				<td>給其它Users贊</td>
-        				<td>&nbsp;likeUsers</td>
-        			</tr>
-        			<tr>
-        				<td>拜訪者</td>
-        				<td>&nbsp;visitors</td>
-        			</tr>
-        			<tr>
-        				<td>黑名單列表</td>
-        				<td>&nbsp;blockUsers</td>
-        			</tr>
-        			
-        			<tr>
-        				<td valign="top">最後定位點</td>
-        				<td style="height: 300px">
-        					lat:<input id="location.lat" name="location.lat" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" readonly="readonly" style="border: 0px" /><br/>
-        					lon:<input id="location.lon" name="location.lon" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" readonly="readonly" style="border: 0px" /><br/>
-        					<div id="map_canvas" style="width: 300px; height:200px; border: 1px solid #000;"></div>
-        				</td>
-        			</tr>
-        			
-        			<tr>
-        				<td>最後定位時間</td>
-        				<td><input id="locationDateTime" name="locationDateTime" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" readonly="readonly" style="border: 0px" /></td>
-        			</tr>
-        			<tr>
-        				<td>最後打卡地點名稱</td>
-        				<td><input id="placeName" name="placeName" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" readonly="readonly" style="border: 0px" /></td>
-        			</tr>
-        			<tr>
-        				<td>興趣</td>
-        				<td><input groupval="df" id="interest" name="interest" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" /></td>
-        			</tr>
-        			<tr>
-        				<td>專長</td>
-        				<td><input groupval="df" id="profession" name="profession" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" /></td>
-        			</tr>
-        			<tr>
-        				<td>學校</td>
-        				<td><input groupval="df" id="school" name="school" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" /></td>
-        			</tr>
-        			<tr>
-        				<td>說明</td>
-        				<td>
-        					<textarea groupval="df" id="description" name="description" rows="5" cols="20" class="text ui-widget-content ui-corner-all" >
-        					
-        					</textarea>
-        				</td>
-        			</tr>
-        			
-        			<tr>
         				<td>假帳號</td>
         				<td>
         					<select groupval="df" id="fake">
@@ -787,6 +824,12 @@ function dataEachRowAdd(data)
         				</td>
         			</tr>
         			<tr>
+        				<td valign="top" rowspan="9">最後定位點</td>
+        				<td valign="top" colspan="3" rowspan="9">
+        					lat:<input id="location.lat" name="location.lat" type="text" value="" size="13" class="text ui-widget-content ui-corner-all" readonly="readonly" style="border: 0px" />
+        					lon:<input id="location.lon" name="location.lon" type="text" value="" size="13" class="text ui-widget-content ui-corner-all" readonly="readonly" style="border: 0px" /><br/>
+        					<div id="map_canvas" style="width: 300px; height:200px; border: 1px solid #000;"></div>
+        				</td>
         				<td>封存</td>
         				<td>
         				<select groupval="df" id="deleted">
@@ -794,35 +837,80 @@ function dataEachRowAdd(data)
 							<option value="true">是</option>
 						</select>
         				</td>
+        				
         			</tr>
-        			
         			<tr>
-        				<td>更新時間</td>
-        				<td><input id="updateTime" name="updateTime" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" readonly="readonly" style="border: 0px" /></td>
+        				<td>贊</td>
+        				<td><input id="numOfLikes" name="numOfLikes" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" readonly="readonly" style="border: 0px" /></td>
+        			</tr>
+        			<tr>
+        				<td>排行名次</td>
+        				<td><input id="ranking" name="ranking" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" readonly="readonly" style="border: 0px" /></td>
+        				
         			</tr>
         			<tr>
         				<td>月得分</td>
         				<td><input id="monthScore" name="monthScore" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" readonly="readonly" style="border: 0px" /></td>
+        				
         			</tr>
-        			
         			<tr>
         				<td>總得分</td>
         				<td><input id="totalScore" name="totalScore" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" readonly="readonly" style="border: 0px" /></td>
+        				
         			</tr>
-        			
         			<tr>
         				<td>排行榜上升或下降</td>
         				<td><input id="rankingCompare" name="rankingCompare" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" readonly="readonly" style="border: 0px" /></td>
         			</tr>
-        			
-        			
-        			
         			<tr>
-        				<td colspan="2" align="right"><input id="updateFrameBtn" type="button" value="存檔" /></td>
+        				<td>最後定位時間</td>
+        				<td><input id="locationDateTime" name="locationDateTime" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" readonly="readonly" style="border: 0px" /></td>
+        			</tr>
+        			<tr>
+        				<td>最後打卡地點名稱</td>
+        				<td><input id="placeName" name="placeName" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" readonly="readonly" style="border: 0px" /></td>
+        			</tr>
+        			<tr>        				
+        				<td>更新時間</td>
+        				<td><input id="updateTime" name="updateTime" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" readonly="readonly" style="border: 0px" /></td>
+        			</tr> 
+        			<tr>
+        				<td valign="top">說明</td>
+        				<td colspan="5">
+        					<textarea groupval="df" id="description" name="description" rows="5" cols="70" class="text ui-widget-content ui-corner-all" >
+        					
+        					</textarea>
+        				</td>   
+        				        				     			        			
+        			</tr>
+        			<tr>
+        				<td colspan="6">
+        					<table>
+        						<tr>
+	        						<td>
+	        							<input id="photosBtn" type="button" value="上傳的照片" />
+	        						</td>
+			        				<td>
+			        					<input id="likeUsersBtn" type="button" value="給其它玩家贊" />
+			        				</td>
+			        				<td>
+			        					<input id="visitorsBtn" type="button" value="拜訪者" />
+			        				</td>
+			        				<td>
+			        					<input id="blockUsersBtn" type="button" value="黑名單列表" />
+			        				</td>
+        						</tr>
+        					</table>
+        				</td>        				
+        			</tr>
+        			      			        			
+        			<tr>
+        				<td colspan="7" align="right"><input id="updateFrameBtn" type="button" value="存檔" /></td>
         			</tr>
         		</tbody>
         	</table>
-        </form>
+        </form>	
+    	
     </div>
 </body>
 </html>
