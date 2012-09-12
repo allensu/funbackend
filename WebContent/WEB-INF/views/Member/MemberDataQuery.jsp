@@ -128,7 +128,7 @@ $(function() {
 		$("#visitors-dialog-form").dialog("open");
 	});
 	$("#blockUsersBtn").button().click(function() {
-		//$("#block-dialog-form").dialog("open");
+		$("#blockUsers-dialog-form").dialog("open");
 	});
 	
 	
@@ -152,10 +152,22 @@ $(function() {
 		            	}},
 		              { "mDataProp": "userName" },
 		              { "mDataProp": "displayName" },
-		              { "mDataProp": "gender" },
+		              { "mDataProp": "gender",
+		            	  "fnRender": function(oObj)
+		            	  {
+		            		  return oObj.aData.gender == "M" ? "男" : oObj.aData.gender == "F" ? "女" : "";
+		            	  }},
 		              { "mDataProp": "countryCode" },
-		              { "mDataProp": "online" },
-		              { "mDataProp": "fake" },
+		              { "mDataProp": "online",
+		            	  "fnRender": function(oObj)
+		            	  {
+		            		  return oObj.aData.online == true ? "是" : "否";
+		            	  }},
+		              { "mDataProp": "fake",
+		            	  "fnRender": function(oObj)
+		            	  {
+		            		  return oObj.aData.fake == true ? "是" : "否";
+		            	  }},
 		              { "mDataProp": "numOfLikes" },
 		              { "mDataProp": "monthScore" },
 		              { "mDataProp": "totalScore" },
@@ -197,6 +209,15 @@ $(function() {
         "bDeferRender": true
 	});
 	
+	//blockUsersTable
+	var blockUsersTable = $('#blockUsersTable').dataTable({
+        //"sScrollY":  '100%',
+        "bJQueryUI": true,
+        "bPaginate": true,
+        "bDeferRender": true
+	});
+	
+	
 	// Form View	
  	$("#dialog-form").dialog({
  		autoOpen : false,
@@ -209,7 +230,7 @@ $(function() {
 	$("#likeUsers-dialog-form").dialog({
  		autoOpen : false,
  		modal : true,
- 		width : 400,
+ 		width : 500,
  		height : 600
  	});
 	
@@ -217,11 +238,20 @@ $(function() {
 	$("#visitors-dialog-form").dialog({
  		autoOpen : false,
  		modal : true,
- 		width : 400,
+ 		width : 500,
+ 		height : 600
+ 	});
+	
+	//blockUsers-dialog-form
+	$("#blockUsers-dialog-form").dialog({
+ 		autoOpen : false,
+ 		modal : true,
+ 		width : 500,
  		height : 600
  	});
 	
 
+	
 	
 	
 	changeField("queryFormField");
@@ -308,7 +338,7 @@ function showDetailEvent(id)
 				$('#id').val(data.id); //使用者名稱
 				$('#userName').attr("orgVal", data.userName); //使用者名稱	
 				$('#userName').val(data.userName); //使用者名稱
-				$('#pic').attr("src", "http://localhost:8080/funbackend/controller/Member/file/get/" + data.pic); //大頭照
+				$('#pic').attr("src", "/funbackend/controller/Member/file/get/" + data.pic); //大頭照
 				
 				
 				if(data.displayName == null)
@@ -543,6 +573,17 @@ function showDetailEvent(id)
 				}
 			
 				//$("#blockUsers").val(data.blockUsers); //黑名單列表
+				//黑名單列表
+				$('#blockUsersTable').dataTable().fnClearTable(true);
+				$.each(data.blockUsers, function (k, v) {
+					
+					$('#blockUsersTable').dataTable().fnAddData([                             					    
+					    v.userName,
+					    v.displayName,
+					    v.gender == "M" ? "男" : v.gender == "F" ? "女" : "",
+					]); 
+					
+				});
 				
 				//拜訪者
 				$('#visitorsTable').dataTable().fnClearTable(true);
@@ -645,10 +686,10 @@ function dataEachRowAdd(data)
 			"<input id='dataId' name='dataId' type='checkbox' value='" + v.id + "'/>",                                
             v.userName,
             v.displayName,
-            v.gender,
+            v.gender == "M" ? "男" : v.gender == "F" ? "女" : "",
             v.countryCode,
-            v.online,
-            v.fake,
+            v.online == true ? "是" : "否",
+            v.fake == true ? "是" : "否",
             v.numOfLikes,
             v.monthScore,            
             v.totalScore,
@@ -732,7 +773,26 @@ function dataEachRowAdd(data)
         </tbody>
     </table>
 
-	<div id="likeUsers-dialog-form" title="給其它Users贊">
+	<div id="blockUsers-dialog-form" title="黑名單列表">
+		<table id="blockUsersTable"  cellpadding="0" cellspacing="0" border="0" class="display" >
+	        <thead>
+	            <tr>	         
+	                <th>帳號名稱</th>
+	                <th>顯示名稱</th>
+	                <th>性別</th>	                              
+	            </tr>
+	        </thead>
+	        <tbody>
+	            <tr class="row">
+	                <td></td>
+	                <td></td>
+	                <td></td>
+	            </tr>
+	        </tbody>
+    	</table>
+	</div>
+	
+	<div id="likeUsers-dialog-form" title="給其它玩家贊">
 		<table id="likeUsersTable"  cellpadding="0" cellspacing="0" border="0" class="display" >
 	        <thead>
 	            <tr>	         
