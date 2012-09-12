@@ -1,18 +1,28 @@
 package tw.com.funbackend.controllers;
 
+import java.io.InputStream;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
+
+import tw.com.funbackend.service.FileService;
 
 import tw.com.funbackend.enumeration.OrderDirection;
 import tw.com.funbackend.form.MemberDataTableQueryParam;
@@ -25,9 +35,13 @@ import tw.com.funbackend.service.MemberService;
 
 @SessionAttributes("userBean")
 @Controller
+@RequestMapping(value = "/Member")
 public class MemberController {
 	protected Logger logger = Logger.getLogger("controller");
 		
+	@Autowired
+	public FileService fileService;	
+	
 	@Autowired
 	private MemberService memberService;
 	
@@ -36,7 +50,7 @@ public class MemberController {
 	 * @param userBean
 	 * @return
 	 */
-	@RequestMapping(value = "/Member/BlackMember", method = RequestMethod.GET)
+	@RequestMapping(value = "/BlackMember", method = RequestMethod.GET)
 	public ModelAndView blackMember(@ModelAttribute("userBean") UserBean userBean) {
 		return new ModelAndView("/Member/BlackMember");	
 	}
@@ -46,7 +60,7 @@ public class MemberController {
 	 * @param userBean
 	 * @return
 	 */
-	@RequestMapping(value = "/Member/MemberDataQuery", method = RequestMethod.GET)
+	@RequestMapping(value = "/MemberDataQuery", method = RequestMethod.GET)
 	public ModelAndView memberDataQuery(@ModelAttribute("userBean") UserBean userBean) {
 		return new ModelAndView("/Member/MemberDataQuery");	
 	}
@@ -55,7 +69,7 @@ public class MemberController {
 	 * 取得所有User資料
 	 * @return
 	 */
-	@RequestMapping(value = "/Member/MemberDataQuery/Read")
+	@RequestMapping(value = "/MemberDataQuery/Read")
 	public @ResponseBody List<User> readMember() {
 		List<User> userDataList = new ArrayList<User>();
 		
@@ -80,7 +94,7 @@ public class MemberController {
 	 * 取得分頁 User 資料
 	 * @return
 	 */
-	@RequestMapping(value = "/Member/MemberDataQuery/ReadPages")
+	@RequestMapping(value = "/MemberDataQuery/ReadPages")
 	public @ResponseBody MemberDataTableResult readPagesMember(
 			@ModelAttribute MemberDataQueryCondition qCondition,
 			@ModelAttribute MemberDataTableQueryParam tableParm) {
@@ -146,11 +160,53 @@ public class MemberController {
 	}
 	
 	/**
+	 * get file from file store
+	 * 
+	 * @param json
+	 * @param fileName get file name of file store
+	 * @return image
+	 */
+	@RequestMapping(value = "/file/get/{filename:.+}")
+	public ResponseEntity<byte[]> getFile(@RequestBody String json, @PathVariable("filename") String fileName) {
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "application/json;charset=utf-8");
+		
+		
+		byte[] bytes = null;
+	
+			try {
+				bytes = fileService.get(fileName);
+				String mimeType = URLConnection.getFileNameMap().getContentTypeFor(fileName);
+				responseHeaders.add("Content-Type", mimeType);
+				if(bytes == null || bytes.length == 0){
+					logger.error("bytes == null || bytes.length == 0");
+					
+					
+					
+				}
+				
+				return new ResponseEntity<byte[]>(
+						bytes, responseHeaders,
+						HttpStatus.OK);
+				
+				
+				
+			} catch (Exception e) {
+				logger.error("Get File Exception");
+			}
+			
+			return new ResponseEntity<byte[]>(
+					bytes, responseHeaders,
+					HttpStatus.OK);
+	
+	}
+	
+	/**
 	 * 取得特定User資料
 	 * @param id
 	 * @return
 	 */
-	@RequestMapping(value = "/Member/MemberDataQuery/Read/Id")
+	@RequestMapping(value = "/MemberDataQuery/Read/Id")
 	public @ResponseBody User readMemberById(@RequestParam(value="id") String id) {
 		User userData = new User();
 		
@@ -170,7 +226,7 @@ public class MemberController {
 	 * @param user
 	 * @return
 	 */
-	@RequestMapping(value = "/Member/MemberDataQuery/Update", method = RequestMethod.POST)
+	@RequestMapping(value = "/MemberDataQuery/Update", method = RequestMethod.POST)
 	public @ResponseBody User updateUser(
 			@ModelAttribute("userBean") UserBean userBean,
 			@ModelAttribute User userP, @RequestParam(value="updateFiald") String updateFiald) {
@@ -282,7 +338,7 @@ public class MemberController {
 	 * @param userBean
 	 * @return
 	 */
-	@RequestMapping(value = "/Member/MemberLoginRecord", method = RequestMethod.GET)
+	@RequestMapping(value = "/MemberLoginRecord", method = RequestMethod.GET)
 	public ModelAndView memberLoginRecord(@ModelAttribute("userBean") UserBean userBean) {
 		return new ModelAndView("/Member/MemberLoginRecord");	
 	}
@@ -292,7 +348,7 @@ public class MemberController {
 	 * @param userBean
 	 * @return
 	 */
-	@RequestMapping(value = "/Member/MemberPlace", method = RequestMethod.GET)
+	@RequestMapping(value = "/MemberPlace", method = RequestMethod.GET)
 	public ModelAndView memberPlace(@ModelAttribute("userBean") UserBean userBean) {
 		return new ModelAndView("/Member/MemberPlace");	
 	}

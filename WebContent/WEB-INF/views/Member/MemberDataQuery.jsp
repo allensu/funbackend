@@ -1,14 +1,38 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> -->
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
 <title>會員基本資料查詢</title>
 
 <jsp:include page="../../views/Common/CommonResource.jsp"></jsp:include>
-<!-- <script src="../../ViewScript/MemberDataQueryScript.js" type="text/javascript"></script> -->
+ 
+ 
+<style type="text/css">
+  html { height: 100% }
+  body { height: 100%; margin: 0px; padding: 0px }
+  #map_canvas { height: 100% }
+</style>
+
+<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>
+
+<script type="text/javascript">
+  function initialize() {
+    var latlng = new google.maps.LatLng(-34.397, 150.644);
+    var myOptions = {
+      zoom: 8,
+      center: latlng,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    var map = new google.maps.Map(document.getElementById("map_canvas"),
+        myOptions);
+  }
+
+</script>
 <script type="text/javascript">
 var disTable; //保留被DataTables enhanced 過的變數
 $.fx.speeds._default = 1000;
@@ -133,12 +157,14 @@ $(function() {
     });
 	
 	// Form View
+	
 	$("#dialog-form").dialog({
 		autoOpen : false,
 		modal : true,
 		width : 600,
 		height : 600
 	});
+	
 	
 	// Form Control Define
 	//$("#fake").combobox();
@@ -212,7 +238,6 @@ function readData() {
 
 function showDetailEvent(id)
 {
-	//alert(id);
 	$("#dialog:ui-dialog").dialog( "destroy" );
 	
 	var postData = {
@@ -232,6 +257,8 @@ function showDetailEvent(id)
 				$('#id').val(data.id); //使用者名稱
 				$('#userName').attr("orgVal", data.userName); //使用者名稱	
 				$('#userName').val(data.userName); //使用者名稱
+				$('#pic').attr("src", "http://localhost:8080/funbackend/controller/Member/file/get/" + data.pic); //大頭照
+				
 				
 				if(data.displayName == null)
 				{
@@ -472,10 +499,10 @@ function showDetailEvent(id)
 				if(data.location == null)
 				{
 					//最後定位點
-					$("#location.lat").attr("orgVal", "");
-					$('#location.lat').val(""); 
-					$("#location.lon").attr("orgVal", "");
-					$('#location.lon').val(""); 
+					$("#location\\.lat").attr("orgVal", "");
+					$('#location\\.lat').val(""); 
+					$("#location\\.lon").attr("orgVal", "");
+					$('#location\\.lon').val(""); 
 				}
 				else 
 				{
@@ -483,6 +510,24 @@ function showDetailEvent(id)
 					$("#location\\.lat").val(data.location["lat"]); 
 					$("#location\\.lon").attr("orgVal", data.location["lon"]);
 					$("#location\\.lon").val(data.location["lon"]); 
+					
+					 var latlng = new google.maps.LatLng(data.location["lat"], data.location["lon"]);
+					    var myOptions = {
+					      zoom: 8,
+					      center: latlng,
+					      mapTypeId: google.maps.MapTypeId.ROADMAP
+					    };
+					    var currentMap = new google.maps.Map(document.getElementById("map_canvas"),
+					        myOptions);
+					    
+					    var optionOfMarker = {
+						    	position: latlng,
+						    	map: currentMap,
+						    	title: "I am here!"
+						   	};
+						    
+						var mapMarker = new google.maps.Marker(optionOfMarker);
+						mapMarker.setAnimation(google.maps.Animation.DROP);
 				}
 				
 			
@@ -551,7 +596,8 @@ function dataEachRowAdd(data)
 
 </script>
 </head>
-<body>
+<body onload="initialize()">
+
 	<div id="toolBar">
 		<button id="createBtn" name="createBtn" disabled="disabled">新增</button>	
 	    <button id="readBtn" name="readBtn">查詢</button>
@@ -571,6 +617,7 @@ function dataEachRowAdd(data)
 					<option value="F">女</option>					
 				</select><br />
 		</form>	
+		
 	</fieldset>
 
 	<br/>
@@ -612,18 +659,18 @@ function dataEachRowAdd(data)
     </table>
 
     <div id="dialog-form" title="詳細資料">
-    
+    	
     	<form action="UpdateUser" method="post">
         	<table style="border: 1px;" >
         		<thead>
 	        		<tr>
-	        			<th class=" ui-state-default" style="width:150px">欄位名稱</th><th  class=" ui-state-default" style="width:450px">欄位資料</th>
+	        			<th class=" ui-state-default" style="width:150px">欄位名稱</th><th  class=" ui-state-default" style="width:100%">欄位資料</th>
 	        		</tr>
         		</thead>
         		<tbody>
         			<tr>
         				<td>大頭照</td>
-        				<td>&nbsp;pic</td>
+        				<td><img id="pic" name="pic" src="" style="width:100px; height: 100px" /></td>
         			</tr>    		
         			<tr>
         				<td>帳號名稱</td>
@@ -694,9 +741,10 @@ function dataEachRowAdd(data)
         			
         			<tr>
         				<td valign="top">最後定位點</td>
-        				<td>
+        				<td style="height: 300px">
         					lat:<input id="location.lat" name="location.lat" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" readonly="readonly" style="border: 0px" /><br/>
         					lon:<input id="location.lon" name="location.lon" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" readonly="readonly" style="border: 0px" /><br/>
+        					<div id="map_canvas" style="width: 300px; height:200px; border: 1px solid #000;"></div>
         				</td>
         			</tr>
         			
