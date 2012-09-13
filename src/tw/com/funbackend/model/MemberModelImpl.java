@@ -139,6 +139,9 @@ public class MemberModelImpl implements MemberModel {
 				if("All".equals(cond.getGenderQ()) == false)
 					parameter.put("gender", cond.getGenderQ());
 			}
+			
+			if(StringUtility.isNotEmpty(cond.getPhoneNoQ()))
+				parameter.put("phoneNo", cond.getPhoneNoQ());
 				
 			count = (int) userColl.count(parameter);
 		} 
@@ -181,6 +184,14 @@ public class MemberModelImpl implements MemberModel {
 					else
 						criteria = criteria.and("gender").is(cond.getGenderQ());	
 				}
+			}
+			
+			if(StringUtility.isNotEmpty(cond.getPhoneNoQ()))
+			{	
+				if(criteria == null)
+					criteria = Criteria.where("phoneNo").is(cond.getPhoneNoQ());
+				else 
+					criteria = criteria.and("phoneNo").is(cond.getPhoneNoQ());
 			}
 			
 			Query query = null;

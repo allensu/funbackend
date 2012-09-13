@@ -5,6 +5,7 @@ public class MemberDataQueryCondition {
 	private String userNameQ;
 	private String displayNameQ;
 	private String genderQ;
+	private String phoneNoQ;
 	
 	public String getUserNameQ() {
 		return userNameQ;
@@ -23,6 +24,12 @@ public class MemberDataQueryCondition {
 	}
 	public void setGenderQ(String genderQ) {
 		this.genderQ = genderQ;
+	}
+	public String getPhoneNoQ() {
+		return phoneNoQ;
+	}
+	public void setPhoneNoQ(String phoneNoQ) {
+		this.phoneNoQ = phoneNoQ;
 	}
 	
 	

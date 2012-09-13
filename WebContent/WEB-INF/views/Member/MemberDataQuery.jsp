@@ -120,7 +120,9 @@ $(function() {
     	updateData(); 
     });
 	
-	$("#photosBtn").button();
+	$("#photosBtn").button().click(function() {
+		$("#photos-dialog-form").dialog("open");
+	});
 	$("#likeUsersBtn").button().click(function() {
 		$("#likeUsers-dialog-form").dialog("open");
 	});
@@ -194,6 +196,20 @@ $(function() {
 		}
     });
 	
+	//photosTable
+	var photosTable = $('#photosTable').dataTable({
+        //"sScrollY":  '100%',
+        "bJQueryUI": true,
+        "bPaginate": true,
+        "bDeferRender": true,        
+        "aoColumns": [{ "bSortable": false},
+                      { "bSortable": false},
+                      { "bSortable": false},
+                      { "bSortable": false},
+                      { "bSortable": false}]
+	});
+	
+	//likeUsersTable
 	var likeUsersTable = $('#likeUsersTable').dataTable({
         //"sScrollY":  '100%',
         "bJQueryUI": true,
@@ -217,7 +233,6 @@ $(function() {
         "bDeferRender": true
 	});
 	
-	
 	// Form View	
  	$("#dialog-form").dialog({
  		autoOpen : false,
@@ -226,6 +241,14 @@ $(function() {
  		height : 650
  	});
 	
+ 	//photos
+	$("#photos-dialog-form").dialog({
+ 		autoOpen : false,
+ 		modal : true,
+ 		width : 500,
+ 		height : 600
+ 	});
+ 	
 	//likeUsers-dialog-form
 	$("#likeUsers-dialog-form").dialog({
  		autoOpen : false,
@@ -338,7 +361,20 @@ function showDetailEvent(id)
 				$('#id').val(data.id); //使用者名稱
 				$('#userName').attr("orgVal", data.userName); //使用者名稱	
 				$('#userName').val(data.userName); //使用者名稱
-				$('#pic').attr("src", "/funbackend/controller/Member/file/get/" + data.pic); //大頭照
+				
+				
+				if(data.pic == null)
+				{
+					$('#picShow').attr("src", ""); //大頭照
+					$('#pic').attr("orgVal", ""); //大頭照
+					$('#pic').val(""); //大頭照
+				}
+				else 
+				{
+					$('#picShow').attr("src", "/funbackend/controller/Member/file/get/" + data.pic); //大頭照
+					$('#pic').attr("orgVal", data.pic); //大頭照
+					$('#pic').val(data.pic); //大頭照
+				}
 				
 				
 				if(data.displayName == null)
@@ -572,7 +608,30 @@ function showDetailEvent(id)
 					$('#deleted').val(data.deleted.toString()); //封存
 				}
 			
-				//$("#blockUsers").val(data.blockUsers); //黑名單列表
+				//照片管理
+				var i = -1;
+				var rowData = ["","","","",""];
+				$('#photosTable').dataTable().fnClearTable(true);
+				$.each(data.photos, function (k, v) {
+					i++;
+					rowData[i] = "<img name='photosShow' src='/funbackend/controller/Member/file/get/" + 
+						v.photo + "' photoName='" + v.photo + "' style='width:100px; height: 100px' />";
+						
+					if(i==5)
+					{
+						$('#photosTable').dataTable().fnAddData(rowData);
+						i = -1;
+						rowData = ["","","","",""];
+					}
+				});
+				
+				if(i >= 0)
+				{
+					$('#photosTable').dataTable().fnAddData(rowData);
+					i = -1;
+					rowData = ["","","","",""];
+				}
+				
 				//黑名單列表
 				$('#blockUsersTable').dataTable().fnClearTable(true);
 				$.each(data.blockUsers, function (k, v) {
@@ -605,8 +664,7 @@ function showDetailEvent(id)
 					    v.userName
 					]); 
 					
-				});
-				
+				});				
 				
 				if(data.location == null)
 				{
@@ -721,7 +779,7 @@ function dataEachRowAdd(data)
 					<option value="M">男</option>
 					<option value="F">女</option>					
 				</select><br />
-			
+			<label>電話:</label><input id="phoneNoQ" name="phoneNoQ" type="text" value="" size="20" class="text ui-widget-content ui-corner-all"/><br /><br />
 		</form>			
 		<button id="readSendBtn" name="readSendBtn">送出</button>
 	</fieldset>
@@ -773,6 +831,28 @@ function dataEachRowAdd(data)
         </tbody>
     </table>
 
+	<div id="photos-dialog-form" title="照片管理">
+		<table id="photosTable"  cellpadding="0" cellspacing="0" border="0" class="display" >
+	        <thead>
+	            <tr>	         
+	            	<th></th>    	
+	                <th></th>
+	                <th></th>
+	                <th></th>
+	                <th></th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	            <tr class="row">
+	                <td></td>
+	                <td></td>
+	                <td></td>
+	                <td></td>
+	                <td></td>	                
+	            </tr>
+	        </tbody>
+    	</table>
+	</div>
 	<div id="blockUsers-dialog-form" title="黑名單列表">
 		<table id="blockUsersTable"  cellpadding="0" cellspacing="0" border="0" class="display" >
 	        <thead>
@@ -838,7 +918,10 @@ function dataEachRowAdd(data)
         		</thead> -->
         		<tbody>
         			<tr>        				
-        				<td rowspan="16" valign="top"><img id="pic" name="pic" src="" style="width:100px; height: 100px" /></td>
+        				<td rowspan="16" valign="top">
+        					<img id="picShow" name="picShow" src="" style="width:100px; height: 100px" />
+        					<input groupval="df" id="pic" name="pic" type="hidden" value="" />        					
+        				</td>
         				<td>帳號名稱</td>
         				<td>
         					<input id="id" name="id" type="hidden" value="" />
@@ -948,7 +1031,7 @@ function dataEachRowAdd(data)
         					<table>
         						<tr>
 	        						<td>
-	        							<input id="photosBtn" type="button" value="上傳的照片" />
+	        							<input id="photosBtn" type="button" value="照片管理" />
 	        						</td>
 			        				<td>
 			        					<input id="likeUsersBtn" type="button" value="給其它玩家贊" />
