@@ -778,7 +778,7 @@ function dataEachRowAdd(data)
 					<option value="All">全部</option>
 					<option value="M">男</option>
 					<option value="F">女</option>					
-				</select><br />
+				</select><br /><br />
 			<label>電話:</label><input id="phoneNoQ" name="phoneNoQ" type="text" value="" size="20" class="text ui-widget-content ui-corner-all"/><br /><br />
 		</form>			
 		<button id="readSendBtn" name="readSendBtn">送出</button>
