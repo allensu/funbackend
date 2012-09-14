@@ -870,27 +870,11 @@ function initGrallery()
 
 	function setPic($link) {
 		
-		var src = $link.attr("href");
 		var photoName = $link.attr("photoName");
-		
-
 		
 		$('#picShow').attr("src", "/funbackend/controller/Files/get/" + photoName); //大頭照
 		$('#pic').val(photoName); //大頭照
 		
-
-		/* var postData = {
-				id : id,
-		};
-
-			$.ajax({
-				type : "GET",
-				url : "/funbackend/controller/Member/MemberDataQuery/Read/Id",
-				data : postData,
-				success : function(data) {
-					
-				}
-			}); */
 	}
 	
 	// image deletion function
