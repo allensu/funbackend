@@ -197,6 +197,7 @@ $(function() {
     });
 	
 	//photosTable
+	/*
 	var photosTable = $('#photosTable').dataTable({
         //"sScrollY":  '100%',
         "bJQueryUI": true,
@@ -208,6 +209,7 @@ $(function() {
                       { "bSortable": false},
                       { "bSortable": false}]
 	});
+	*/
 	
 	//likeUsersTable
 	var likeUsersTable = $('#likeUsersTable').dataTable({
@@ -243,12 +245,27 @@ $(function() {
 	
  	//photos
 	$("#photos-dialog-form").dialog({
+		resizable: false,
  		autoOpen : false,
  		modal : true,
- 		width : 500,
- 		height : 600
+ 		width : 650,
+ 		height : 600,
+ 		buttons: {
+			"取消": function() {
+				
+				
+				$( this ).dialog( "close" );
+			},
+			"確定": function() {
+				
+				
+				$( this ).dialog( "close" );
+			}
+		}
  	});
  	
+	
+ 
 	//likeUsers-dialog-form
 	$("#likeUsers-dialog-form").dialog({
  		autoOpen : false,
@@ -342,6 +359,7 @@ function showDetailEvent(id)
 {
 	//$("#dialog:ui-dialog").dialog( "destroy" );
 	
+	$.blockUI({ message: '<div>查詢資料中...</div>', overlayCSS: { backgroundColor: '#4297D7'} });
 	var postData = {
 			id : id,
 	};
@@ -351,7 +369,7 @@ function showDetailEvent(id)
 			url : "/funbackend/controller/Member/MemberDataQuery/Read/Id",
 			data : postData,
 			success : function(data) {
-				//changeField("updateFormField");
+				$.unblockUI();
 				$("#dialog-form").dialog("open");
 				
 				// Form Control Value Setting
@@ -371,7 +389,7 @@ function showDetailEvent(id)
 				}
 				else 
 				{
-					$('#picShow').attr("src", "/funbackend/controller/Member/file/get/" + data.pic); //大頭照
+					$('#picShow').attr("src", "/funbackend/controller/Files/get/" + data.pic); //大頭照
 					$('#pic').attr("orgVal", data.pic); //大頭照
 					$('#pic').val(data.pic); //大頭照
 				}
@@ -609,6 +627,27 @@ function showDetailEvent(id)
 				}
 			
 				//照片管理
+				
+				$("#gallery").empty();
+				$("#trash ul").remove();
+				$.each(data.photos, function (k, v) {
+					//i++;
+					//rowData[i] = "<img name='photosShow' src='/funbackend/controller/Member/file/get/" + 
+						//v.photo + "' photoName='" + v.photo + "' style='width:100px; height: 100px' />";
+						
+						var photoObj = "<li class='ui-widget-content ui-corner-tr'>" +
+						"<h5 class='ui-widget-header'></h5>" +
+						"<img name='photosShow' photoName='" + v.photo + "' src='/funbackend/controller/Files/get/" + v.photo + "' alt='The peaks of High Tatras' width='96' height='72' />" +
+						"<a photoName='" + v.photo + "' href='/funbackend/controller/Files/get/normal/" + v.photo + "' title='View larger image' class='ui-icon ui-icon-zoomin'>View larger</a>" +
+						"<a href='link/to/trash/script/when/we/have/js/off' title='Delete this image' class='ui-icon ui-icon-trash'>Delete image</a>" +
+						"</li>";
+						
+						$("#gallery").append(photoObj);
+				});
+				
+				initGrallery();
+				
+				/*
 				var i = -1;
 				var rowData = ["","","","",""];
 				$('#photosTable').dataTable().fnClearTable(true);
@@ -631,6 +670,7 @@ function showDetailEvent(id)
 					i = -1;
 					rowData = ["","","","",""];
 				}
+				*/
 				
 				//黑名單列表
 				$('#blockUsersTable').dataTable().fnClearTable(true);
@@ -758,6 +798,136 @@ function dataEachRowAdd(data)
 }
 
 </script>
+
+<style>
+	#gallery { float: left; width: 60%; min-height: 12em; } * html #gallery { height: 12em; } /* IE6 */
+	.gallery.custom-state-active { background: #eee; }
+	.gallery li { float: left; width: 96px; padding: 0.4em; margin: 0 0.4em 0.4em 0; text-align: center; }
+	.gallery li h5 { margin: 0 0 0.4em; cursor: move; }
+	.gallery li a { float: right; }
+	.gallery li a.ui-icon-zoomin { float: left; }
+	.gallery li img { width: 100%; cursor: move; }
+
+	#trash { overflow:auto; float: right; width: 32%; min-height: 18em; padding: 1%;} * html #trash { height: 18em; } /* IE6 */
+	#trash h4 { line-height: 16px; margin: 0 0 0.4em; }
+	#trash h4 .ui-icon { float: left; }
+	#trash .gallery h5 { display: none; }
+</style>
+<script>
+
+function initGrallery()
+{
+	var $gallery = $( "#gallery" );
+	var $trash = $( "#trash" );
+
+	// let the gallery items be draggable
+	$( "li", $gallery ).draggable({
+		cancel: "a.ui-icon", // clicking an icon won't initiate dragging
+		revert: "invalid", // when not dropped, the item will revert back to its initial position
+		containment: $( "#demo-frame" ).length ? "#demo-frame" : "document", // stick to demo-frame if present
+		helper: "clone",
+		cursor: "move"
+	});
+
+	// let the trash be droppable, accepting the gallery items
+	$trash.droppable({
+		accept: "#gallery > li",
+		activeClass: "ui-state-highlight",
+		drop: function( event, ui ) {
+			deleteImage( ui.draggable );
+		}
+	});
+
+	// let the gallery be droppable as well, accepting items from the trash
+	$gallery.droppable({
+		accept: "#trash li",
+		activeClass: "custom-state-active",
+		drop: function( event, ui ) {
+			recycleImage( ui.draggable );
+		}
+	});
+	
+	// resolve the icons behavior with event delegation
+	$( "ul.gallery > li" ).click(function( event ) {
+		var $item = $( this ),
+			$target = $( event.target );
+
+		if ( $target.is( "a.ui-icon-trash" ) ) {
+			deleteImage( $item );
+		} else if ( $target.is( "a.ui-icon-zoomin" ) ) {
+			viewLargerImage( $target );
+		} else if ( $target.is( "a.ui-icon-refresh" ) ) {
+			recycleImage( $item );
+		}
+
+		return false;
+	});
+	
+
+	// image deletion function
+	var recycle_icon = "<a href='link/to/recycle/script/when/we/have/js/off' title='Recycle this image' class='ui-icon ui-icon-refresh'>Recycle image</a>";
+	function deleteImage( $item ) {
+		$item.fadeOut(function() {
+			var $list = $( "ul", $trash ).length ?
+				$( "ul", $trash ) :
+				$( "<ul class='gallery ui-helper-reset'/>" ).appendTo( $trash );
+
+			$item.find( "a.ui-icon-trash" ).remove();
+			$item.append( recycle_icon ).appendTo( $list ).fadeIn(function() {
+				$item
+					.animate({ width: "48px" })
+					.find( "img" )
+						.animate({ height: "36px" });
+			});
+		});
+	}
+
+	// image recycle function
+	var trash_icon = "<a href='link/to/trash/script/when/we/have/js/off' title='Delete this image' class='ui-icon ui-icon-trash'>Delete image</a>";
+	function recycleImage( $item ) {
+		$item.fadeOut(function() {
+			$item
+				.find( "a.ui-icon-refresh" )
+					.remove()
+				.end()
+				.css( "width", "96px")
+				.append( trash_icon )
+				.find( "img" )
+					.css( "height", "72px" )
+				.end()
+				.appendTo( $gallery )
+				.fadeIn();
+		});
+	}
+
+	// image preview function, demonstrating the ui.dialog used as a modal window
+	function viewLargerImage( $link ) {
+		
+		var src = $link.attr("href");
+		var photoName = $link.attr("photoName");
+		
+		$("#picZoomShow").attr("src", src);	
+				
+	 	//photos zoomin
+	 	$("#photos-zoomin-dialog").dialog({
+	 		title: photoName,
+			resizable: true,
+	 		autoOpen : false,
+	 		modal : true,
+	 		width : 600,
+	 		height : 600
+	 	});
+	 	
+		$("#photos-zoomin-dialog").dialog("open");
+	}
+}
+
+
+
+
+
+</script>
+	
 </head>
 <body>
 
@@ -783,15 +953,6 @@ function dataEachRowAdd(data)
 		</form>			
 		<button id="readSendBtn" name="readSendBtn">送出</button>
 	</fieldset>
-	
-	<fieldset id="updateFormField" style="display: none">
-		<legend>會員基本資料更新</legend>
-		<p />
-		
-		
-		
-	</fieldset>
-
 	
 	<br/>
     <br/>
@@ -830,28 +991,17 @@ function dataEachRowAdd(data)
             </tr>
         </tbody>
     </table>
-
+	
+	<div id="photos-zoomin-dialog">
+		<img id="picZoomShow" name="picZoomShow" src=""/>
+	</div>
 	<div id="photos-dialog-form" title="照片管理">
-		<table id="photosTable"  cellpadding="0" cellspacing="0" border="0" class="display" >
-	        <thead>
-	            <tr>	         
-	            	<th></th>    	
-	                <th></th>
-	                <th></th>
-	                <th></th>
-	                <th></th>
-	            </tr>
-	        </thead>
-	        <tbody>
-	            <tr class="row">
-	                <td></td>
-	                <td></td>
-	                <td></td>
-	                <td></td>
-	                <td></td>	                
-	            </tr>
-	        </tbody>
-    	</table>
+		<ul id="gallery" class="gallery ui-helper-reset ui-helper-clearfix">
+		
+		</ul>
+		<div id="trash" class="ui-widget-content ui-state-default">
+			<h4 class="ui-widget-header">垃圾筒<span class="ui-icon ui-icon-trash" style="color: white;"></span></h4>
+		</div>		
 	</div>
 	<div id="blockUsers-dialog-form" title="黑名單列表">
 		<table id="blockUsersTable"  cellpadding="0" cellspacing="0" border="0" class="display" >
