@@ -639,6 +639,7 @@ function showDetailEvent(id)
 						//"<h5 class='ui-widget-header'></h5>" +
 						"<img name='photosShow' photoName='" + v.photo + "' src='/funbackend/controller/Files/get/" + v.photo + "' alt='The peaks of High Tatras' width='96' height='72' />" +
 						"<a photoName='" + v.photo + "' href='/funbackend/controller/Files/get/normal/" + v.photo + "' title='View larger image' class='ui-icon ui-icon-zoomin'>View larger</a>" +
+						"<a href='#' photoName='" + v.photo + "' title='set pic' class='ui-icon ui-icon-person'>Set Pic</a>" + 
 						"<a href='link/to/trash/script/when/we/have/js/off' title='Delete this image' class='ui-icon ui-icon-trash'>Delete image</a>" +
 						"</li>";
 						
@@ -806,6 +807,7 @@ function dataEachRowAdd(data)
 	.gallery li h5 { margin: 0 0 0.4em; cursor: move; }
 	.gallery li a { float: right; }
 	.gallery li a.ui-icon-zoomin { float: left; }
+	.gallery li a.ui-icon-person { float: left; }
 	.gallery li img { width: 100%; cursor: move; }
 
 	#trash { overflow:auto; float: right; width: 32%; min-height: 18em; padding: 1%;} * html #trash { height: 18em; } /* IE6 */
@@ -858,12 +860,39 @@ function initGrallery()
 			viewLargerImage( $target );
 		} else if ( $target.is( "a.ui-icon-refresh" ) ) {
 			recycleImage( $item );
+		} else if ($target.is("a.ui-icon-person")) {
+			setPic($target);
 		}
 
 		return false;
 	});
 	
 
+	function setPic($link) {
+		
+		var src = $link.attr("href");
+		var photoName = $link.attr("photoName");
+		
+
+		
+		$('#picShow').attr("src", "/funbackend/controller/Files/get/" + photoName); //大頭照
+		$('#pic').val(photoName); //大頭照
+		
+
+		/* var postData = {
+				id : id,
+		};
+
+			$.ajax({
+				type : "GET",
+				url : "/funbackend/controller/Member/MemberDataQuery/Read/Id",
+				data : postData,
+				success : function(data) {
+					
+				}
+			}); */
+	}
+	
 	// image deletion function
 	var recycle_icon = "<a href='link/to/recycle/script/when/we/have/js/off' title='Recycle this image' class='ui-icon ui-icon-refresh'>Recycle image</a>";
 	function deleteImage( $item ) {

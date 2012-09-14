@@ -66,4 +66,25 @@ public interface MemberService {
 	 * @param user
 	 */
 	void updateUser(User user);
+	
+	/**
+	 * 刪除多個照片
+	 * @param user
+	 * @param fileNames
+	 */
+	public void deleteBatchPhotoFromAlbum(User user, List<String> fileNames);
+	
+	/**
+	 * 刪除照片
+	 * @param user
+	 * @param fileName
+	 */
+	public void deletePhotoFromAlbum(User user, String fileName);
+	
+	/**
+	 * 刪除大頭照
+	 * @param user
+	 * @param fileName
+	 */
+	public void deletePhotoFromPic(User user, String fileName);
 }

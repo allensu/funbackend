@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Order;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import com.mongodb.BasicDBObject;
@@ -264,5 +265,34 @@ public class MemberModelImpl implements MemberModel {
 		
 		return result;
 		
+	}
+	
+	@Override
+	public void deletePhotoFromAlbum(User user, String fileName) {
+		try {
+			Query query = new Query(where("userName").is(user.getUserName()));
+			query.addCriteria(where("photos.photo").is(fileName));
+			Update update = new Update();
+			update.inc("numOfPic", -1);
+			update.pull("photos", new BasicDBObject("photo", fileName));
+			partyonMongo.updateFirst(query, update, User.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@Override
+	public void deletePhotoFromPic(User user, String fileName) {
+		try {
+			Query query = new Query(where("userName").is(user.getUserName()));
+			query.addCriteria(where("pic").is(fileName));
+			Update update = new Update();
+			update.set("pic", "");
+			partyonMongo.updateFirst(query, update, User.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 }

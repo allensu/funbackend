@@ -203,6 +203,10 @@ public class MemberController {
 			// 取得原本的 User 資料
 			userData = memberService.readUser(userP.getId());
 			
+			//大頭照
+			if(updateFiald.contains("pic"))
+				userData.setPic(userP.getPic());
+			
 			//顯示名稱
 			if(updateFiald.contains("displayName"))
 				userData.setDisplayName(userP.getDisplayName());

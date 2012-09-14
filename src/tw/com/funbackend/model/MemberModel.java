@@ -68,4 +68,18 @@ public interface MemberModel {
 	 * @return
 	 */
 	void updateUser(User user);
+	
+	/**
+	 * 刪除照片
+	 * @param user
+	 * @param fileName
+	 */
+	public void deletePhotoFromAlbum(User user, String fileName);
+	
+	/**
+	 * 刪除大頭照
+	 * @param user
+	 * @param fileName
+	 */
+	public void deletePhotoFromPic(User user, String fileName);
 }

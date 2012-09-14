@@ -67,4 +67,25 @@ public class MemberServiceImpl implements MemberService {
 				
 		return memberModel.readUserPageByCondSort(cond, startIndex, length, sortColName, sortDir);
 	}
+	
+	@Override
+	public void deletePhotoFromAlbum(User user, String fileName) {
+		memberModel.deletePhotoFromAlbum(user, fileName);
+		
+	}
+	
+	@Override
+	public void deletePhotoFromPic(User user, String fileName) {
+		memberModel.deletePhotoFromPic(user, fileName);
+		
+	}
+
+	@Override
+	public void deleteBatchPhotoFromAlbum(User user, List<String> fileNames) {
+		
+		for(String currFileName : fileNames)
+		{
+			memberModel.deletePhotoFromAlbum(user, currFileName);
+		}
+	}
 }
