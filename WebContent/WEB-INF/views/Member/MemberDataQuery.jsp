@@ -636,7 +636,7 @@ function showDetailEvent(id)
 						//v.photo + "' photoName='" + v.photo + "' style='width:100px; height: 100px' />";
 						
 						var photoObj = "<li class='ui-widget-content ui-corner-tr'>" +
-						"<h5 class='ui-widget-header'></h5>" +
+						//"<h5 class='ui-widget-header'></h5>" +
 						"<img name='photosShow' photoName='" + v.photo + "' src='/funbackend/controller/Files/get/" + v.photo + "' alt='The peaks of High Tatras' width='96' height='72' />" +
 						"<a photoName='" + v.photo + "' href='/funbackend/controller/Files/get/normal/" + v.photo + "' title='View larger image' class='ui-icon ui-icon-zoomin'>View larger</a>" +
 						"<a href='link/to/trash/script/when/we/have/js/off' title='Delete this image' class='ui-icon ui-icon-trash'>Delete image</a>" +
