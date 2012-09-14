@@ -19,8 +19,8 @@ import com.mongodb.gridfs.GridFSDBFile;
 import com.mongodb.gridfs.GridFSInputFile;
 
 @Repository
-public class FileDAOImpl implements FileDAO {
-	Logger log = Logger.getLogger(FileDAOImpl.class);
+public class FileModelImpl implements FileModel {
+	Logger log = Logger.getLogger(FileModelImpl.class);
 	
 	@Autowired
 	Mongo mongo;

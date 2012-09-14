@@ -6,6 +6,7 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import tw.com.funbackend.service.FileService;
@@ -36,6 +38,7 @@ import tw.com.funbackend.enumeration.OrderDirection;
 import tw.com.funbackend.form.MemberDataTableQueryParam;
 import tw.com.funbackend.form.MemberDataTableSchema;
 import tw.com.funbackend.form.MemberDataTableResult;
+import tw.com.funbackend.form.SimpleResult;
 import tw.com.funbackend.form.querycond.MemberDataQueryCondition;
 import tw.com.funbackend.persistence.gopartyon.User;
 import tw.com.funbackend.pojo.UserBean;
@@ -299,6 +302,36 @@ public class MemberController {
 		}
 		
 		return userData;
+	}
+	
+	@RequestMapping(value = "/MemberDataQuery/Album/add", method = RequestMethod.POST)
+	public @ResponseBody SimpleResult addPhoto(@RequestParam("userName") String userName, @RequestParam("fileName") String fileName,
+			@RequestParam("photofile") MultipartFile file) {
+
+		SimpleResult result = new SimpleResult();
+
+		if (!file.isEmpty()) {
+			try {
+				
+				User user = memberService.readUser(userName);
+				
+				byte[] bytes = file.getBytes();
+				if (bytes.length > 0) {
+					memberService.addPhotoToAlbum(user, fileName, bytes);
+				}
+			} catch (IOException ex) {
+				logger.error(ex.getMessage());
+				result.setResultCode(-1);
+				result.setResultMessage("上傳檔案失敗");
+			}
+
+		} else {
+
+			result.setResultCode(-1);
+			result.setResultMessage("上傳檔案資料是空的");
+		}
+		
+		return result;
 	}
 	
 	/**

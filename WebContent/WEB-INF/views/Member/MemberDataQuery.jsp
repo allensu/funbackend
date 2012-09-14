@@ -251,6 +251,11 @@ $(function() {
  		width : 650,
  		height : 600,
  		buttons: {
+ 			"新增": function() {
+ 				
+ 				
+ 				
+ 			},
 			"取消": function() {
 				
 				
@@ -853,7 +858,7 @@ function initGrallery()
 	$( "ul.gallery > li" ).click(function( event ) {
 		var $item = $( this ),
 			$target = $( event.target );
-
+		
 		if ( $target.is( "a.ui-icon-trash" ) ) {
 			deleteImage( $item );
 		} else if ( $target.is( "a.ui-icon-zoomin" ) ) {
@@ -1009,6 +1014,7 @@ function initGrallery()
 		<img id="picZoomShow" name="picZoomShow" src=""/>
 	</div>
 	<div id="photos-dialog-form" title="照片管理">
+		<input type="file" name="photofile" multiple>
 		<ul id="gallery" class="gallery ui-helper-reset ui-helper-clearfix">
 		
 		</ul>

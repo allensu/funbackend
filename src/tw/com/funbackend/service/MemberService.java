@@ -87,4 +87,13 @@ public interface MemberService {
 	 * @param fileName
 	 */
 	public void deletePhotoFromPic(User user, String fileName);
+	
+	/**
+	 * 新增照片
+	 * @param user
+	 * @param fileName
+	 * @param bytes
+	 */
+	public boolean addPhotoToAlbum(User user, String fileName, byte[] fileBytes);
+	
 }

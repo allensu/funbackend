@@ -8,37 +8,36 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import tw.com.funbackend.model.FileDAO;
+import tw.com.funbackend.model.FileModel;
 import com.mongodb.gridfs.GridFSDBFile;
 
 @Service
-public class MongoDBFileServiceImpl implements FileService {
+public class FileServiceImpl implements FileService {
 	
 	@Autowired
-	FileDAO fileDAO;
+	FileModel fileModel;
 	
 	@Override
 	public void save(String inputFileName, byte[] file) {
-		fileDAO.createByByte(inputFileName, file);
+		fileModel.createByByte(inputFileName, file);
 
 	}
 
 	@Override
 	public void get(String filename, OutputStream out) {
-		fileDAO.get(filename, out);
+		fileModel.get(filename, out);
 	}
 
 	@Override
 	public byte[] get(String fileName) {
 		byte[] bytes = null;
 		try {
-			GridFSDBFile file = fileDAO.get(fileName);
+			GridFSDBFile file = fileModel.get(fileName);
 			if(file == null)
 				return null;
 			bytes = IOUtils.toByteArray(file.getInputStream());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (IOException ex) {
+			ex.printStackTrace();
 		}
 		
 		return bytes;
@@ -46,7 +45,7 @@ public class MongoDBFileServiceImpl implements FileService {
 	
 	@Override
 	public InputStream getInputStream(String filename){
-		return fileDAO.getInputStream(filename);
+		return fileModel.getInputStream(filename);
 	}
 
 }

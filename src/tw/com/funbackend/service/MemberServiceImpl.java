@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import tw.com.funbackend.persistence.gopartyon.User;
 
 import tw.com.funbackend.form.querycond.MemberDataQueryCondition;
+import tw.com.funbackend.model.FileModel;
 import tw.com.funbackend.model.MemberModel;
 
 @Service
@@ -18,6 +19,9 @@ public class MemberServiceImpl implements MemberService {
 	@Autowired
 	private MemberModel memberModel;
 
+	@Autowired
+	FileModel fileModel;
+	
 	@Override
 	public List<User> readUserAll() {
 		
@@ -87,5 +91,24 @@ public class MemberServiceImpl implements MemberService {
 		{
 			memberModel.deletePhotoFromAlbum(user, currFileName);
 		}
+	}
+
+	@Override
+	public boolean addPhotoToAlbum(User user, String fileName, byte[] fileBytes) {
+
+		boolean result = false;
+		
+		try {
+			// save file to album
+			fileModel.createByByte(fileName, fileBytes);
+			
+			// update user photo data
+			memberModel.addPhotoToAlbum(user, fileName);
+			
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+		}
+		
+		return result;
 	}
 }

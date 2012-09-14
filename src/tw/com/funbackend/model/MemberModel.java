@@ -63,6 +63,13 @@ public interface MemberModel {
 	User readUser(String id);
 	
 	/**
+	 * 取得特定的 User
+	 * @param userName
+	 * @return
+	 */
+	User readUserByUserName(String userName);
+	
+	/**
 	 * 更新 User 資料
 	 * @param user
 	 * @return
@@ -82,4 +89,11 @@ public interface MemberModel {
 	 * @param fileName
 	 */
 	public void deletePhotoFromPic(User user, String fileName);
+	
+	/**
+	 * 新增照片
+	 * @param user
+	 * @param fileName
+	 */
+	public void addPhotoToAlbum(User user, String fileName);
 }

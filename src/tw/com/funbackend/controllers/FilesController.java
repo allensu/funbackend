@@ -130,29 +130,29 @@ public class FilesController {
 	 * @param apiAccessKey api key
 	 * @return json
 	 */
-	@RequestMapping(value = "/upload", method = RequestMethod.POST)
-	public @ResponseBody SimpleResult handleFormUpload(@RequestParam("fileName") String fileName,
-			@RequestParam("file") MultipartFile file) {
-
-		SimpleResult result = new SimpleResult();
-
-		if (!file.isEmpty()) {
-			try {
-				byte[] bytes = file.getBytes();
-				if (bytes.length > 0) {
-					fileService.save(fileName, bytes);
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			return result;
-		} else {
-
-			result.setResultCode(-1);
-			result.setResultMessage("上傳檔案資料是空的");
-			return result;
-		}
-	}
+//	@RequestMapping(value = "/upload", method = RequestMethod.POST)
+//	public @ResponseBody SimpleResult handleFormUpload(@RequestParam("fileName") String fileName,
+//			@RequestParam("file") MultipartFile file) {
+//
+//		SimpleResult result = new SimpleResult();
+//
+//		if (!file.isEmpty()) {
+//			try {
+//				byte[] bytes = file.getBytes();
+//				if (bytes.length > 0) {
+//					fileService.save(fileName, bytes);
+//				}
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//			return result;
+//		} else {
+//
+//			result.setResultCode(-1);
+//			result.setResultMessage("上傳檔案資料是空的");
+//			return result;
+//		}
+//	}
 	
 	public String getImageFormat(String mimeType){
 		if(mimeType.contains("jpeg"))

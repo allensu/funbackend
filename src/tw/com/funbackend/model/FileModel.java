@@ -6,7 +6,7 @@ import java.io.OutputStream;
 
 import com.mongodb.gridfs.GridFSDBFile;
 
-public interface FileDAO {
+public interface FileModel {
 	
 	/**
 	 * create file from byte array

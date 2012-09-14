@@ -3,7 +3,9 @@ package tw.com.funbackend.model;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,9 +45,6 @@ public class MemberModelImpl implements MemberModel {
 			{
 				result = partyonMongo.findAll(User.class);	
 			}
-			 	
-			
-			
 		} catch(Exception ex)
 		{
 			logger.error(ex.getMessage());
@@ -276,8 +275,9 @@ public class MemberModelImpl implements MemberModel {
 			update.inc("numOfPic", -1);
 			update.pull("photos", new BasicDBObject("photo", fileName));
 			partyonMongo.updateFirst(query, update, User.class);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception ex) {
+			//e.printStackTrace();
+			logger.error(ex.getMessage());
 		}
 
 	}
@@ -290,9 +290,44 @@ public class MemberModelImpl implements MemberModel {
 			Update update = new Update();
 			update.set("pic", "");
 			partyonMongo.updateFirst(query, update, User.class);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception ex) {
+			//ex.printStackTrace();
+			logger.error(ex.getMessage());
 		}
 
+	}
+
+	@Override
+	public void addPhotoToAlbum(User user, String fileName) {
+		
+		try {
+			Map<String, String> data = new HashMap<String, String>(1);
+			data.put("photo", fileName);
+			Query query = new Query(where("userName").is(user.getUserName()));
+			Update update = new Update();
+			update.inc("numOfPic", 1);
+			update.push("photos", data);
+			partyonMongo.updateFirst(query, update, User.class);
+		} catch (Exception ex) {
+			//ex.printStackTrace();
+			logger.error(ex.getMessage());
+		}
+	}
+
+	@Override
+	public User readUserByUserName(String userName) {
+		User result = null;
+		
+		try {
+			Query query = new Query(where("userName").is(userName));
+			
+			result = partyonMongo.findOne(query, User.class);			
+		}
+		catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+		
+		return result;
 	}
 }
