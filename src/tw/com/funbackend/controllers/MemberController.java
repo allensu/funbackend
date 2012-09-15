@@ -304,7 +304,7 @@ public class MemberController {
 		return userData;
 	}
 	
-	@RequestMapping(value = "/MemberDataQuery/Album/add", method = RequestMethod.POST)
+	@RequestMapping(value = "/MemberDataQuery/Album/add")
 	public @ResponseBody SimpleResult addPhoto(@RequestParam("userName") String userName, @RequestParam("fileName") String fileName,
 			@RequestParam("photofile") MultipartFile file) {
 

@@ -120,6 +120,15 @@ $(function() {
     	updateData(); 
     });
 	
+	$('#uploadBtn').button({
+		icons: {
+			primary: "ui-icon-circle-arrow-n"
+		}	
+	}).click(function() {
+		$.blockUI({ message: '<div>檔案上傳中...</div>', overlayCSS: { backgroundColor: '#4297D7'} });
+		uploadData();
+	});
+	
 	$("#photosBtn").button().click(function() {
 		$("#photos-dialog-form").dialog("open");
 	});
@@ -195,22 +204,7 @@ $(function() {
 			});
 		}
     });
-	
-	//photosTable
-	/*
-	var photosTable = $('#photosTable').dataTable({
-        //"sScrollY":  '100%',
-        "bJQueryUI": true,
-        "bPaginate": true,
-        "bDeferRender": true,        
-        "aoColumns": [{ "bSortable": false},
-                      { "bSortable": false},
-                      { "bSortable": false},
-                      { "bSortable": false},
-                      { "bSortable": false}]
-	});
-	*/
-	
+		
 	//likeUsersTable
 	var likeUsersTable = $('#likeUsersTable').dataTable({
         //"sScrollY":  '100%',
@@ -251,11 +245,6 @@ $(function() {
  		width : 650,
  		height : 600,
  		buttons: {
- 			"新增": function() {
- 				
- 				
- 				
- 			},
 			"取消": function() {
 				
 				
@@ -301,6 +290,22 @@ $(function() {
 	
 	changeField("queryFormField");
 });
+
+
+function uploadData()
+{
+	$('#uploadBtn').click(function() {
+        $('#uploadFields').upload('/funbackend/Member/MemberDataQuery/Album/add', function(res) {
+            alert(
+                'Field1: ' + res.userName + "\n" + 
+                'Field2: ' + res.fileName + "\n" +
+                'Filename: ' + (res.file ? res.file.name : '')
+            );
+        }, 'json');
+    });
+	
+	$.unblockUI();
+}
 
 function changeField(fieldName)
 {
@@ -1014,7 +1019,16 @@ function initGrallery()
 		<img id="picZoomShow" name="picZoomShow" src=""/>
 	</div>
 	<div id="photos-dialog-form" title="照片管理">
-		<input type="file" name="photofile" multiple>
+		<form id="fileUpload" action="#" method="POST" enctype="multipart/form-data">
+			<div id="uploadFields">
+				<input type="hidden" id="userName" name="userName"/>
+				<input type="hidden" id="fileName" name="fileName"/>
+				<input type="file" id="photofile" name="photofile"/>
+			</div>
+			<button id="uploadBtn" name="uploadBtn">上傳</button>
+			
+		</form>
+		
 		<ul id="gallery" class="gallery ui-helper-reset ui-helper-clearfix">
 		
 		</ul>
