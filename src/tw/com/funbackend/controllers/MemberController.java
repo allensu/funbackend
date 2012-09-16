@@ -324,19 +324,19 @@ public class MemberController {
 			    
 		System.out.println(cFile.getFileItem().getName());
 		if (!cFile.isEmpty()) {
-//			try {
-//				
-//				User user = memberService.readUser(userName);
-//				
-//				byte[] bytes = file.getBytes();
-//				if (bytes.length > 0) {
-//					memberService.addPhotoToAlbum(user, fileName, bytes);
-//				}
-//			} catch (IOException ex) {
-//				logger.error(ex.getMessage());
-//				result.setResultCode(-1);
-//				result.setResultMessage("上傳檔案失敗");
-//			}
+			try {
+				
+				User user = memberService.readUser(userName);
+				
+				byte[] bytes = cFile.getBytes();
+				if (bytes.length > 0) {
+					memberService.addPhotoToAlbum(user, cFile.getFileItem().getName(), bytes);
+				}
+			} catch (Exception ex) {
+				logger.error(ex.getMessage());
+				result.setResultCode(-1);
+				result.setResultMessage("上傳檔案失敗");
+			}
 
 		} else {
 			
