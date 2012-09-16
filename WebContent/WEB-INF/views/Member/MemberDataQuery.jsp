@@ -11,13 +11,13 @@
 
 <jsp:include page="../../views/Common/CommonResource.jsp"></jsp:include>
  
- 
 <style type="text/css">
   html { height: 100% }
   body { height: 100%; margin: 0px; padding: 0px }
   #map_canvas { height: 100% }
 </style>
 
+<script type="text/javascript" src="../../Script/ajaxfileupload.js"></script>
 <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>
 
 <!-- <script type="text/javascript">
@@ -124,10 +124,11 @@ $(function() {
 		icons: {
 			primary: "ui-icon-circle-arrow-n"
 		}	
-	}).click(function() {
-		$.blockUI({ message: '<div>檔案上傳中...</div>', overlayCSS: { backgroundColor: '#4297D7'} });
-		uploadData();
 	});
+	//.click(function() {
+	//	$.blockUI({ message: '<div>檔案上傳中...</div>', overlayCSS: { backgroundColor: '#4297D7'} });
+	//	uploadData();
+	//});
 	
 	$("#photosBtn").button().click(function() {
 		$("#photos-dialog-form").dialog("open");
@@ -294,17 +295,46 @@ $(function() {
 
 function uploadData()
 {
-	$('#uploadBtn').click(function() {
-        $('#uploadFields').upload('/funbackend/Member/MemberDataQuery/Album/add', function(res) {
+	
+	//alert('aa');
+	$.ajaxFileUpload
+	(
+		{
+			url:'/funbackend/controller/Member/MemberDataQuery/Album/add?userName=' + $('#userName').val(), 
+            secureuri:false,
+            fileElementId:'photofile',
+            dataType: 'json',
+            success: function (data, status) {  
+              
+              if(data.resultCode == 0)
+              {
+            	  alert('success');
+              } else {
+            	  alert('error');
+              }
+              
+            },  
+                      
+            error: function (data, status, e) {  
+               alert(e);  
+            }  
+
+		}		
+	); 
+	
+
+/*         $('#uploadFields').upload('http://localhost:8080/funbackend/controller/Member/MemberDataQuery/Album/add', function(res) {
             alert(
                 'Field1: ' + res.userName + "\n" + 
                 'Field2: ' + res.fileName + "\n" +
                 'Filename: ' + (res.file ? res.file.name : '')
             );
-        }, 'json');
-    });
+        }); */
+  
 	
-	$.unblockUI();
+	//alert('bb');
+	
+	//$.unblockUI();
 }
 
 function changeField(fieldName)
@@ -1019,16 +1049,10 @@ function initGrallery()
 		<img id="picZoomShow" name="picZoomShow" src=""/>
 	</div>
 	<div id="photos-dialog-form" title="照片管理">
-		<form id="fileUpload" action="#" method="POST" enctype="multipart/form-data">
-			<div id="uploadFields">
-				<input type="hidden" id="userName" name="userName"/>
-				<input type="hidden" id="fileName" name="fileName"/>
-				<input type="file" id="photofile" name="photofile"/>
-			</div>
-			<button id="uploadBtn" name="uploadBtn">上傳</button>
-			
+		<form id="fileUpload" action="" method="POST" enctype="multipart/form-data">
+			<input type="file" id="photofile" name="photofile"/>
+			<button id="uploadBtn" name="uploadBtn" onclick="uploadData();return false;">上傳</button>
 		</form>
-		
 		<ul id="gallery" class="gallery ui-helper-reset ui-helper-clearfix">
 		
 		</ul>

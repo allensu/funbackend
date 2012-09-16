@@ -95,4 +95,9 @@
 	<!-- <bean
 		class="org.springframework.data.mongodb.core.mapping.event.LoggingEventListener" /> -->
 	   
+		<!-- Only Scan MVC -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+	<context:component-scan base-package="tw.com.funbackend" use-default-filters="false">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
 </beans>

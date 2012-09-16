@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import tw.com.funbackend.service.FileService;
@@ -39,6 +44,7 @@ import tw.com.funbackend.form.MemberDataTableQueryParam;
 import tw.com.funbackend.form.MemberDataTableSchema;
 import tw.com.funbackend.form.MemberDataTableResult;
 import tw.com.funbackend.form.SimpleResult;
+import tw.com.funbackend.form.UploadResult;
 import tw.com.funbackend.form.querycond.MemberDataQueryCondition;
 import tw.com.funbackend.persistence.gopartyon.User;
 import tw.com.funbackend.pojo.UserBean;
@@ -305,32 +311,39 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value = "/MemberDataQuery/Album/add")
-	public @ResponseBody SimpleResult addPhoto(@RequestParam("userName") String userName, @RequestParam("fileName") String fileName,
-			@RequestParam("photofile") MultipartFile file) {
-
+	//public @ResponseBody SimpleResult addPhoto(@RequestParam("userName") String userName, @RequestParam("fileName") String fileName,
+	//		@RequestParam("photofile") MultipartFile file) {
+	public @ResponseBody SimpleResult addPhoto(@RequestParam("userName") String userName, HttpServletRequest request, HttpServletResponse response) 
+	{
+		
 		SimpleResult result = new SimpleResult();
-
-		if (!file.isEmpty()) {
-			try {
-				
-				User user = memberService.readUser(userName);
-				
-				byte[] bytes = file.getBytes();
-				if (bytes.length > 0) {
-					memberService.addPhotoToAlbum(user, fileName, bytes);
-				}
-			} catch (IOException ex) {
-				logger.error(ex.getMessage());
-				result.setResultCode(-1);
-				result.setResultMessage("上傳檔案失敗");
-			}
+		result.setResultCode(0);
+		
+		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request ;
+		CommonsMultipartFile cFile = (CommonsMultipartFile) multipartRequest.getFile("photofile");
+			    
+		System.out.println(cFile.getFileItem().getName());
+		if (!cFile.isEmpty()) {
+//			try {
+//				
+//				User user = memberService.readUser(userName);
+//				
+//				byte[] bytes = file.getBytes();
+//				if (bytes.length > 0) {
+//					memberService.addPhotoToAlbum(user, fileName, bytes);
+//				}
+//			} catch (IOException ex) {
+//				logger.error(ex.getMessage());
+//				result.setResultCode(-1);
+//				result.setResultMessage("上傳檔案失敗");
+//			}
 
 		} else {
-
+			
 			result.setResultCode(-1);
 			result.setResultMessage("上傳檔案資料是空的");
 		}
-		
+
 		return result;
 	}
 	
