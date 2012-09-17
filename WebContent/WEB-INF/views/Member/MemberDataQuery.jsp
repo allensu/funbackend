@@ -345,7 +345,7 @@ function uploadData()
           			}
             	  });
             
-            	  alert('success');
+            	  //alert('success');
             	  
             	  
               } else {
