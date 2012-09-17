@@ -297,6 +297,10 @@ function uploadData()
 {
 	
 	//alert('aa');
+	
+	$('#uploadBtn').attr('disabled', true);
+	
+	$('#uploading').css("display", "");
 	$.ajaxFileUpload
 	(
 		{
@@ -308,15 +312,56 @@ function uploadData()
               
               if(data.resultCode == 0)
               {
+            	  var postData = {
+            				userName : $('#userName').val(),
+            		};
+            	  
+            	  $.ajax({
+          			type : "GET",
+          			url : "/funbackend/controller/Member/MemberDataQuery/Album/Photos",
+          			data : postData,
+          			success : function(data) {
+          				
+          				
+          				$("#gallery").empty();
+        				$("#trash ul").remove();
+        				$.each(data, function (k, v) {
+        					//i++;
+        					//rowData[i] = "<img name='photosShow' src='/funbackend/controller/Member/file/get/" + 
+        						//v.photo + "' photoName='" + v.photo + "' style='width:100px; height: 100px' />";
+        						
+        						var photoObj = "<li class='ui-widget-content ui-corner-tr'>" +
+        						//"<h5 class='ui-widget-header'></h5>" +
+        						"<img name='photosShow' photoName='" + v.photo + "' src='/funbackend/controller/Files/get/" + v.photo + "' alt='The peaks of High Tatras' width='96' height='72' />" +
+        						"<a photoName='" + v.photo + "' href='/funbackend/controller/Files/get/normal/" + v.photo + "' title='View larger image' class='ui-icon ui-icon-zoomin'>View larger</a>" +
+        						"<a href='#' photoName='" + v.photo + "' title='set pic' class='ui-icon ui-icon-person'>Set Pic</a>" + 
+        						"<a href='link/to/trash/script/when/we/have/js/off' title='Delete this image' class='ui-icon ui-icon-trash'>Delete image</a>" +
+        						"</li>";
+        						
+        						$("#gallery").append(photoObj);
+        				});
+        				
+        				initGrallery();
+          			}
+            	  });
+            
             	  alert('success');
+            	  
+            	  
               } else {
+            	  
             	  alert('error');
               }
               
+              $('#uploadBtn').attr('disabled', false);
+              $('#uploading').css("display", "none");
             },  
                       
             error: function (data, status, e) {  
                alert(e);  
+               
+               $('#uploadBtn').attr('disabled', false);
+               $('#uploading').css("display", "none");
             }  
 
 		}		
@@ -666,8 +711,7 @@ function showDetailEvent(id)
 					$('#deleted').val(data.deleted.toString()); //封存
 				}
 			
-				//照片管理
-				
+				//照片管理				
 				$("#gallery").empty();
 				$("#trash ul").remove();
 				$.each(data.photos, function (k, v) {
@@ -1046,12 +1090,19 @@ function initGrallery()
     </table>
 	
 	<div id="photos-zoomin-dialog">
-		<img id="picZoomShow" name="picZoomShow" src=""/>
+		<img id="picZoomShow" name="picZoomShow" src="" style="max-height: 100%; max-width: 100%; height:100%; width:100% "/>
 	</div>
 	<div id="photos-dialog-form" title="照片管理">
 		<form id="fileUpload" action="" method="POST" enctype="multipart/form-data">
-			<input type="file" id="photofile" name="photofile"/>
-			<button id="uploadBtn" name="uploadBtn" onclick="uploadData();return false;">上傳</button>
+			<table>
+				<tr>
+					<td><input type="file" id="photofile" name="photofile"/></td>
+					<td><button id="uploadBtn" name="uploadBtn" onclick="uploadData();return false;">上傳</button></td>
+					<td>
+						<img id="uploading" name="uploading" alt="uploading" src="/funbackend/Images/loading.gif" style="display: none">
+					</td>
+				</tr>			
+			</table>
 		</form>
 		<ul id="gallery" class="gallery ui-helper-reset ui-helper-clearfix">
 		

@@ -1,6 +1,7 @@
 package tw.com.funbackend.service;
 
 import java.util.List;
+import java.util.Map;
 
 import tw.com.funbackend.form.querycond.MemberDataQueryCondition;
 import tw.com.funbackend.persistence.gopartyon.User;
@@ -60,6 +61,20 @@ public interface MemberService {
 	 * @return
 	 */
 	User readUser(String id);
+	
+	/**
+	 * 取得特定的 User
+	 * @param userName
+	 * @return
+	 */
+	User readUserByUserName(String userName);
+	
+	/**
+	 * 取得指定 User 的圖片
+	 * @param userName
+	 * @return
+	 */
+	List<Map<String, String>> readUserPhotosByUserName(String userName);
 	
 	/**
 	 * 更新 User 資料

@@ -310,6 +310,28 @@ public class MemberController {
 		return userData;
 	}
 	
+	/**
+	 * 取得特定User資料
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value = "/MemberDataQuery/Album/Photos")
+	public @ResponseBody List<Map<String, String>> getPhotos(@RequestParam("userName") String userName) {
+
+		List<Map<String, String>> resultPhotos = new ArrayList<Map<String,String>>();
+		
+		try {
+			User userData = memberService.readUserByUserName(userName);
+			
+			resultPhotos = userData.getPhotos();					
+		} catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+		
+		return resultPhotos;
+	}
+	
 	@RequestMapping(value = "/MemberDataQuery/Album/add")
 	//public @ResponseBody SimpleResult addPhoto(@RequestParam("userName") String userName, @RequestParam("fileName") String fileName,
 	//		@RequestParam("photofile") MultipartFile file) {
@@ -326,7 +348,7 @@ public class MemberController {
 		if (!cFile.isEmpty()) {
 			try {
 				
-				User user = memberService.readUser(userName);
+				User user = memberService.readUserByUserName(userName);
 				
 				byte[] bytes = cFile.getBytes();
 				if (bytes.length > 0) {

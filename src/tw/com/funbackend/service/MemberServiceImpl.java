@@ -1,6 +1,7 @@
 package tw.com.funbackend.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,5 +111,18 @@ public class MemberServiceImpl implements MemberService {
 		}
 		
 		return result;
+	}
+
+	@Override
+	public User readUserByUserName(String userName) {
+		
+		return memberModel.readUserByUserName(userName);		
+	}
+
+	@Override
+	public List<Map<String, String>> readUserPhotosByUserName(String userName) {
+		
+		User user = readUserByUserName(userName);
+		return user.getPhotos();
 	}
 }
