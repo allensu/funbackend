@@ -20,7 +20,7 @@ import com.mongodb.gridfs.GridFSInputFile;
 
 @Repository
 public class FileModelImpl implements FileModel {
-	Logger log = Logger.getLogger(FileModelImpl.class);
+	protected Logger logger = Logger.getLogger("model");
 	
 	@Autowired
 	Mongo mongo;
@@ -71,7 +71,7 @@ public class FileModelImpl implements FileModel {
 		try {
 			DB db = mongo.getDB("partyon");
 			GridFS gfsPhoto = new GridFS(db, "filestore");
-			log.info("get1 filename = " + filename);
+			logger.info("get1 filename = " + filename);
 			GridFSDBFile imageForOutput = gfsPhoto.findOne(filename);
 			if(imageForOutput != null && imageForOutput.getLength() > 0)
 				imageForOutput.writeTo(out);			
@@ -90,7 +90,7 @@ public class FileModelImpl implements FileModel {
 		try {
 			DB db = mongo.getDB("partyon");
 			GridFS gfsPhoto = new GridFS(db, "filestore");
-			log.debug("get filename = " + filename);
+			logger.debug("get filename = " + filename);
 			imageForOutput = gfsPhoto.findOne(filename);
 		} catch (MongoException e) {
 			e.printStackTrace();
@@ -105,7 +105,7 @@ public class FileModelImpl implements FileModel {
 		try {
 			DB db = mongo.getDB("partyon");
 			GridFS gfsPhoto = new GridFS(db, "filestore");
-			log.debug("getInputStream filename = " + filename);
+			logger.debug("getInputStream filename = " + filename);
 			imageForOutput = gfsPhoto.findOne(filename);
 		} catch (MongoException e) {
 			e.printStackTrace();
@@ -115,6 +115,19 @@ public class FileModelImpl implements FileModel {
 			return imageForOutput.getInputStream();
 		else
 			return null;
+	}
+
+	@Override
+	public void deleteFile(String filename) {
+	
+		try {
+			DB db = mongo.getDB("partyon");
+			GridFS gfsPhoto = new GridFS(db, "filestore");
+			logger.debug("get filename = " + filename);
+			gfsPhoto.remove(filename);
+		} catch (MongoException e) {
+			logger.error(e.getMessage());
+		} 		
 	}
 
 }

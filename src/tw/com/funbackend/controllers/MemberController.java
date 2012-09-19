@@ -332,7 +332,50 @@ public class MemberController {
 		return resultPhotos;
 	}
 	
-	@RequestMapping(value = "/MemberDataQuery/Album/add")
+	/**
+	 * 刪除使用者檔案
+	 * @param userName
+	 * @param fileNames
+	 * @return
+	 */
+	@RequestMapping(value = "/MemberDataQuery/Album/Delete")
+	public @ResponseBody SimpleResult deletePhoto(@RequestParam("userName") String userName,
+			@RequestParam("fileNames") String fileNames)
+	{
+		SimpleResult result = new SimpleResult();
+		result.setResultCode(0);
+		
+		try 
+		{
+			List<String> fileNameList = new ArrayList<String>();
+			String[] fileNameArray = fileNames.split(",");
+			
+			for(String currFileName : fileNameArray)
+			{
+				fileNameList.add(currFileName);
+			}
+			
+			User userData = memberService.readUserByUserName(userName);
+			memberService.deleteBatchPhotoFromAlbum(userData, fileNameList);
+		} 
+		catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+			result.setResultCode(-1);
+			result.setResultMessage("刪除檔案失敗");
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * 新增使用者檔案
+	 * @param userName
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value = "/MemberDataQuery/Album/Add")
 	//public @ResponseBody SimpleResult addPhoto(@RequestParam("userName") String userName, @RequestParam("fileName") String fileName,
 	//		@RequestParam("photofile") MultipartFile file) {
 	public @ResponseBody SimpleResult addPhoto(@RequestParam("userName") String userName, HttpServletRequest request, HttpServletResponse response) 
@@ -343,8 +386,7 @@ public class MemberController {
 		
 		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request ;
 		CommonsMultipartFile cFile = (CommonsMultipartFile) multipartRequest.getFile("photofile");
-			    
-		System.out.println(cFile.getFileItem().getName());
+			    		
 		if (!cFile.isEmpty()) {
 			try {
 				

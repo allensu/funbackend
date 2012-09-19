@@ -20,6 +20,12 @@ public interface FileModel {
 	 * @param file
 	 */
 	public void createByFile(String filename, File file);
+	
+	/**
+	 * 刪除檔案
+	 * @param filename
+	 */
+	public void deleteFile(String filename);
 	public void get(String filename, OutputStream out);
 	public GridFSDBFile get(String filename);
 	public InputStream getInputStream(String filename);

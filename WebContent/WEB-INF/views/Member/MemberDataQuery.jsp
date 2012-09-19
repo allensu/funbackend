@@ -248,11 +248,41 @@ $(function() {
  		buttons: {
 			"取消": function() {
 				
-				
 				$( this ).dialog( "close" );
 			},
 			"確定": function() {
 				
+				var trashList = $( "#trash li" );
+				var fileNames = "";
+				
+				$.each(trashList, function (k, v) {
+					
+					if(fileNames == "")
+						fileNames += $(v).attr("photoName");
+					else
+					{
+						fileNames += "," + $(v).attr("photoName");
+					}
+					
+				});
+				
+				if(fileNames.length > 0)
+				{
+					var postData = {
+		        		userName : $('#userName').val(),
+		        		fileNames : fileNames
+		        	};
+		        	  
+			        $.ajax({
+			      		type : "GET",
+			      		url : "/funbackend/controller/Member/MemberDataQuery/Album/Delete",
+			      		data : postData,
+			      		success : function(data) {
+			      				
+			      			reloadPhoto();	      				
+			      		}
+			        });
+				}
 				
 				$( this ).dialog( "close" );
 			}
@@ -292,6 +322,41 @@ $(function() {
 	changeField("queryFormField");
 });
 
+function reloadPhoto()
+{
+	var postData = {
+			userName : $('#userName').val(),
+	};
+  
+  	$.ajax({
+		type : "GET",
+		url : "/funbackend/controller/Member/MemberDataQuery/Album/Photos",
+		data : postData,
+		success : function(data) {
+			
+			
+			$("#gallery").empty();
+		$("#trash ul").remove();
+		$.each(data, function (k, v) {
+			//i++;
+			//rowData[i] = "<img name='photosShow' src='/funbackend/controller/Member/file/get/" + 
+				//v.photo + "' photoName='" + v.photo + "' style='width:100px; height: 100px' />";
+				
+				var photoObj = "<li class='ui-widget-content ui-corner-tr' photoName='" + v.photo + "'>" +
+				//"<h5 class='ui-widget-header'></h5>" +
+				"<img name='photosShow' photoName='" + v.photo + "' src='/funbackend/controller/Files/get/" + v.photo + "' alt='The peaks of High Tatras' width='96' height='72' />" +
+				"<a photoName='" + v.photo + "' href='/funbackend/controller/Files/get/normal/" + v.photo + "' title='View larger image' class='ui-icon ui-icon-zoomin'>View larger</a>" +
+				"<a href='#' photoName='" + v.photo + "' title='set pic' class='ui-icon ui-icon-person'>Set Pic</a>" + 
+				"<a href='link/to/trash/script/when/we/have/js/off' title='Delete this image' class='ui-icon ui-icon-trash'>Delete image</a>" +
+				"</li>";
+				
+				$("#gallery").append(photoObj);
+		});
+		
+		initGrallery();
+		}
+  	});
+}
 
 function uploadData()
 {
@@ -304,7 +369,7 @@ function uploadData()
 	$.ajaxFileUpload
 	(
 		{
-			url:'/funbackend/controller/Member/MemberDataQuery/Album/add?userName=' + $('#userName').val(), 
+			url:'/funbackend/controller/Member/MemberDataQuery/Album/Add?userName=' + $('#userName').val(), 
             secureuri:false,
             fileElementId:'photofile',
             dataType: 'json',
@@ -312,41 +377,7 @@ function uploadData()
               
               if(data.resultCode == 0)
               {
-            	  var postData = {
-            				userName : $('#userName').val(),
-            		};
-            	  
-            	  $.ajax({
-          			type : "GET",
-          			url : "/funbackend/controller/Member/MemberDataQuery/Album/Photos",
-          			data : postData,
-          			success : function(data) {
-          				
-          				
-          				$("#gallery").empty();
-        				$("#trash ul").remove();
-        				$.each(data, function (k, v) {
-        					//i++;
-        					//rowData[i] = "<img name='photosShow' src='/funbackend/controller/Member/file/get/" + 
-        						//v.photo + "' photoName='" + v.photo + "' style='width:100px; height: 100px' />";
-        						
-        						var photoObj = "<li class='ui-widget-content ui-corner-tr'>" +
-        						//"<h5 class='ui-widget-header'></h5>" +
-        						"<img name='photosShow' photoName='" + v.photo + "' src='/funbackend/controller/Files/get/" + v.photo + "' alt='The peaks of High Tatras' width='96' height='72' />" +
-        						"<a photoName='" + v.photo + "' href='/funbackend/controller/Files/get/normal/" + v.photo + "' title='View larger image' class='ui-icon ui-icon-zoomin'>View larger</a>" +
-        						"<a href='#' photoName='" + v.photo + "' title='set pic' class='ui-icon ui-icon-person'>Set Pic</a>" + 
-        						"<a href='link/to/trash/script/when/we/have/js/off' title='Delete this image' class='ui-icon ui-icon-trash'>Delete image</a>" +
-        						"</li>";
-        						
-        						$("#gallery").append(photoObj);
-        				});
-        				
-        				initGrallery();
-          			}
-            	  });
-            
-            	  //alert('success');
-            	  
+            	  reloadPhoto();
             	  
               } else {
             	  
@@ -719,7 +750,7 @@ function showDetailEvent(id)
 					//rowData[i] = "<img name='photosShow' src='/funbackend/controller/Member/file/get/" + 
 						//v.photo + "' photoName='" + v.photo + "' style='width:100px; height: 100px' />";
 						
-						var photoObj = "<li class='ui-widget-content ui-corner-tr'>" +
+						var photoObj = "<li class='ui-widget-content ui-corner-tr' photoName='" + v.photo + "'>" +
 						//"<h5 class='ui-widget-header'></h5>" +
 						"<img name='photosShow' photoName='" + v.photo + "' src='/funbackend/controller/Files/get/" + v.photo + "' alt='The peaks of High Tatras' width='96' height='72' />" +
 						"<a photoName='" + v.photo + "' href='/funbackend/controller/Files/get/normal/" + v.photo + "' title='View larger image' class='ui-icon ui-icon-zoomin'>View larger</a>" +

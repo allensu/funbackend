@@ -74,9 +74,22 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	@Override
-	public void deletePhotoFromAlbum(User user, String fileName) {
-		memberModel.deletePhotoFromAlbum(user, fileName);
+	public boolean deletePhotoFromAlbum(User user, String fileName) {
 		
+		boolean result = false;
+		
+		try {
+			// delete file from album			
+			fileModel.deleteFile(fileName);
+			
+			// delete file from user
+			memberModel.deletePhotoFromAlbum(user, fileName);
+			
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+		}
+		
+		return result;
 	}
 	
 	@Override

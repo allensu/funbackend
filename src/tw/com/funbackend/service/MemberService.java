@@ -94,7 +94,7 @@ public interface MemberService {
 	 * @param user
 	 * @param fileName
 	 */
-	public void deletePhotoFromAlbum(User user, String fileName);
+	public boolean deletePhotoFromAlbum(User user, String fileName);
 	
 	/**
 	 * 刪除大頭照
