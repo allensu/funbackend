@@ -392,9 +392,24 @@ public class MemberController {
 				
 				User user = memberService.readUserByUserName(userName);
 				
+				long nowTimeStamp = System.currentTimeMillis();
+				String newFileName = "" + userName + "-" + user.getFilenameCount() + "-" + nowTimeStamp;
+				String[] fileSplit = cFile.getFileItem().getName().split(".");
+				String fileExtension = "";
+				if(fileSplit.length == 2)
+				{
+					fileExtension = fileSplit[1];
+				}
+				
+				if(fileExtension != null){
+					newFileName = newFileName + "." + fileExtension;
+				}
+				
+				user.setFilenameCount(user.getFilenameCount() + 1);
+				
 				byte[] bytes = cFile.getBytes();
 				if (bytes.length > 0) {
-					memberService.addPhotoToAlbum(user, cFile.getFileItem().getName(), bytes);
+					memberService.addPhotoToAlbum(user, newFileName, bytes);
 				}
 			} catch (Exception ex) {
 				logger.error(ex.getMessage());
