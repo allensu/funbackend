@@ -306,6 +306,7 @@ public class MemberModelImpl implements MemberModel {
 			Query query = new Query(where("userName").is(user.getUserName()));
 			Update update = new Update();
 			update.inc("numOfPic", 1);
+			update.inc("filenameCount", 1);
 			update.push("photos", data);
 			partyonMongo.updateFirst(query, update, User.class);
 		} catch (Exception ex) {

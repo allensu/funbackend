@@ -405,7 +405,7 @@ public class MemberController {
 					newFileName = newFileName + "." + fileExtension;
 				}
 				
-				user.setFilenameCount(user.getFilenameCount() + 1);
+				//user.setFilenameCount(user.getFilenameCount() + 1);
 				
 				byte[] bytes = cFile.getBytes();
 				if (bytes.length > 0) {
