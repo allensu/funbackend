@@ -40,7 +40,7 @@ import org.springframework.web.servlet.ModelAndView;
 import tw.com.funbackend.service.FileService;
 
 import tw.com.funbackend.enumeration.OrderDirection;
-import tw.com.funbackend.form.MemberDataTableQueryParam;
+import tw.com.funbackend.form.DataTableQueryParam;
 import tw.com.funbackend.form.MemberDataTableSchema;
 import tw.com.funbackend.form.MemberDataTableResult;
 import tw.com.funbackend.form.SimpleResult;
@@ -111,7 +111,7 @@ public class MemberController {
 	@RequestMapping(value = "/MemberDataQuery/ReadPages")
 	public @ResponseBody MemberDataTableResult readPagesMember(
 			@ModelAttribute MemberDataQueryCondition qCondition,
-			@ModelAttribute MemberDataTableQueryParam tableParm) {
+			@ModelAttribute DataTableQueryParam tableParm) {
 //			@RequestParam(value="sEcho") String sEcho,
 //			@RequestParam(value="iDisplayStart") int iDisplayStart,
 //			@RequestParam(value="iDisplayLength") int iDisplayLength,

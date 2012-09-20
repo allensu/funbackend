@@ -1,6 +1,6 @@
 package tw.com.funbackend.form;
 
-public class MemberDataTableQueryParam {
+public class DataTableQueryParam {
 	private String sEcho;
 	private int iDisplayStart;
 	private int iDisplayLength;
