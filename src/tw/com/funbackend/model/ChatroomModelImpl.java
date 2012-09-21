@@ -39,7 +39,7 @@ public class ChatroomModelImpl implements ChatroomModel {
 				parameter.put("chatRoomStyle", cond.getChatRoomStyleQ());
 			
 			if(StringUtility.isNotEmpty(cond.getUserNameQ()))
-				parameter.put("userName", cond.getUserNameQ());
+				parameter.put("users", cond.getUserNameQ());
 			
 			count = (int) chatroomColl.count(parameter);
 		} 
@@ -65,7 +65,7 @@ public class ChatroomModelImpl implements ChatroomModel {
 				criteria = Criteria.where("chatRoomStyle").is(cond.getChatRoomStyleQ());
 			
 			if(StringUtility.isNotEmpty(cond.getUserNameQ()))
-				criteria = Criteria.where("userName").is(cond.getUserNameQ());
+				criteria = Criteria.where("users").is(cond.getUserNameQ());
 			
 			Query query = null;
 			if(criteria != null)
@@ -98,7 +98,7 @@ public class ChatroomModelImpl implements ChatroomModel {
 				criteria = Criteria.where("chatRoomStyle").is(cond.getChatRoomStyleQ());
 					
 			if(StringUtility.isNotEmpty(cond.getUserNameQ()))
-				criteria = Criteria.where("userName").is(cond.getUserNameQ());
+				criteria = Criteria.where("users").is(cond.getUserNameQ());
 			
 			Query query = null;
 			
