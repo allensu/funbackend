@@ -1,8 +1,14 @@
 package tw.com.funbackend.form;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.data.mongodb.core.index.Indexed;
+
 public class ChatroomDataTableSchema {
 	static public String[] MapColumns = {
-		"","chatRoomStyle","numOfUser",""
+		"","chatRoomStyle","numOfUser","users",""
 		};
 	
 	private String itemCheckCol;
@@ -21,6 +27,23 @@ public class ChatroomDataTableSchema {
 	 * 人數
 	 */
 	private int numOfUser;
+	
+	/**
+	 * 參與人員
+	 */
+	private List<String> users = new ArrayList<String>();
+	
+	/**
+	 * 離開人員
+	 */
+	private List<String> leaveUsers = new ArrayList<String>();
+	
+	/**
+	 * 位置
+	 */
+	private Map<String, Double> location;
+	
+	private String detailBtnCol;
 	
 	public String getItemCheckCol() {
 		return itemCheckCol;
@@ -62,6 +85,30 @@ public class ChatroomDataTableSchema {
 		this.detailBtnCol = detailBtnCol;
 	}
 
-	private String detailBtnCol;
+	public List<String> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<String> users) {
+		this.users = users;
+	}
+
+	public List<String> getLeaveUsers() {
+		return leaveUsers;
+	}
+
+	public void setLeaveUsers(List<String> leaveUsers) {
+		this.leaveUsers = leaveUsers;
+	}
+
+	public Map<String, Double> getLocation() {
+		return location;
+	}
+
+	public void setLocation(Map<String, Double> location) {
+		this.location = location;
+	}
+
+	
 	
 }

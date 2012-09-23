@@ -2,8 +2,10 @@ package tw.com.funbackend.service;
 
 import java.util.List;
 
+import tw.com.funbackend.form.querycond.ChatroomMessageCondition;
 import tw.com.funbackend.form.querycond.ChatroomMessageRecordCondition;
 import tw.com.funbackend.persistence.gopartyon.Chatroom;
+import tw.com.funbackend.persistence.gopartyon.ChatroomMessage;
 import tw.com.funbackend.persistence.gopartyon.User;
 
 public interface ChatroomService {
@@ -34,5 +36,35 @@ public interface ChatroomService {
 	 * @return
 	 */
 	List<Chatroom> readChatroomPageByCondSort(ChatroomMessageRecordCondition cond, int startIndex, int length, String sortColName, int sortDir);
+	
+	/**
+	 * 取得特定的聊天室
+	 * @param id
+	 * @return
+	 */
+	Chatroom readChatroom(String id);
+	
+	/**
+	 * 取得特定聊天室的訊息內容
+	 * @param chatroomId
+	 * @return
+	 */
+	List<ChatroomMessage> readChatroomMessage(String chatroomId);
+	
+	/**
+	 * 取得條件下的總聊天室的訊息內容筆數
+	 * @param cond
+	 * @return
+	 */
+	int readChatroomMessageCountByCond(ChatroomMessageCondition cond);
+	
+	/**
+	 * 取得條件下分頁聊天室的訊息內容
+	 * @param cond
+	 * @param startIndex
+	 * @param length
+	 * @return
+	 */
+	List<ChatroomMessage> readChatroomMessagePageByCond(ChatroomMessageCondition cond, int startIndex, int length);
 	
 }

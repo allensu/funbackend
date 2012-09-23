@@ -6,10 +6,12 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import tw.com.funbackend.form.querycond.ChatroomMessageCondition;
 import tw.com.funbackend.form.querycond.ChatroomMessageRecordCondition;
 import tw.com.funbackend.model.ChatroomModel;
 import tw.com.funbackend.model.MemberModel;
 import tw.com.funbackend.persistence.gopartyon.Chatroom;
+import tw.com.funbackend.persistence.gopartyon.ChatroomMessage;
 import tw.com.funbackend.persistence.gopartyon.User;
 
 @Service
@@ -40,6 +42,31 @@ public class ChatroomServiceImpl implements ChatroomService {
 		
 		return chatroomModel.readChatroomPageByCondSort(cond, startIndex, length, sortColName, sortDir);
 	}
-	
 
+	@Override
+	public Chatroom readChatroom(String id) {
+
+		return chatroomModel.readChatroom(id);
+	}
+
+	@Override
+	public List<ChatroomMessage> readChatroomMessage(String chatroomId) {
+
+		return chatroomModel.readChatroomMessage(chatroomId);
+	}
+
+	@Override
+	public int readChatroomMessageCountByCond(ChatroomMessageCondition cond) {
+
+		return chatroomModel.readChatroomMessageCountByCond(cond);
+	}
+
+	@Override
+	public List<ChatroomMessage> readChatroomMessagePageByCond(
+			ChatroomMessageCondition cond, int startIndex, int length) {
+		
+		return chatroomModel.readChatroomMessagePageByCond(cond, startIndex, length);
+	}
+	
+	
 }

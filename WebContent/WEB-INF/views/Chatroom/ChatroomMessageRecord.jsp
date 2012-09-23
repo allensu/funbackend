@@ -4,18 +4,32 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
 <title>Insert title here</title>
 <jsp:include page="../../views/Common/CommonResource.jsp"></jsp:include>
+
+<style type="text/css">
+  html { height: 100% }
+  body { height: 100%; margin: 0px; padding: 0px }
+  #map_canvas { height: 100% }
+</style>
+
+<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>
 
 <script type="text/javascript">
 
 var disTable; //保留被DataTables enhanced 過的變數
+var chatroomMessageTable; 
+
 $.fx.speeds._default = 1000;
 $(function() {
 	
 	$("#toolBar").buttonset();
 	
 	$("#chatRoomStyleQ").combobox();
+	
+	$("#typeQ").combobox();
 	
 	// Create Btn
 	$("#createBtn").button({
@@ -63,6 +77,15 @@ $(function() {
         readData();
     });
 	
+	$("#readMessageSendBtn").button({
+        icons: {
+            primary: "ui-icon-search"
+        }
+    }).click(function () {
+        //$.blockUI({ message: '<div>載入資料中...</div>', overlayCSS: { backgroundColor: '#4297D7'} });
+        readMessageData();
+    });
+	
 	disTable = $('#jtable').dataTable({
         //"sScrollY":  '100%',
         "bJQueryUI": true,
@@ -94,14 +117,52 @@ $(function() {
 			            		else
 			            			return "";
 			           		}},
-		              { "mDataProp": "numOfUser" },		              
+		              { "mDataProp": "numOfUser" },		
+		              { "mDataProp": "users",
+		            	  "fnRender": function(oObj)
+		            	  {
+		            		// 在線名單
+		      				var usersStr = "";
+		      				$.each(oObj.aData.users, function (k, v) {
+		      					
+		      					if(usersStr == "")
+		      						usersStr = v;
+		      					else 
+		      						usersStr = usersStr + ", " + v;
+		      				});
+		      				
+		      				return usersStr;
+		            	  }},
+		           	  { "mDataProp": "leaveUsers",
+			              "fnRender": function(oObj)
+			              {
+			            	// 離線名單
+			      			var usersStr = "";
+			      			$.each(oObj.aData.leaveUsers, function (k, v) {
+			      					
+			  					if(usersStr == "")
+		    						usersStr = v;
+		      					else 
+		      						usersStr = usersStr + ", " + v;
+			      			});
+			      				
+			      			return usersStr;
+			              }},
+			          { "mDataProp": "location",
+				          "fnRender": function(oObj)
+			              {
+		   	            	// 位置
+		   	            	var obj = "";
+		   	            	
+		   	            	if(oObj.aData.location != null)
+		   	            		obj = "<div name='colMap' lat='"+oObj.aData.location["lat"]+"' lon='"+oObj.aData.location["lon"]+"' style='width: 300px; height:200px; border: 1px solid #000;'></div>";
+		   	            		 
+							return obj;
+			              }},
 		              { "mDataProp": "detailBtnCol", "bSortable": false,
 		            	"fnRender": function(oObj)
 		            	{ 
-		            		//\"" + oObj.aData.id + "\"
-		            		//alert(oObj.aData.id);
-		            		var obj = "<input name='showDetail' type='button' value='修改' class='gcms-ui-corner-all ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' onclick='showDetailEvent(\"" + oObj.aData.id + "\")'/>";
-		            		//alert(obj);
+		            		var obj = "<input name='showDetail' type='button' value='內容' class='gcms-ui-corner-all ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' onclick='showDetailEvent(\"" + oObj.aData.id + "\")'/>";
 		            		return obj;
 		            	}}
 		              ],
@@ -109,6 +170,50 @@ $(function() {
 			
 			$('#selectAll').attr('checked', false);
 			var checkBoxes = $("input[name=dataId]");
+			$.each(checkBoxes, function() {
+				if ($(this).attr('checked') == true) {
+					$(this).attr('checked', false);
+				}
+			});
+			
+			showMap();
+		}
+    });
+	
+	chatroomMessageTable = $('#jtable-detail').dataTable({
+        //"sScrollY":  '100%',
+        "bJQueryUI": true,
+        //"bPaginate": true,
+        //"bDeferRender": true,
+        "bServerSide":true,
+        "sPaginationType":"full_numbers",
+        "bProcessing": true, 
+        "sAjaxSource": '/funbackend/controller/Chatroom/ChatroomMessageRecord/ReadPages/Message',
+        "fnServerParams": function ( aoData ) {
+        	$.merge(aoData, $("#messageQueryform").serializeArray());
+        },
+        "aoColumns": [{ "mDataProp": "itemCheckCol", "bSortable": false,
+		            	"fnRender": function(oObj)
+		            	{ 
+		            		return "<input id='messageDataId' name='messageDataId' type='checkbox' value='" + oObj.aData.id + "'/>";		            		
+		            	}},
+		              { "mDataProp": "userName", "bSortable": false},
+		              { "mDataProp": "senderName", "bSortable": false },		
+		              { "mDataProp": "type", "bSortable": false },
+		              { "mDataProp": "message", "bSortable": false },
+		              { "mDataProp": "fileName", "bSortable": false },
+		              { "mDataProp": "fileSize", "bSortable": false },
+		              { "mDataProp": "createDateTime", "bSortable": false,
+		            	"fnRender": function(oObj)
+		            	{
+		            		return jsonDate2Format(oObj.aData.createDateTime,"yyyy/m/d TT hh:MM");
+		            	}
+		              }			            	
+		              ],
+		"fnDrawCallback" : function() {
+			
+			$('#detailSelectAll').attr('checked', false);
+			var checkBoxes = $("input[name=messageDataId]");
 			$.each(checkBoxes, function() {
 				if ($(this).attr('checked') == true) {
 					$(this).attr('checked', false);
@@ -137,12 +242,72 @@ $(function() {
 		}
 	}); 
 	
+	// 全選
+	$('#detailSelectAll').click(function() {
+
+		var checkBoxes = $("input[name=messageDataId]");
+
+		if ($('#detailSelectAll').attr('checked')) {
+			$.each(checkBoxes, function() {
+				if ($(this).attr('checked') == false) {
+					$(this).attr('checked', true);
+				}
+			});
+		} else {
+			$.each(checkBoxes, function() {
+				if ($(this).attr('checked') == true) {
+					$(this).attr('checked', false);
+				}
+			});
+		}
+	}); 
+	
+	// Detail Form View	
+ 	$("#detail-dialog-form").dialog({
+ 		autoOpen : false,
+ 		//modal : true,
+ 		width : 800,
+ 		height : 500
+ 	});
+	
 	changeField("queryFormField");
 });
+
+function showMap()
+{
+	$('div[name=colMap]').each(function(i) {
+		loadMap(this, $(this).attr("lat"), $(this).attr("lon"));
+	});	
+}
+
+function loadMap(thisObj, lat, lon) {
+	
+	  var latlng = new google.maps.LatLng(lat, lon);
+	    var myOptions = {
+	      zoom: 12,
+	      center: latlng,
+	      mapTypeId: google.maps.MapTypeId.ROADMAP
+	    };
+	    var currentMap = new google.maps.Map(thisObj, myOptions);
+	    
+	    var optionOfMarker = {
+		    	position: latlng,
+		    	map: currentMap,
+		    	title: "Chatroom here!"
+		   	};
+		    
+		var mapMarker = new google.maps.Marker(optionOfMarker);
+		mapMarker.setAnimation(google.maps.Animation.DROP);
+}
 
 function readData() {
 
 	disTable.fnDraw();
+}
+
+function readMessageData() {
+	
+	chatroomMessageTable.fnDraw();
 }
 
 function changeField(fieldName)
@@ -151,6 +316,16 @@ function changeField(fieldName)
 	//$("#updateFormField").hide();
 	
 	$("#" + fieldName).show();
+}
+
+function showDetailEvent(id)
+{
+	$("#dialog:ui-dialog").dialog( "destroy" );
+	
+	$('#chatroomIdQ').val(id);
+	chatroomMessageTable.fnDraw();
+	
+	$("#detail-dialog-form").dialog("open");
 }
 </script>
 </head>
@@ -189,6 +364,9 @@ function changeField(fieldName)
             	<th align="left"><input type="checkbox" id="selectAll" /></th>
                 <th>類別</th>
                 <th>人數</th>
+                <th>名單</th>
+                <th>離開名單</th>
+                <th>位置</th>
                 <th></th>                
             </tr>
         </thead>
@@ -198,12 +376,91 @@ function changeField(fieldName)
                 <td></td>
                 <td></td>
                 <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
             </tr>
         </tbody>
     </table>
 
 
-
+    <div id="detail-dialog-form" title="聊天內容">
+    	<form id="messageQueryform">
+			<input id="chatroomIdQ" name="chatroomIdQ" type="hidden"/>
+			<label>收信者:</label><input id="receiverNameQ" name="receiverNameQ" type="text" value="" size="20" class="text ui-widget-content ui-corner-all"/><br /><br />
+			<label>發信者:</label><input id="senderNameQ" name="senderNameQ" type="text" value="" size="20" class="text ui-widget-content ui-corner-all"/><br /><br />
+			<label>訊息類別 :</label>
+			<select id="typeQ" name="typeQ" >
+				<option value="All">全部</option>
+				<option value="text">文字</option>
+				<option value="audio">語音</option>
+				<option value="video">影片</option>
+				<option value="photo">圖片</option>		
+				<option value="location">地圖</option>					
+			</select><br /><br />
+		</form>
+		<button id="readMessageSendBtn" name="readMessageSendBtn">查詢</button><br />
+    	<table id="jtable-detail"  cellpadding="0" cellspacing="0" border="0" class="display" >
+        <thead>
+            <tr>
+            	<th align="left"><input type="checkbox" id="detailSelectAll" /></th>
+                <th>收信者</th>
+                <th>發信者</th>
+                <th>訊息類別</th>
+                <th>訊息文字</th>
+                <th>檔案名稱</th>
+                <th>檔案大小</th>   
+                <th>建立時間</th>                
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="row">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+   		</table>
+    
+    	<!-- <form action="DetailChatroom" method="post">
+    		<input id="id" name="id" type="hidden" value="" />
+        	<table style="border: 1px;" >
+        		<tbody>
+        			<tr>
+        				<td>類別</td>
+        				<td><input id="chatRoomStyle" name="chatRoomStyle" type="text" value="" size="13" class="text ui-widget-content ui-corner-all" readonly="readonly" style="border: 0px" /></td>
+        			</tr>
+        			<tr>
+        				<td>人數</td>
+        				<td><input id="numOfUser" name="numOfUser" type="text" value="" size="13" class="text ui-widget-content ui-corner-all" readonly="readonly" style="border: 0px" /></td>
+        			</tr>
+        			<tr>
+        				<td>人員名單</td>
+        				<td><input id="users" name="users" type="text" value="" class="text ui-widget-content ui-corner-all" style="width: 100%" readonly="readonly" style="border: 0px" /></td>
+        			</tr>
+        			<tr>
+        				<td>離開人員名單</td>
+        				<td><input id="leaveUsers" name="leaveUsers" type="text" value="" class="text ui-widget-content ui-corner-all" style="width: 100%" readonly="readonly" style="border: 0px" /></td>
+        			</tr>
+        			<tr id="locationTr">
+        				<td valign="top">最後定位點</td>
+        				<td valign="top">
+        					lat:<input id="location.lat" name="location.lat" type="text" value="" size="13" class="text ui-widget-content ui-corner-all" readonly="readonly" style="border: 0px" />
+        					lon:<input id="location.lon" name="location.lon" type="text" value="" size="13" class="text ui-widget-content ui-corner-all" readonly="readonly" style="border: 0px" /><br/>
+        					<div id="map_canvas" style="width: 300px; height:200px; border: 1px solid #000;"></div>
+        				</td>
+        			</tr>
+        		</tbody>
+        	
+        	</table>
+        </form>
+        <button id="chatroomMessageBtn" name="chatroomMessageBtn">對話內容</button> -->
+    </div>
 
 
 
