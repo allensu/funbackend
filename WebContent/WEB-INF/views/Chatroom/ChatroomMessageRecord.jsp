@@ -201,7 +201,18 @@ $(function() {
 		              { "mDataProp": "senderName", "bSortable": false },		
 		              { "mDataProp": "type", "bSortable": false },
 		              { "mDataProp": "message", "bSortable": false },
-		              { "mDataProp": "fileName", "bSortable": false },
+		              { "mDataProp": "fileName", "bSortable": false ,
+		            	  "fnRender": function(oObj)
+		            	  {
+		            		  if(oObj.aData.type == "photo")
+		            		  {
+		            			  var imgObj = oObj.aData.fileName + "<br/>";
+		            			  imgObj = imgObj + "<img src='/funbackend/controller/Files/get/" + oObj.aData.fileName + "' style='width:100px; height: 100px' />";
+		            			  return imgObj;
+		            		  } else {
+		            			  return oObj.aData.fileName;
+		            		  }
+		            	  }},
 		              { "mDataProp": "fileSize", "bSortable": false },
 		              { "mDataProp": "createDateTime", "bSortable": false,
 		            	"fnRender": function(oObj)
@@ -399,7 +410,7 @@ function showDetailEvent(id)
 				<option value="location">地圖</option>					
 			</select><br /><br />
 		</form>
-		<button id="readMessageSendBtn" name="readMessageSendBtn">查詢</button><br />
+		<button id="readMessageSendBtn" name="readMessageSendBtn">查詢</button><br />		
     	<table id="jtable-detail"  cellpadding="0" cellspacing="0" border="0" class="display" >
         <thead>
             <tr>
@@ -426,44 +437,6 @@ function showDetailEvent(id)
             </tr>
         </tbody>
    		</table>
-    
-    	<!-- <form action="DetailChatroom" method="post">
-    		<input id="id" name="id" type="hidden" value="" />
-        	<table style="border: 1px;" >
-        		<tbody>
-        			<tr>
-        				<td>類別</td>
-        				<td><input id="chatRoomStyle" name="chatRoomStyle" type="text" value="" size="13" class="text ui-widget-content ui-corner-all" readonly="readonly" style="border: 0px" /></td>
-        			</tr>
-        			<tr>
-        				<td>人數</td>
-        				<td><input id="numOfUser" name="numOfUser" type="text" value="" size="13" class="text ui-widget-content ui-corner-all" readonly="readonly" style="border: 0px" /></td>
-        			</tr>
-        			<tr>
-        				<td>人員名單</td>
-        				<td><input id="users" name="users" type="text" value="" class="text ui-widget-content ui-corner-all" style="width: 100%" readonly="readonly" style="border: 0px" /></td>
-        			</tr>
-        			<tr>
-        				<td>離開人員名單</td>
-        				<td><input id="leaveUsers" name="leaveUsers" type="text" value="" class="text ui-widget-content ui-corner-all" style="width: 100%" readonly="readonly" style="border: 0px" /></td>
-        			</tr>
-        			<tr id="locationTr">
-        				<td valign="top">最後定位點</td>
-        				<td valign="top">
-        					lat:<input id="location.lat" name="location.lat" type="text" value="" size="13" class="text ui-widget-content ui-corner-all" readonly="readonly" style="border: 0px" />
-        					lon:<input id="location.lon" name="location.lon" type="text" value="" size="13" class="text ui-widget-content ui-corner-all" readonly="readonly" style="border: 0px" /><br/>
-        					<div id="map_canvas" style="width: 300px; height:200px; border: 1px solid #000;"></div>
-        				</td>
-        			</tr>
-        		</tbody>
-        	
-        	</table>
-        </form>
-        <button id="chatroomMessageBtn" name="chatroomMessageBtn">對話內容</button> -->
     </div>
-
-
-
-
 </body>
 </html>
