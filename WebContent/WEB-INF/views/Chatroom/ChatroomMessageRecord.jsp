@@ -13,9 +13,23 @@
   html { height: 100% }
   body { height: 100%; margin: 0px; padding: 0px }
   #map_canvas { height: 100% }
+  #locationCenterQ { height: 100% }
 </style>
 
 <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>
+
+<script type="text/javascript">
+  function initialize() {
+    var latlng = new google.maps.LatLng(-34.397, 150.644);
+    var myOptions = {
+      zoom: 12,
+      center: latlng,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    var mapLocationCenterQ = new google.maps.Map(document.getElementById("locationCenterQ"),
+        myOptions);
+  }
+</script>
 
 <script type="text/javascript">
 
@@ -29,7 +43,11 @@ $(function() {
 	
 	$("#chatRoomStyleQ").combobox();
 	
-	$("#typeQ").combobox();
+	$("#typeQ").combobox({
+		selected: function(event, ui) { 
+	        alert('working?');
+	    }
+	});
 	
 	// Create Btn
 	$("#createBtn").button({
@@ -360,6 +378,10 @@ function showDetailEvent(id)
 					<option value="geo">地理範圍</option>
 					<option value="broadcast">廣播</option>					
 				</select><br /><br />
+			<div id="locationCond" style="display: none">
+				<div id="locationCenterQ" style="width: 300px; height:200px; border: 1px solid #000;"></div>
+				<label>距離(公里):</label><input id="distanceQ" name="distanceQ" type="text" value="" size="20" class="text ui-widget-content ui-corner-all"/><br /><br />
+			</div>
 			<label>帳號名稱:</label><input id="userNameQ" name="userNameQ" type="text" value="" size="20" class="text ui-widget-content ui-corner-all"/><br /><br /> 
 			<!-- <label>顯示名稱:</label><input id="displayNameQ" name="displayNameQ" type="text" value="" size="20" class="text ui-widget-content ui-corner-all"/><br /><br /> -->
 		</form>			
