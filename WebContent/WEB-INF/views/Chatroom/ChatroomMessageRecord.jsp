@@ -19,6 +19,8 @@
 <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>
 
 <script type="text/javascript">
+
+  var searchMarker = null;
   function locationCenterQInit() {
     var latlng = new google.maps.LatLng(25.047795, 121.516900);
     var myOptions = {
@@ -29,38 +31,19 @@
     var mapLocationCenterQ = new google.maps.Map(document.getElementById("locationCenterQ"),
         myOptions);
     
-    var marker = new google.maps.Marker();
-	var mapMarker = new google.maps.Marker();
-	//alert('aa');
-    google.maps.event.addListener(mapLocationCenterQ, 'click', function(e) {
-    	
-    	//placeMarker(e.latLng, mapLocationCenterQ);
-    	//alert('aa');
-    	//marker.position = e.latLng;
-    	
-    	marker.setMap(null);
-    	mapMarker.setMap(null); 
-    	marker = new google.maps.Marker({
-            position: e.latLng, 
-            map: mapLocationCenterQ,
-            title:"查詢中心點"
-        });
-    	
-    	mapMarker = new google.maps.Marker(marker);
-    	mapMarker.setAnimation(google.maps.Animation.DROP);
-    	
-    	mapLocationCenterQ.panTo(e.latLng);
-    	
-    	//alert('aa');
-    	
-    	//mapMarker = new google.maps.Marker(marker);
-    	//mapMarker.setAnimation(google.maps.Animation.DROP);
-    	//alert('aa1');
-    	//mapLocationCenterQ.panTo(e.latLng);
-    	
-    	//alert('aa2');
+    searchMarker = new google.maps.Marker();
+    searchMarker = new google.maps.Marker({
+        position: latlng, 
+        map: mapLocationCenterQ,
+        title:"查詢中心點"
     });
     
+    google.maps.event.addListener(mapLocationCenterQ, 'click', function(e) {
+    	
+    	searchMarker.setPosition(e.latLng);
+    	mapLocationCenterQ.panTo(e.latLng);
+    	
+    });
   }
   
   function placeMarker(position, map) {
@@ -387,6 +370,8 @@ function loadMap(thisObj, lat, lon) {
 
 function readData() {
 
+	//searchMarker.setPosition(e.latLng);
+	alert(searchMarker.getPosition());
 	disTable.fnDraw();
 }
 
