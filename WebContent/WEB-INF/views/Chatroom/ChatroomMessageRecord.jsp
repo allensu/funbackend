@@ -19,8 +19,8 @@
 <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>
 
 <script type="text/javascript">
-  function initialize() {
-    var latlng = new google.maps.LatLng(-34.397, 150.644);
+  function locationCenterQInit() {
+    var latlng = new google.maps.LatLng(25.047795, 121.516900);
     var myOptions = {
       zoom: 12,
       center: latlng,
@@ -28,7 +28,53 @@
     };
     var mapLocationCenterQ = new google.maps.Map(document.getElementById("locationCenterQ"),
         myOptions);
+    
+    var marker = new google.maps.Marker();
+	var mapMarker = new google.maps.Marker();
+	//alert('aa');
+    google.maps.event.addListener(mapLocationCenterQ, 'click', function(e) {
+    	
+    	//placeMarker(e.latLng, mapLocationCenterQ);
+    	//alert('aa');
+    	//marker.position = e.latLng;
+    	
+    	marker.setMap(null);
+    	mapMarker.setMap(null); 
+    	marker = new google.maps.Marker({
+            position: e.latLng, 
+            map: mapLocationCenterQ,
+            title:"查詢中心點"
+        });
+    	
+    	mapMarker = new google.maps.Marker(marker);
+    	mapMarker.setAnimation(google.maps.Animation.DROP);
+    	
+    	mapLocationCenterQ.panTo(e.latLng);
+    	
+    	//alert('aa');
+    	
+    	//mapMarker = new google.maps.Marker(marker);
+    	//mapMarker.setAnimation(google.maps.Animation.DROP);
+    	//alert('aa1');
+    	//mapLocationCenterQ.panTo(e.latLng);
+    	
+    	//alert('aa2');
+    });
+    
   }
+  
+  function placeMarker(position, map) {
+      var marker = new google.maps.Marker({
+        position: position,
+        map: map,
+        title:"查詢中心點"
+      });
+      
+      var mapMarker = new google.maps.Marker(marker);
+  	  mapMarker.setAnimation(google.maps.Animation.DROP);
+  	
+      map.panTo(position);
+    }
 </script>
 
 <script type="text/javascript">
@@ -41,13 +87,23 @@ $(function() {
 	
 	$("#toolBar").buttonset();
 	
-	$("#chatRoomStyleQ").combobox();
-	
-	$("#typeQ").combobox({
-		selected: function(event, ui) { 
-	        alert('working?');
+	$("#chatRoomStyleQ").combobox({
+		selected: function(event, ui) { 	        
+	        var selectValue = $(this).val(); 
+	        if(selectValue == 'geo')
+	        {
+	        	$('#locationCond').css('display', '');
+	        	locationCenterQInit();
+	        }	       	       
+	        else 
+	        {
+	        	$('#locationCond').css('display', 'none');
+	        }
 	    }
 	});
+	
+	
+	$("#typeQ").combobox();
 	
 	// Create Btn
 	$("#createBtn").button({
