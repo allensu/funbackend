@@ -201,99 +201,16 @@ public class AccountController {
 	 * @return
 	 */
 	@RequestMapping(value = "/Account/MenuList")
-	public @ResponseBody List<MenuGroup> getMenuList(HttpServletResponse response) {
-		UserBean userBean = new UserBean();
-		userBean.setAccountId("allensu");
-
-//		ArrayList list = new ArrayList();
-//		ArrayList list1 = new ArrayList();
-//
-//		Hashtable ht1 = new Hashtable();
-//		ht1.put("title", "FunCube");
-//		Hashtable ht1_1 = new Hashtable();
-//		ht1_1.put("title", "會員基本資料查詢");
-//		ht1_1.put("url", "/funbackend/controller/Member/MemberDataQuery");
-//		ht1_1.put("id", "MemberDataQuery");
-//		Hashtable ht1_2 = new Hashtable();
-//		ht1_2.put("title", "會員黑名單");
-//		ht1_2.put("url", "/funbackend/controller/Member/BlackMember");
-//		ht1_2.put("id", "BlackMember");
-////		Hashtable ht1_10 = new Hashtable();
-////		ht1_10.put("title", "會員照片管理");
-////		ht1_10.put("url", "/funbackend/controller/Member/MemberPhotos");
-////		ht1_10.put("id", "PhotosMember");
-//		Hashtable ht1_3 = new Hashtable();
-//		ht1_3.put("title", "會員登入/出時間");
-//		ht1_3.put("url", "/funbackend/controller/Member/MemberLoginRecord");
-//		ht1_3.put("id", "MemberLoginRecord");
-//		Hashtable ht1_5 = new Hashtable();
-//		ht1_5.put("title", "各地區會員數");
-//		ht1_5.put("url", "/funbackend/controller/Member/MemberPlace");
-//		ht1_5.put("id", "MemberPlace");
-//		Hashtable ht1_4 = new Hashtable();
-//		ht1_4.put("title", "聊天室記錄查詢");
-//		ht1_4.put("url", "/funbackend/controller/Chatroom/ChatroomMessageRecord");
-//		ht1_4.put("id", "ChatroomMessageRecord");
-////		Hashtable ht1_6 = new Hashtable();
-////		ht1_6.put("title", "最多贊會員排行");
-////		ht1_6.put("url", "/funbackend/controller/Rank/LikeRank");
-////		ht1_6.put("id", "LikeRank");
-//		Hashtable ht1_7 = new Hashtable();
-//		ht1_7.put("title", "Po文排行");
-//		ht1_7.put("url", "/funbackend/controller/Rank/ArticleRank");
-//		ht1_7.put("id", "ArticleRank");
-////		Hashtable ht1_8 = new Hashtable();
-////		ht1_8.put("title", "上傳圖片排行");
-////		ht1_8.put("url", "/funbackend/controller/Rank/UploadPicRank");
-////		ht1_8.put("id", "UploadPicRank");
-//		Hashtable ht1_9 = new Hashtable();
-//		ht1_9.put("title", "MQTT資料管理");
-//		ht1_9.put("url", "/funbackend/controller/Mqtt/MqttManage");
-//		ht1_9.put("id", "MqttManage");
-//		
-//		
-//		
-//		list1.add(ht1_1);
-//		list1.add(ht1_2);
-//		list1.add(ht1_3);
-//		list1.add(ht1_4);
-//		list1.add(ht1_5);
-//		//list1.add(ht1_6);
-//		list1.add(ht1_7);
-//		//list1.add(ht1_8);
-//		list1.add(ht1_9);
-//		ht1.put("content", list1);
-//
-//		Hashtable ht5 = new Hashtable();
-//		ht5.put("title", "帳號管理");
-//		ArrayList list5 = new ArrayList();
-//		Hashtable ht5_1 = new Hashtable();
-//		ht5_1.put("title", "帳號管理");
-//		ht5_1.put("url", "/funbackend/controller/Account/ManageUser");
-//		ht5_1.put("id", "ManageUser");
-//		list5.add(ht5_1);
-//		ht5.put("content", list5);
-//
-//		list.add(ht1);
-//		list.add(ht5);
-
+	public @ResponseBody List<MenuGroup> getMenuList(@ModelAttribute("userBean") UserBean userBean) {
 		
 		
 		// 取得使用帳號的權限
 		List<MenuGroup> menuGroupListResult = accountService
 				.getMenuList(userBean.getAccountId());
 
-//		MenuGroup accountManageGroup = new MenuGroup();
-//		List<MenuItem> accountManageItemList = new ArrayList<MenuItem>();
-//		accountManageGroup.setTitle("帳號管理");
-//		MenuItem menuItem3_1 = new MenuItem();
-//		menuItem3_1.setTitle("帳號管理");
-//		menuItem3_1.setUrl("/funbackend/controller/Account/ManageUser");
-//		accountManageItemList.add(menuItem3_1);
-//		accountManageGroup.setContent(accountManageItemList);
-
-		//menuGroupListResult.add(accountManageGroup);
-
+		
+		
+		
 		return menuGroupListResult;
 	}
 
