@@ -370,8 +370,13 @@ function loadMap(thisObj, lat, lon) {
 
 function readData() {
 
-	//searchMarker.setPosition(e.latLng);
-	alert(searchMarker.getPosition());
+	//searchMarker.setPosition(e.latLng);	
+	//alert(searchMarker.getPosition());
+	//alert(searchMarker.getPosition().lat());
+	//alert(searchMarker.getPosition().lng());
+	$('#longitudeQ').val(searchMarker.getPosition().lng());
+	$('#latitudeQ').val(searchMarker.getPosition().lat());
+	
 	disTable.fnDraw();
 }
 
@@ -421,7 +426,9 @@ function showDetailEvent(id)
 				</select><br /><br />
 			<div id="locationCond" style="display: none">
 				<div id="locationCenterQ" style="width: 300px; height:200px; border: 1px solid #000;"></div>
-				<label>距離(公里):</label><input id="distanceQ" name="distanceQ" type="text" value="" size="20" class="text ui-widget-content ui-corner-all"/><br /><br />
+				<input id="longitudeQ" name="longitudeQ" type="hidden" value=""/>
+				<input id="latitudeQ" name="latitudeQ" type="hidden" value=""/>
+				<label>距離(公里):</label><input id="kilometerQ" name="kilometerQ" type="text" value="" size="20" class="text ui-widget-content ui-corner-all"/><br /><br />
 			</div>
 			<label>帳號名稱:</label><input id="userNameQ" name="userNameQ" type="text" value="" size="20" class="text ui-widget-content ui-corner-all"/><br /><br /> 
 			<!-- <label>顯示名稱:</label><input id="displayNameQ" name="displayNameQ" type="text" value="" size="20" class="text ui-widget-content ui-corner-all"/><br /><br /> -->

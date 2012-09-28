@@ -15,13 +15,17 @@ import org.springframework.stereotype.Repository;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 
 import tw.com.funbackend.form.querycond.ChatroomMessageCondition;
 import tw.com.funbackend.form.querycond.ChatroomMessageRecordCondition;
 import tw.com.funbackend.persistence.gopartyon.Chatroom;
 import tw.com.funbackend.persistence.gopartyon.ChatroomMessage;
 import tw.com.funbackend.persistence.gopartyon.User;
+import tw.com.funbackend.utility.GeoUtility;
 import tw.com.funbackend.utility.StringUtility;
+import tw.com.gopartyon.mqtt.MessageData;
 
 @Repository
 public class ChatroomModelImpl implements ChatroomModel {
@@ -46,7 +50,33 @@ public class ChatroomModelImpl implements ChatroomModel {
 			if(StringUtility.isNotEmpty(cond.getUserNameQ()))
 				parameter.put("users", cond.getUserNameQ());
 			
-			count = (int) chatroomColl.count(parameter);
+			if("geo".equals(cond.getChatRoomStyleQ()) && cond.getKilometerQ() != "")
+			{
+				DBCursor dbCursor = chatroomColl.find(parameter);
+				
+				double lon = 0;
+				double lat = 0;
+				double distance = 0;
+				GeoUtility geoUtility = new GeoUtility();
+				while(dbCursor.hasNext())
+				{
+					DBObject dbObj = dbCursor.next();
+					
+					lon = Double.parseDouble(String.valueOf(((DBObject)dbObj.get("location")).get("lon")));
+					lat = Double.parseDouble(String.valueOf(((DBObject)dbObj.get("location")).get("lat")));
+					
+					distance = geoUtility.GetDistance(lat, lon, 
+							Double.parseDouble(cond.getLatitudeQ()), 
+							Double.parseDouble(cond.getLongitudeQ()));
+
+					if(distance <= Double.parseDouble(cond.getKilometerQ()))
+					{
+						count++;
+					}
+				}
+			} else {
+				count = (int) chatroomColl.count(parameter);
+			}
 		} 
 		catch(Exception ex)
 		{
@@ -61,6 +91,7 @@ public class ChatroomModelImpl implements ChatroomModel {
 			ChatroomMessageRecordCondition cond, int startIndex, int length) {
 
 		List<Chatroom> result = new ArrayList<Chatroom>();
+		List<Chatroom> resultFinal = new ArrayList<Chatroom>();
 		
 		try 
 		{
@@ -85,13 +116,36 @@ public class ChatroomModelImpl implements ChatroomModel {
 				query = new Query().skip(startIndex).limit(length);
 			
 			result = partyonMongo.find(query, Chatroom.class);
+			
+			if("geo".equals(cond.getChatRoomStyleQ()) && cond.getKilometerQ() != "")
+			{
+				double lon = 0;
+				double lat = 0;
+				double distance = 0;
+				GeoUtility geoUtility = new GeoUtility();
+				for(Chatroom currChatroom : result)
+				{
+					lon = currChatroom.getLocation().get("lon");
+					lat = currChatroom.getLocation().get("lat");
+					distance = geoUtility.GetDistance(lat, lon, 
+							Double.parseDouble(cond.getLatitudeQ()), 
+							Double.parseDouble(cond.getLongitudeQ()));
+					
+					if(distance <= Double.parseDouble(cond.getKilometerQ()))
+					{
+						resultFinal.add(currChatroom);
+					}
+				}					
+			} else {
+				resultFinal = result;
+			}
 		} 
 		catch(Exception ex)
 		{
 			logger.error(ex.getMessage());
 		}
 		
-		return result;
+		return resultFinal;
 	}
 
 	@Override
@@ -100,6 +154,7 @@ public class ChatroomModelImpl implements ChatroomModel {
 			String sortColName, int sortDir) {
 
 		List<Chatroom> result = new ArrayList<Chatroom>();
+		List<Chatroom> resultFinal = new ArrayList<Chatroom>();
 		
 		try 
 		{
@@ -130,13 +185,36 @@ public class ChatroomModelImpl implements ChatroomModel {
 			}
 			
 			result = partyonMongo.find(query, Chatroom.class);
+			
+			if("geo".equals(cond.getChatRoomStyleQ()) && cond.getKilometerQ() != "")
+			{
+				double lon = 0;
+				double lat = 0;
+				double distance = 0;
+				GeoUtility geoUtility = new GeoUtility();
+				for(Chatroom currChatroom : result)
+				{
+					lon = currChatroom.getLocation().get("lon");
+					lat = currChatroom.getLocation().get("lat");
+					distance = geoUtility.GetDistance(lat, lon, 
+							Double.parseDouble(cond.getLatitudeQ()), 
+							Double.parseDouble(cond.getLongitudeQ()));
+					
+					if(distance <= Double.parseDouble(cond.getKilometerQ()))
+					{
+						resultFinal.add(currChatroom);
+					}
+				}					
+			} else {
+				resultFinal = result;
+			}
 		} 
 		catch(Exception ex)
 		{
 			logger.error(ex.getMessage());
 		}
 		
-		return result;
+		return resultFinal;
 		
 	}
 

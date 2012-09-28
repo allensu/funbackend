@@ -20,18 +20,6 @@
 <script type="text/javascript" src="../../Script/ajaxfileupload.js"></script>
 <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>
 
-<!-- <script type="text/javascript">
-  function initialize() {
-    var latlng = new google.maps.LatLng(-34.397, 150.644);
-    var myOptions = {
-      zoom: 8,
-      center: latlng,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
-    var map = new google.maps.Map(document.getElementById("map_canvas"),
-        myOptions);
-  }
-</script> -->
 <script type="text/javascript">
 var disTable; //保留被DataTables enhanced 過的變數
 $.fx.speeds._default = 1000;
@@ -470,11 +458,102 @@ function readData() {
 }
 
 
+function showDetailEventPreClear()
+{
+	//記錄原值與值
+	$('#id').attr("orgVal", ""); //使用者名稱
+	$('#id').val(""); //使用者名稱
+	$('#userName').attr("orgVal", ""); //使用者名稱	
+	$('#userName').val(""); //使用者名稱
+
+	$('#picShow').attr("src", ""); //大頭照
+	$('#pic').attr("orgVal", ""); //大頭照
+	$('#pic').val(""); //大頭照
+		
+	$('#displayName').attr("orgVal", ""); //顯示名稱
+	$('#displayName').val(""); //顯示名稱
+		
+	$('#fake').attr("orgVal", ""); //假帳號
+	$("#fake").val(""); //假帳號	
+	
+	$('#birthday').attr("orgVal", ""); //生日
+	$("#birthday").val(""); //生日
+	
+	$('#email').attr("orgVal", ""); //信箱
+	$("#email").val(""); //信箱
+	
+	$('#phoneNo').attr("orgVal", ""); //電話號碼
+	$("#phoneNo").val(""); //電話號碼
+			
+	$('#countryCode').attr("orgVal", ""); //國碼
+	$("#countryCode").val(""); //國碼	
+
+	$('#address').attr("orgVal", ""); //地址
+	$("#address").val(""); //地址
+
+	$('#numOfLikes').attr("orgVal", ""); //贊數量
+	$("#numOfLikes").val(0); //贊數量
+
+	$('#ranking').attr("orgVal", ""); //排名
+	$("#ranking").val(""); //排名
+
+	$('#locationDateTime').attr("orgVal", ""); //最後定位時間
+	$("#locationDateTime").val(""); //最後定位時間
+	
+	$('#placeName').attr("orgVal", ""); //最後打卡地點名稱
+	$("#placeName").val(""); //最後打卡地點名稱
+	
+	$('#interest').attr("orgVal", ""); //興趣
+	$("#interest").val(""); //興趣
+
+	$("#profession").attr("orgVal", ""); //專長
+	$("#profession").val(""); //專長
+
+	$("#school").attr("orgVal", ""); //學校
+	$("#school").val(""); //學校
+	
+	$("#description").attr("orgVal", ""); //自我介紹
+	$("#description").val(""); //自我介紹
+	
+	$("#updateTime").attr("orgVal", ""); //更新時間
+	$("#updateTime").val(""); //更新時間
+	
+	$("#monthScore").attr("orgVal", ""); //月得分
+	$("#monthScore").val(0); //月得分
+
+	$("#totalScore").attr("orgVal", ""); //總得分
+	$("#totalScore").val(0); //總得分
+	
+	$("#rankingCompare").attr("orgVal", ""); //排行榜上升或下降
+	$("#rankingCompare").val(""); //排行榜上升或下降
+
+	$("#gender").attr("orgVal", ""); //性別
+	$("#gender").val(""); //性別
+	
+	$("#deleted").attr("orgVal", ""); //封存
+	$('#deleted').val(""); //封存
+	
+	//照片管理				
+	$("#gallery").empty();
+	$("#trash ul").remove();
+	
+	//黑名單列表
+	$('#blockUsersTable').dataTable().fnClearTable(true);
+	//拜訪者
+	$('#visitorsTable').dataTable().fnClearTable(true);
+	//給其它Users贊
+	$('#likeUsersTable').dataTable().fnClearTable(true);
+	//最後定位點
+	$("#location\\.lat").attr("orgVal", "");
+	$('#location\\.lat').val(""); 
+	$("#location\\.lon").attr("orgVal", "");
+	$('#location\\.lon').val(""); 
+}
 
 function showDetailEvent(id)
 {
 	//$("#dialog:ui-dialog").dialog( "destroy" );
-	
+	showDetailEventPreClear();
 	$.blockUI({ message: '<div>查詢資料中...</div>', overlayCSS: { backgroundColor: '#4297D7'} });
 	var postData = {
 			id : id,
