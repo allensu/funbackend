@@ -97,52 +97,79 @@ public class AccountModelImpl implements AccountModel {
 	public List<MenuGroup> getMenuList(String accountId) {
 
 		List<MenuGroup> menuGroupListResult = new ArrayList<MenuGroup>();
-		MenuGroup menuGroup1 = new MenuGroup();
-		MenuGroup menuGroup2 = new MenuGroup();
 		
-		List<MenuItem> menuItemList1 = new ArrayList<MenuItem>();
-		List<MenuItem> menuItemList2 = new ArrayList<MenuItem>();
+		menuGroupListResult = funBackendMongo.findAll(MenuGroup.class);	
 		
-		
-		
-		MenuItem menuItem1_1 = new MenuItem();
-        menuItem1_1.setTitle("功能一");
-        menuItem1_1.setUrl("/ProductManage/ProductCard");
-        MenuItem menuItem1_2 = new MenuItem();
-        menuItem1_2.setTitle("功能二");
-        menuItem1_2.setUrl("/ProductManage/RSPointCard");
-        MenuItem menuItem1_3 = new MenuItem();
-        menuItem1_3.setTitle("功能三");
-        menuItem1_3.setUrl("/ProductManage/RSTimeCard");
-        menuItemList1.add(menuItem1_1);
-        menuItemList1.add(menuItem1_2);
-        menuItemList1.add(menuItem1_3);
-        menuGroup1.setContent(menuItemList1);
-        menuGroup1.setTitle("群組一");
-        
-        MenuItem menuItem2_1 = new MenuItem();
-        menuItem2_1.setTitle("功能一");
-        menuItem2_1.setUrl("/ProductManage/ProductCard");
-        MenuItem menuItem2_2 = new MenuItem();
-        menuItem2_2.setTitle("功能二");
-        menuItem2_2.setUrl("/ProductManage/RSPointCard");
-        menuItemList2.add(menuItem2_1);
-        menuItemList2.add(menuItem2_2);
-        menuGroup2.setContent(menuItemList2);
-        menuGroup2.setTitle("群組二");
-        
-        menuGroupListResult.add(menuGroup1);
-        menuGroupListResult.add(menuGroup2);
-        
+		if(menuGroupListResult == null || menuGroupListResult.size() == 0)
+		{
+			MenuGroup menuGroup1 = new MenuGroup();
+			MenuGroup menuGroup2 = new MenuGroup();
+			
+			List<MenuItem> menuItemList1 = new ArrayList<MenuItem>();
+			List<MenuItem> menuItemList2 = new ArrayList<MenuItem>();
+			
+			MenuItem menuItem1_1 = new MenuItem();
+	        menuItem1_1.setTitle("會員基本資料查詢");
+	        menuItem1_1.setId("MemberDataQuery");
+	        menuItem1_1.setUrl("/funbackend/controller/Member/MemberDataQuery");
+	        MenuItem menuItem1_2 = new MenuItem();
+	        menuItem1_2.setTitle("會員黑名單");
+	        menuItem1_2.setId("BlackMember");
+	        menuItem1_2.setUrl("/funbackend/controller/Member/BlackMember");
+	        MenuItem menuItem1_3 = new MenuItem();
+	        menuItem1_3.setTitle("會員登入/出時間");
+	        menuItem1_3.setId("MemberLoginRecord");
+	        menuItem1_3.setUrl("/funbackend/controller/Member/MemberLoginRecord");
+	        MenuItem menuItem1_4 = new MenuItem();
+	        menuItem1_4.setTitle("各地區會員數");
+	        menuItem1_4.setId("MemberPlace");
+	        menuItem1_4.setUrl("/funbackend/controller/Member/MemberPlace");
+	        MenuItem menuItem1_5 = new MenuItem();
+	        menuItem1_5.setTitle("聊天室記錄查詢");
+	        menuItem1_5.setId("ChatroomMessageRecord");
+	        menuItem1_5.setUrl("/funbackend/controller/Chatroom/ChatroomMessageRecord");
+	        MenuItem menuItem1_6 = new MenuItem();
+	        menuItem1_6.setTitle("Po文排行");
+	        menuItem1_6.setId("ArticleRank");
+	        menuItem1_6.setUrl("/funbackend/controller/Rank/ArticleRank");
+	        MenuItem menuItem1_7 = new MenuItem();
+	        menuItem1_7.setTitle("MQTT資料管理");
+	        menuItem1_7.setId("MqttManage");
+	        menuItem1_7.setUrl("/funbackend/controller/Mqtt/MqttManage");
+	        
+	        menuItemList1.add(menuItem1_1);
+	        menuItemList1.add(menuItem1_2);
+	        menuItemList1.add(menuItem1_3);
+	        menuItemList1.add(menuItem1_4);
+	        menuItemList1.add(menuItem1_5);
+	        menuItemList1.add(menuItem1_6);
+	        menuItemList1.add(menuItem1_7);
+	        
+	        menuGroup1.setContent(menuItemList1);
+	        menuGroup1.setTitle("FunCube");
+	        
+	        MenuItem menuItem2_1 = new MenuItem();
+	        menuItem2_1.setTitle("帳號管理");
+	        menuItem2_1.setId("ManageUser");
+	        menuItem2_1.setUrl("/funbackend/controller/Account/ManageUser");
+	        menuItemList2.add(menuItem2_1);
+	        menuGroup2.setContent(menuItemList2);
+	        menuGroup2.setTitle("帳號管理");
+	        
+	        menuGroupListResult.add(menuGroup1);
+	        menuGroupListResult.add(menuGroup2);
 
-        
-//        funBackendMongo.save(menuItem1_1);
-//        funBackendMongo.save(menuItem1_2);
-//        funBackendMongo.save(menuItem1_3);
-//        funBackendMongo.save(menuItem2_1);
-//        funBackendMongo.save(menuItem2_2);
-//        funBackendMongo.save(menuGroup1);
-//        funBackendMongo.save(menuGroup2);
+	        funBackendMongo.save(menuItem1_1);
+	        funBackendMongo.save(menuItem1_2);
+	        funBackendMongo.save(menuItem1_3);
+	        funBackendMongo.save(menuItem1_4);
+	        funBackendMongo.save(menuItem1_5);
+	        funBackendMongo.save(menuItem1_6);
+	        funBackendMongo.save(menuItem1_7);
+	        funBackendMongo.save(menuItem2_1);
+	        funBackendMongo.save(menuGroup1);
+	        funBackendMongo.save(menuGroup2);
+		}
         
         return menuGroupListResult;
 	}
