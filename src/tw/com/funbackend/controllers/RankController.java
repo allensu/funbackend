@@ -1,24 +1,46 @@
 package tw.com.funbackend.controllers;
 
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import tw.com.funbackend.form.TableSchema.BlockUserRankTableSchema;
 import tw.com.funbackend.pojo.UserBean;
+import tw.com.funbackend.service.MemberService;
 
 @SessionAttributes("userBean")
 @Controller
+@RequestMapping(value = "/Rank")
 public class RankController {
+	protected Logger logger = Logger.getLogger("controller");
+	
+	@Autowired
+	private MemberService memberService;
+	
+	/**
+	 * 會員黑名單
+	 * @param userBean
+	 * @return
+	 */
+	@RequestMapping(value = "/BlockUserRank", method = RequestMethod.GET)
+	public ModelAndView blockUserRank(@ModelAttribute("userBean") UserBean userBean) {
+		return new ModelAndView("/Rank/BlockUserRank");	
+	}
 	
 	/**
 	 * Po文排行
 	 * @param userBean
 	 * @return
 	 */
-	@RequestMapping(value = "/Rank/ArticleRank", method = RequestMethod.GET)
+	@RequestMapping(value = "/ArticleRank", method = RequestMethod.GET)
 	public ModelAndView articleRank(@ModelAttribute("userBean") UserBean userBean) {
 		return new ModelAndView("/Rank/ArticleRank");	
 	}
@@ -28,7 +50,7 @@ public class RankController {
 	 * @param userBean
 	 * @return
 	 */
-	@RequestMapping(value = "/Rank/LikeRank", method = RequestMethod.GET)
+	@RequestMapping(value = "/LikeRank", method = RequestMethod.GET)
 	public ModelAndView likeRank(@ModelAttribute("userBean") UserBean userBean) {
 		return new ModelAndView("/Rank/LikeRank");	
 	}
@@ -38,8 +60,22 @@ public class RankController {
 	 * @param userBean
 	 * @return
 	 */
-	@RequestMapping(value = "/Rank/UploadPicRank", method = RequestMethod.GET)
+	@RequestMapping(value = "/UploadPicRank", method = RequestMethod.GET)
 	public ModelAndView uploadPicRank(@ModelAttribute("userBean") UserBean userBean) {
 		return new ModelAndView("/Rank/UploadPicRank");	
+	}
+	
+	/**
+	 * 取得會員黑名單
+	 * @param userBean
+	 * @return
+	 */
+	@RequestMapping(value = "/BlockUserRank/Read", method = RequestMethod.GET)
+	public @ResponseBody List<BlockUserRankTableSchema> getBlockUserRank(@ModelAttribute("userBean") UserBean userBean) {
+		
+		List<BlockUserRankTableSchema> result = memberService.getBlockUserRank();
+		
+		
+		return result;
 	}
 }

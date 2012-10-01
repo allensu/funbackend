@@ -1,7 +1,11 @@
 package tw.com.funbackend.service;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import tw.com.funbackend.persistence.gopartyon.User;
 
+import tw.com.funbackend.form.TableSchema.BlockUserRankTableSchema;
 import tw.com.funbackend.form.querycond.MemberDataQueryCondition;
 import tw.com.funbackend.model.FileModel;
 import tw.com.funbackend.model.MemberModel;
@@ -25,7 +30,7 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Override
 	public List<User> readUserAll() {
-		
+				
 		return memberModel.readUserAll();
 	}
 
@@ -137,5 +142,74 @@ public class MemberServiceImpl implements MemberService {
 		
 		User user = readUserByUserName(userName);
 		return user.getPhotos();
+	}
+
+	@Override
+	public List<BlockUserRankTableSchema> getBlockUserRank() {
+		
+		List<BlockUserRankTableSchema> result = new ArrayList<BlockUserRankTableSchema>();
+		List<User> userList = new ArrayList<User>();		
+		//Map<String, BlockUserRankTableSchema> userBlockCount = new HashMap<String, BlockUserRankTableSchema>();
+		Map<String, Integer> userBlockCount = new HashMap<String, Integer>();
+		ValueComparator bvc = new ValueComparator(userBlockCount);
+		TreeMap<String,Integer> sorted_map = new TreeMap<String,Integer>(bvc);
+		
+		try {
+			userList = memberModel.readValidUser(false, false);
+			
+			for(User currUser : userList)
+			{
+				if(currUser.getBlockUsers() != null)
+				{
+					for(Map<String, Object> currMap : currUser.getBlockUsers())
+					{
+						if(userBlockCount.containsKey(String.valueOf(currMap.get("userName"))))
+						{
+							int count = userBlockCount.get(String.valueOf(currMap.get("userName")));
+							count = count + 1;
+							userBlockCount.put(String.valueOf(currMap.get("userName")), count);					
+						}
+						else
+						{
+							userBlockCount.put(String.valueOf(currMap.get("userName")), 1);
+						}														
+					}
+				}
+			}
+			
+			 sorted_map.putAll(userBlockCount);
+			 
+			 int rankNum = 0;
+			 for(String currUserName : sorted_map.keySet())
+			 {
+				 BlockUserRankTableSchema data = new BlockUserRankTableSchema();
+				 data.setUserName(currUserName);
+				 data.setVotes(userBlockCount.get(currUserName));
+				 data.setRankNum(++rankNum);
+				 result.add(data);
+			 }
+						
+		} catch (Exception ex) {
+			logger.error(ex.getMessage());
+		}
+				
+		return result;
+	}
+	
+	class ValueComparator implements Comparator<String> {
+
+	    Map<String, Integer> base;
+	    public ValueComparator(Map<String, Integer> base) {
+	        this.base = base;
+	    }
+
+	    // Note: this comparator imposes orderings that are inconsistent with equals.    
+	    public int compare(String a, String b) {
+	        if (base.get(a) >= base.get(b)) {
+	            return -1;
+	        } else {
+	            return 1;
+	        } // returning 0 would merge keys
+	    }
 	}
 }

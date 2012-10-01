@@ -3,6 +3,7 @@ package tw.com.funbackend.service;
 import java.util.List;
 import java.util.Map;
 
+import tw.com.funbackend.form.TableSchema.BlockUserRankTableSchema;
 import tw.com.funbackend.form.querycond.MemberDataQueryCondition;
 import tw.com.funbackend.persistence.gopartyon.User;
 
@@ -110,5 +111,11 @@ public interface MemberService {
 	 * @param bytes
 	 */
 	public boolean addPhotoToAlbum(User user, String fileName, byte[] fileBytes);
+	
+	/**
+	 * 取得黑名單排行榜資料
+	 * @return
+	 */
+	public List<BlockUserRankTableSchema> getBlockUserRank();
 	
 }

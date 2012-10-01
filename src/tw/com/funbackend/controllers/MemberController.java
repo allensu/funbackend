@@ -60,16 +60,6 @@ public class MemberController {
 	private MemberService memberService;
 	
 	/**
-	 * 會員黑名單
-	 * @param userBean
-	 * @return
-	 */
-	@RequestMapping(value = "/BlackMember", method = RequestMethod.GET)
-	public ModelAndView blackMember(@ModelAttribute("userBean") UserBean userBean) {
-		return new ModelAndView("/Member/BlackMember");	
-	}
-	
-	/**
 	 * 會員基本資料查詢
 	 * @param userBean
 	 * @return

@@ -96,4 +96,11 @@ public interface MemberModel {
 	 * @param fileName
 	 */
 	public void addPhotoToAlbum(User user, String fileName);
+	
+	/**
+	 * 取得有效的 User
+	 * @param userName
+	 * @return
+	 */
+	public List<User> readValidUser(boolean fake, boolean deleted);
 }

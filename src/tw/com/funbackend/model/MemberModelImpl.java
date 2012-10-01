@@ -331,4 +331,28 @@ public class MemberModelImpl implements MemberModel {
 		
 		return result;
 	}
+
+	@Override
+	public List<User> readValidUser(boolean fake, boolean deleted) {
+
+		List<User> result = new ArrayList<User>();
+		
+		try {
+			if(partyonMongo.collectionExists(User.class))
+			{
+				//Query query = new Query(where("isFake").is(fake).and("isDeleted").is(deleted));
+				
+				//result = partyonMongo.find(query, User.class);
+				result = partyonMongo.findAll(User.class);
+			}
+		} catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+		
+		return result;			
+	}
+
+
+	
 }

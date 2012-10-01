@@ -113,9 +113,9 @@ public class AccountModelImpl implements AccountModel {
 	        menuItem1_1.setId("MemberDataQuery");
 	        menuItem1_1.setUrl("/funbackend/controller/Member/MemberDataQuery");
 	        MenuItem menuItem1_2 = new MenuItem();
-	        menuItem1_2.setTitle("會員黑名單");
-	        menuItem1_2.setId("BlackMember");
-	        menuItem1_2.setUrl("/funbackend/controller/Member/BlackMember");
+	        menuItem1_2.setTitle("黑名單排行榜");
+	        menuItem1_2.setId("BlockUserRank");
+	        menuItem1_2.setUrl("/funbackend/controller/Rank/BlockUserRank");
 	        MenuItem menuItem1_3 = new MenuItem();
 	        menuItem1_3.setTitle("會員登入/出時間");
 	        menuItem1_3.setId("MemberLoginRecord");
