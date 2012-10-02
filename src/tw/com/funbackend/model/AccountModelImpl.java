@@ -153,8 +153,13 @@ public class AccountModelImpl implements AccountModel {
 	        menuItem2_1.setId("ManageUser");
 	        menuItem2_1.setUrl("/funbackend/controller/Account/ManageUser");
 	        menuItemList2.add(menuItem2_1);
+	        MenuItem menuItem2_2 = new MenuItem();
+	        menuItem2_2.setTitle("功能群組管理");
+	        menuItem2_2.setId("ManageMenu");
+	        menuItem2_2.setUrl("/funbackend/controller/Account/ManageMenu");
+	        menuItemList2.add(menuItem2_2);
 	        menuGroup2.setContent(menuItemList2);
-	        menuGroup2.setTitle("帳號管理");
+	        menuGroup2.setTitle("系統管理");
 	        
 	        menuGroupListResult.add(menuGroup1);
 	        menuGroupListResult.add(menuGroup2);
@@ -167,6 +172,7 @@ public class AccountModelImpl implements AccountModel {
 	        funBackendMongo.save(menuItem1_6);
 	        funBackendMongo.save(menuItem1_7);
 	        funBackendMongo.save(menuItem2_1);
+	        funBackendMongo.save(menuItem2_2);
 	        funBackendMongo.save(menuGroup1);
 	        funBackendMongo.save(menuGroup2);
 		}

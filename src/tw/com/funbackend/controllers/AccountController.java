@@ -195,6 +195,18 @@ public class AccountController {
 	}
 
 	/**
+	 * 開啟功能群組管理頁面
+	 * 
+	 * @param userBean
+	 * @param userInfo
+	 * @return
+	 */
+	@RequestMapping(value = "/Account/ManageMenu", method = RequestMethod.GET)
+	public ModelAndView manageMenuGroup(@ModelAttribute("userBean") UserBean userBean) {    
+		return new ModelAndView("/Account/ManageMenu");
+	}
+	
+	/**
 	 * 取得使用者功能清單
 	 * 
 	 * @param response
@@ -208,9 +220,6 @@ public class AccountController {
 		List<MenuGroup> menuGroupListResult = accountService
 				.getMenuList(userBean.getAccountId());
 
-		
-		
-		
 		return menuGroupListResult;
 	}
 
