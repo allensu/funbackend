@@ -222,5 +222,4 @@ public class AccountController {
 
 		return menuGroupListResult;
 	}
-
 }

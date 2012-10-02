@@ -52,4 +52,5 @@ public interface AccountModel {
 	 * @return
 	 */
 	boolean removeUserInfo(List<String> ids);
+	
 }

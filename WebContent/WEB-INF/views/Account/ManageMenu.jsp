@@ -91,6 +91,36 @@ $(function() {
 		}
 	});
 	
+	$("#readBtn-group").button({
+		icons : {
+			primary : "ui-icon-search"
+		}
+	}).click(function() {
+		$.blockUI({
+			message : '<div>載入資料中...</div>',
+			overlayCSS : {
+				backgroundColor : '#4297D7'
+			}
+		});
+		readDataGroup();
+	});
+	
+ 	$("#readBtn-item").button({
+		icons : {
+			primary : "ui-icon-search"
+		}
+	}).click(function() {
+		$.blockUI({
+			message : '<div>載入資料中...</div>',
+			overlayCSS : {
+				backgroundColor : '#4297D7'
+			}
+		});
+		readDataMenu();
+	});
+	
+	
+	
 	
 	
 	
@@ -99,18 +129,53 @@ $(function() {
 	
 });
 
+function readDataGroup()
+{
+	// 資料
+	$('#jtable-group').dataTable().fnClearTable(true);
+	$('#jtable-item').dataTable().fnClearTable(true);
+    $.getJSON('/funbackend/controller/Account/MenuList', function (data) {
+
+        $.each(data, function (k, v) {
+        	
+        	
+        	$('#jtable-group').dataTable().fnAddData([
+        	            						"<input id='groupDataId' name='groupDataId' type='checkbox' value='" + v.id + "'/>", 
+        	            						v.title]);
+        	
+        	$.each(v.content, function (k2, v2) {
+        		
+        		$('#jtable-item').dataTable().fnAddData([
+        	        	            						"<input id='itemDataId' name='itemDataId' type='checkbox' value='" + v2.id + "'/>", 
+        	        	            						v2.title,
+        	        	            						v2.url]);
+        		
+        	});
+        });
+        
+        $.unblockUI();
+    });
+}
+
+function readDataMenu()
+{
+	$.unblockUI();
+}
+
 </script>
 </head>
 <body>
 <br/>
-	<div id="toolBar-group">
-		<button id="createBtn-group" name="createBtn-group">新增</button>	
+<table style="width: 100%;">
+	<tr>
+		<td style="width: 50%" valign="top">
+    	<fieldset>
+    	<div id="toolBar-group">
+		<button id="createBtn-group" name="createBtn-group">新增</button>
 	    <button id="readBtn-group" name="readBtn-group">查詢</button>
 	    <button id="updateBtn-group" name="updateBtn-group">修改</button>
 	    <button id="deleteBtn-group" name="deleteBtn-group" disabled="disabled">刪除</button>
-	</div>	
-    <br/>
-    <fieldset>
+		</div>
 		<legend>群組管理</legend>
 		<p />
 		<table id="jtable-group"  cellpadding="0" cellspacing="0" border="0" class="display" >
@@ -127,33 +192,38 @@ $(function() {
             </tr>
         </tbody>
     	</table>	
-	</fieldset>
-    	<div id="toolBar-item">
-		<button id="createBtn-item" name="createBtn-item">新增</button>	
-	    <button id="readBtn-item" name="readBtn-item">查詢</button>
-	    <button id="updateBtn-item" name="updateBtn-item">修改</button>
-	    <button id="deleteBtn-item" name="deleteBtn-item" disabled="disabled">刪除</button>
-	</div>	
-    <br/>
-	<fieldset>
-		<legend>功能項目管理</legend>
-		<p />
-		<table id="jtable-item"  cellpadding="0" cellspacing="0" border="0" class="display" >
-        <thead>
-            <tr>
-            	<th align="left"><input type="checkbox" id="selectAll-item" /></th>
-                <th>功能名稱 </th>
-                <th>頁面路徑 </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="row">
-            	<td></td>   
-            	<td></td>  
-            	<td></td>          
-            </tr>
-        </tbody>
-    	</table>	
-	</fieldset>
+		</fieldset>
+		</td>
+		<td style="width: 50%" valign="top">
+			<fieldset>
+				<div id="toolBar-item">
+				<button id="createBtn-item" name="createBtn-item">新增</button>	
+	    		<button id="readBtn-item" name="readBtn-item">查詢</button>
+	    		<button id="updateBtn-item" name="updateBtn-item">修改</button>
+	    		<button id="deleteBtn-item" name="deleteBtn-item" disabled="disabled">刪除</button>
+				</div>
+				<legend>功能項目管理</legend>
+				<p />
+				<table id="jtable-item"  cellpadding="0" cellspacing="0" border="0" class="display" >
+        		<thead>
+            		<tr>
+            		<th align="left"><input type="checkbox" id="selectAll-item" /></th>
+                	<th>功能名稱 </th>
+                	<th>頁面路徑 </th>
+            		</tr>
+        		</thead>
+        		<tbody>
+            	<tr class="row">
+            		<td></td>   
+            		<td></td>  
+            		<td></td>          
+            	</tr>
+        		</tbody>
+    			</table>	
+			</fieldset>
+		</td>
+	</tr>
+</table>
+
 </body>
 </html>
