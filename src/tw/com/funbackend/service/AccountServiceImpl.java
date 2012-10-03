@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import tw.com.funbackend.enumeration.UserInfoCategory;
 import tw.com.funbackend.model.AccountModel;
 import tw.com.funbackend.persistence.MenuGroup;
+import tw.com.funbackend.persistence.MenuItem;
 import tw.com.funbackend.persistence.UserInfo;
 import tw.com.funbackend.pojo.UserBean;
 import tw.com.funbackend.utility.Encrypt;
@@ -101,5 +102,35 @@ public class AccountServiceImpl implements AccountService {
 	public boolean removeUserInfo(List<String> ids) {
 	
 		return accountModel.removeUserInfo(ids);
+	}
+
+	@Override
+	public boolean createMenuGroup(MenuGroup menuGroup) {
+				
+		return accountModel.createMenuGroup(menuGroup);
+	}
+
+	@Override
+	public MenuGroup getMenuGroup(String groupId) {
+				
+		return accountModel.getMenuGroup(groupId);
+	}
+
+	@Override
+	public boolean createMenuItem(MenuItem menuItem) {
+
+		return accountModel.createMenuItem(menuItem);
+	}
+
+	@Override
+	public boolean removeMenuItem(String itemId) {
+
+		return accountModel.removeMenuItem(itemId);
+	}
+
+	@Override
+	public boolean removeMenuGroup(String groupId) {
+
+		return accountModel.removeMenuGroup(groupId);
 	}
 }

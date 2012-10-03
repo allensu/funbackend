@@ -6,7 +6,7 @@ import tw.com.funbackend.persistence.MessageData;
 
 public interface MqttModel {
 	/**
-	 * 取得發送訊息
+	 * 建立發送訊息
 	 * @param messageData
 	 * @return
 	 */

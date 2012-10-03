@@ -41,6 +41,7 @@ import tw.com.funbackend.persistence.UserInfo;
 import tw.com.funbackend.pojo.UserBean;
 import tw.com.funbackend.service.AccountService;
 import tw.com.funbackend.utility.Encrypt;
+import tw.com.funbackend.utility.StringUtility;
 
 @SessionAttributes("userBean")
 @Controller
@@ -221,5 +222,110 @@ public class AccountController {
 				.getMenuList(userBean.getAccountId());
 
 		return menuGroupListResult;
+	}
+	
+	/**
+	 * 建立新群組
+	 * 
+	 * @param userBean
+	 * @param userInfo
+	 * @return
+	 */
+	@RequestMapping(value = "/Account/ManageMenu/GroupItem/Create", method = RequestMethod.POST)
+	public @ResponseBody List<MenuGroup> createGroupItem(
+			@ModelAttribute("userBean") UserBean userBean,
+			@ModelAttribute MenuGroup menuGroup) {
+
+		List<MenuGroup> result = new ArrayList<MenuGroup>();
+		
+		try 
+		{
+			accountService.createMenuGroup(menuGroup);
+			
+			result = accountService.getMenuList(userBean.getAccountId());			
+		} 
+		catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * 建立新功能項目
+	 * 
+	 * @param userBean
+	 * @param userInfo
+	 * @return
+	 */
+	@RequestMapping(value = "/Account/ManageMenu/MenuItem/Create", method = RequestMethod.POST)
+	public @ResponseBody List<MenuGroup> createMenuItem(
+			@ModelAttribute("userBean") UserBean userBean,
+			@RequestParam(value="groupId") String groupId,
+			@ModelAttribute MenuItem menuItem) {
+
+		List<MenuGroup> result = new ArrayList<MenuGroup>();
+		
+		try 
+		{
+			accountService.createMenuItem(menuItem);
+			
+			if(StringUtility.isNotEmpty(menuItem.getId()))
+			{
+				MenuGroup menuGroup = accountService.getMenuGroup(groupId);			
+				menuGroup.getContent().add(menuItem);
+				accountService.createMenuGroup(menuGroup);
+			}
+			
+			result = accountService.getMenuList(userBean.getAccountId());			
+		} 
+		catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+		
+		return result;
+	}
+	
+
+	@RequestMapping(value = "/Account/ManageMenu/MenuItem/Remove", method = RequestMethod.POST)
+	public @ResponseBody List<MenuGroup> removeMenuItem(
+			@ModelAttribute("userBean") UserBean userBean,
+			@RequestParam(value="itemId") String itemId) {
+		
+		List<MenuGroup> result = new ArrayList<MenuGroup>();
+		
+		try {
+			// 刪除資料
+			accountService.removeMenuItem(itemId);
+					
+			result = accountService.getMenuList(userBean.getAccountId());			
+		} catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+		
+		return result;
+	}
+	
+	@RequestMapping(value = "/Account/ManageMenu/GroupItem/Remove", method = RequestMethod.POST)
+	public @ResponseBody List<MenuGroup> removeGroupItem(
+			@ModelAttribute("userBean") UserBean userBean,
+			@RequestParam(value="groupId") String groupId) {
+		
+		List<MenuGroup> result = new ArrayList<MenuGroup>();
+		
+		try {
+			// 刪除資料
+			accountService.removeMenuGroup(groupId);
+					
+			result = accountService.getMenuList(userBean.getAccountId());			
+		} catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+		
+		return result;
 	}
 }

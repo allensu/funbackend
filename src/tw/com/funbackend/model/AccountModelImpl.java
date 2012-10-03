@@ -85,9 +85,6 @@ public class AccountModelImpl implements AccountModel {
 	@Override
 	public UserInfo createUser(UserInfo userInfo) {
 		
-		
-		
-		
 		funBackendMongo.save(userInfo);
 		
 		return userInfo;
@@ -216,7 +213,94 @@ public class AccountModelImpl implements AccountModel {
 		return true;
 	}
 
+	@Override
+	public boolean createMenuGroup(MenuGroup menuGroup) {
+		
+		boolean result = false;
+		
+		try 
+		{
+			funBackendMongo.save(menuGroup);
+			result = true;
+		} 
+		catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+				
+		return result;
+	}
+
+	@Override
+	public boolean createMenuItem(MenuItem menuItem) {
+		
+		boolean result = false;
+		
+		try 
+		{
+			funBackendMongo.save(menuItem);
+			result = true;
+		} 
+		catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+				
+		return result;
+	}
+
+	@Override
+	public MenuGroup getMenuGroup(String groupId) {
+		
+		MenuGroup result = new MenuGroup();
+		
+		try {
+			result = funBackendMongo.findOne(new Query(Criteria.where("id").is(groupId)), MenuGroup.class);
+			
+		} catch(Exception ex) {
+			logger.error(ex.getMessage());
+		}
+			
+		return result;
+	}
+
+	@Override
+	public boolean removeMenuItem(String itemId) {
 	
-	
-	
+		boolean result = false;
+		
+		try 
+		{			
+			Query query = new Query(where("id").is(itemId));
+			funBackendMongo.remove(query, MenuItem.class);
+			
+			result = true;
+		} 
+		catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+				
+		return result;
+	}
+
+	@Override
+	public boolean removeMenuGroup(String groupId) {
+		
+		boolean result = false;
+		
+		try 
+		{			
+			Query query = new Query(where("id").is(groupId));
+			funBackendMongo.remove(query, MenuGroup.class);
+			
+			result = true;
+		} 
+		catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+				
+		return result;
+	}	
 }

@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import tw.com.funbackend.persistence.MenuGroup;
+import tw.com.funbackend.persistence.MenuItem;
 import tw.com.funbackend.persistence.UserInfo;
 import tw.com.funbackend.pojo.UserBean;
 
@@ -53,4 +54,38 @@ public interface AccountModel {
 	 */
 	boolean removeUserInfo(List<String> ids);
 	
+	/**
+	 * 建立群組
+	 * @param menuGroup
+	 * @return
+	 */
+	boolean createMenuGroup(MenuGroup menuGroup);
+	
+	/**
+	 * 建立功能項目
+	 * @param menuItem
+	 * @return
+	 */
+	boolean createMenuItem(MenuItem menuItem);
+	
+	/**
+	 * 取得指定的群組項目
+	 * @param groupId
+	 * @return
+	 */
+	MenuGroup getMenuGroup(String groupId);
+	
+	/**
+	 * 刪除功能項目
+	 * @param itemId
+	 * @return
+	 */
+	boolean removeMenuItem(String itemId);
+	
+	/**
+	 * 刪除群組
+	 * @param groupId
+	 * @return
+	 */
+	boolean removeMenuGroup(String groupId);
 }
