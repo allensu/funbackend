@@ -9,6 +9,7 @@
 
 <script type="text/javascript">
 
+var deleteFrom = "";
 $.fx.speeds._default = 1000;
 $(function() {
 	$("#toolBar-group").buttonset();
@@ -58,6 +59,7 @@ $(function() {
 	}).click(function() {
 		$("#dialog:ui-dialog").dialog( "destroy" );
 		$("#dialog-form-Item").dialog("open");
+		$('#groupName').val(defaultGroupTitle);
 		return false;
 	});
 	
@@ -114,7 +116,8 @@ $(function() {
 		}
 	}).click(function() {
 		var checkedCount = $('#jtable-group input:checked').length;
-
+		deleteFrom = "GroupItem";
+		
 		if (checkedCount > 0)
 			$.blockUI({
 				message : $('#question'),
@@ -130,7 +133,8 @@ $(function() {
 		}
 	}).click(function() {
 		var checkedCount = $('#jtable-item input:checked').length;
-
+		deleteFrom = "MenuItem";
+		
 		if (checkedCount > 0)
 			$.blockUI({
 				message : $('#question'),
@@ -170,7 +174,7 @@ $(function() {
 	});
 	$("#createSubmitBtn-Item").button().click(function() {
 				
-		$('#groupId').val(defaultGroupId);		
+		$('#groupId').val(defaultGroupId);	
 		createDataMenuItem();
 	});
 });
@@ -233,14 +237,14 @@ function showData(data)
 	
     $.each(data, function (k, v) {
     	
-    	if(defaultGroupId == 0)
-    	{	
+    	//if(defaultGroupId == 0)
+    	//{	
     		defaultGroupId = v.id;
     		defaultGroupTitle = v.title;
     		defaultGroupChecked = "checked";
-    	} else {
-    		defaultGroupChecked = "";
-    	}
+    	//} else {
+    	//	defaultGroupChecked = "";
+    	//}
     	
     	$('#jtable-group').dataTable().fnAddData([
     	            						"<input id='groupDataId' name='groupDataId' type='radio' value='" + v.id + "' onclick='selectGroup(this)' " + defaultGroupChecked + "/>", 
@@ -360,11 +364,41 @@ function createDataGroup()
 
 function readDataMenu()
 {
+	
 	$.unblockUI();
 }
 
 function deleteData()
 {
+	var postData = {};
+	
+	if(deleteFrom == "GroupItem")
+	{
+		postData = {
+				groupId : $('input[name=groupDataId]:checked').val()
+		};
+	}
+	else if(deleteFrom == "MenuItem")
+	{
+		postData = {
+				itemId : $('input[name=itemDataId]:checked').val()
+		};
+	}
+	
+
+	$.ajax({
+		type : "POST",
+		url : "/funbackend/controller/Account/ManageMenu/" + deleteFrom  + "/Remove",
+		data : postData,
+		success : function(data) {
+
+			showData(data);
+			$.unblockUI();
+		},
+		dataType : "json",
+		traditional : true
+	});
+	
 	$.unblockUI();
 }
 </script>
