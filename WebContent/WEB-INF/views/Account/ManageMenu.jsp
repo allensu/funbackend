@@ -16,7 +16,7 @@ $.fx.speeds._default = 1000;
 $(function() {
 	$("#toolBar-group").buttonset();
 	$("#toolBar-item").buttonset();
-	//$("#groupNameSel").combobox();
+	
 	
 	var oTableGroup = $('#jtable-group').dataTable({
 		"bJQueryUI" : true,
@@ -124,9 +124,47 @@ $(function() {
 		$('#groupName').css("display", "none");
 		$('#groupNameSel').css("display", "");
 		
+		
 		$("#dialog:ui-dialog").dialog( "destroy" );
 		$("#dialog-form-Item").dialog("open");	
 		
+		//$("#groupNameSel").combobox();
+		//  移除全部的項目
+		$("#groupNameSel option").remove();
+
+		//menuGroupKV
+		$.each(menuGroupData, function (k, v) {
+			
+			//alert(v.id);
+			
+			if(defaultGroupTitle == v.title)
+				$('#groupNameSel').append('<option value="' + v.id + '" selected>' + v.title + '</option>');
+			else 
+				$('#groupNameSel').append('<option value="' + v.id + '">' + v.title + '</option>');
+			
+			//$("#groupNameSel").append($("").attr("value", v.id).text(v.title));
+			//alert(v.title);
+			//alert('aa');
+			//alert(v.title);
+			//alert('bb');     		
+		});
+		
+		
+		
+		//alert('bb');
+		$('#jtable-item tr').each(function() {    
+	          var rowData = this.cells;
+	     	
+	          alert(rowData[0].firstChild.checked);
+	          
+	          if(rowData[0].firstChild.checked == true)
+	       	  {
+	       		$('#itemId').val(rowData[0].firstChild.value);
+	        	$('#itemTitle').val(rowData[2].firstChild.value);  
+	        	$('#itemUrl').val(rowData[3].firstChild.value);
+	      	  }
+		});
+		//alert('aa');
 		
 	});
 	
@@ -210,6 +248,7 @@ var menuItemKV = [];
 var defaultGroupId = 0;
 var defaultGroupTitle = "";
 var defaultGroupChecked = "";
+var menuGroupData = [];
 function readDataGroup()
 {
 	//menuGroupKV = [];
@@ -221,6 +260,8 @@ function readDataGroup()
     	defaultGroupId = 0;
 		defaultGroupTitle = "";
 		defaultGroupChecked = "";
+		
+		menuGroupData = data;
 		
     	showData(data);
     	/*
@@ -572,6 +613,7 @@ function deleteData()
 	<div id="dialog-form-Item" title="編輯功能項目">
     
     	<form action="" method="post">
+    	<input id="itemId" name="itemId" type="hidden" value="" />
     	<input id="groupId" name="groupId" type="hidden" value="" />
         <fieldset>
             <div class="editor-label">
@@ -581,7 +623,7 @@ function deleteData()
             	<input id="groupName" name="groupName" type="text" value="" size="20" class="text ui-widget-content ui-corner-all"  readonly="readonly" style="border: 0px"  style="display: none" />
             	<select id="groupNameSel" name="groupNameSel" style="display: none" >
 										
-				</select><br /><br />                
+				</select>             
             </div>   
             <div class="editor-label">
                 功能名稱
