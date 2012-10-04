@@ -69,6 +69,20 @@ public interface AccountModel {
 	boolean createMenuItem(MenuItem menuItem);
 	
 	/**
+	 * 更新群組
+	 * @param menuGroup
+	 * @return
+	 */
+	boolean updateMenuGroup(MenuGroup menuGroup);
+	
+	/**
+	 * 更新功能項目
+	 * @param menuItem
+	 * @return
+	 */
+	boolean updateMenuItem(MenuItem menuItem);
+	
+	/**
 	 * 取得指定的群組項目
 	 * @param groupId
 	 * @return

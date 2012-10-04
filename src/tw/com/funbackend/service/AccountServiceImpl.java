@@ -133,4 +133,39 @@ public class AccountServiceImpl implements AccountService {
 
 		return accountModel.removeMenuGroup(groupId);
 	}
+
+	@Override
+	public boolean updateMenuGroup(MenuGroup menuGroup) {
+		boolean result = false;
+		
+		try {			
+			MenuGroup orgMenuGroup = accountModel.getMenuGroup(menuGroup.getId());
+			menuGroup.setContent(orgMenuGroup.getContent());			
+			result = accountModel.updateMenuGroup(menuGroup);
+		} catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+				
+		return result;
+	}
+
+	@Override
+	public boolean updateMenuItem(String groupId, MenuItem menuItem) {
+		
+		boolean result = false;
+		
+		try {			
+			accountModel.updateMenuItem(menuItem);
+			
+			MenuGroup orgMenuGroup = accountModel.getMenuGroup(groupId);
+			orgMenuGroup.getContent().add(menuItem);
+			result = accountModel.updateMenuGroup(orgMenuGroup);
+		} catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+				
+		return result;
+	}
 }

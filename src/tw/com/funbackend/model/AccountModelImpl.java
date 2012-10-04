@@ -302,5 +302,39 @@ public class AccountModelImpl implements AccountModel {
 		}
 				
 		return result;
+	}
+
+	@Override
+	public boolean updateMenuGroup(MenuGroup menuGroup) {
+		boolean result = false;
+		
+		try 
+		{
+			funBackendMongo.save(menuGroup);
+			result = true;
+		} 
+		catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+				
+		return result;
+	}
+
+	@Override
+	public boolean updateMenuItem(MenuItem menuItem) {
+		boolean result = false;
+		
+		try 
+		{
+			funBackendMongo.save(menuItem);
+			result = true;
+		} 
+		catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+				
+		return result;
 	}	
 }

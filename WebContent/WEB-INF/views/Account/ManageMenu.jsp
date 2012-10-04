@@ -10,11 +10,14 @@
 <script type="text/javascript">
 
 var deleteFrom = "";
+var groupDialogStatus = "";
+var itemDialogStatus = "";
 $.fx.speeds._default = 1000;
 $(function() {
 	$("#toolBar-group").buttonset();
 	$("#toolBar-item").buttonset();
-
+	//$("#groupNameSel").combobox();
+	
 	var oTableGroup = $('#jtable-group').dataTable({
 		"bJQueryUI" : true,
 		"sPaginationType" : "full_numbers",
@@ -47,20 +50,25 @@ $(function() {
 			primary : "ui-icon-circle-plus"
 		}
 	}).click(function() {		
+		groupDialogStatus = "create";
+		$('#title').val('');
 		$("#dialog:ui-dialog").dialog( "destroy" );
 		$("#dialog-form-Group").dialog("open");
-		return false;
 	});
 	// Create Btn
 	$("#createBtn-item").button({
 		icons : {
 			primary : "ui-icon-circle-plus"
 		}
-	}).click(function() {
+	}).click(function() {		
+		itemDialogStatus = "create";
+		$('#groupName').val(defaultGroupTitle);	
+		
+		$('#groupName').css("display", "");
+		$('#groupNameSel').css("display", "none");
+		
 		$("#dialog:ui-dialog").dialog( "destroy" );
-		$("#dialog-form-Item").dialog("open");
-		$('#groupName').val(defaultGroupTitle);
-		return false;
+		$("#dialog-form-Item").dialog("open");			
 	});
 	
 	// Read Btn
@@ -98,7 +106,13 @@ $(function() {
 			primary : "ui-icon-wrench"
 		}
 	}).click(function() {
-
+		
+		groupDialogStatus = "update";
+		$('#title').val(defaultGroupTitle);
+		
+		$("#dialog:ui-dialog").dialog("destroy");
+		$("#dialog-form-Group").dialog("open");
+		return false;		
 	});
 	// Update Btn
 	$("#updateBtn-item").button({
@@ -107,6 +121,13 @@ $(function() {
 		}
 	}).click(function() {
 
+		$('#groupName').css("display", "none");
+		$('#groupNameSel').css("display", "");
+		
+		$("#dialog:ui-dialog").dialog( "destroy" );
+		$("#dialog-form-Item").dialog("open");	
+		
+		
 	});
 	
 	// Delete Btn
@@ -152,6 +173,7 @@ $(function() {
 			}
 		});
 		deleteData();
+		$.unblockUI();
 	});
 
 	$('#no').button().click(function() {
@@ -170,7 +192,11 @@ $(function() {
 	});
 	
 	$("#createSubmitBtn-Group").button().click(function() {
-		createDataGroup();
+		
+		if(groupDialogStatus == "create")
+			createDataGroup();
+		else if(groupDialogStatus == "update")
+			updateDataGroup();
 	});
 	$("#createSubmitBtn-Item").button().click(function() {
 				
@@ -192,6 +218,10 @@ function readDataGroup()
 	// 資料
     $.getJSON('/funbackend/controller/Account/MenuList', function (data) {
 
+    	defaultGroupId = 0;
+		defaultGroupTitle = "";
+		defaultGroupChecked = "";
+		
     	showData(data);
     	/*
     	var defaultGroupId = 0;
@@ -237,14 +267,14 @@ function showData(data)
 	
     $.each(data, function (k, v) {
     	
-    	//if(defaultGroupId == 0)
-    	//{	
+    	if(defaultGroupId == 0)
+    	{	
     		defaultGroupId = v.id;
     		defaultGroupTitle = v.title;
     		defaultGroupChecked = "checked";
-    	//} else {
-    	//	defaultGroupChecked = "";
-    	//}
+    	} else {
+    		defaultGroupChecked = "";
+    	}
     	
     	$('#jtable-group').dataTable().fnAddData([
     	            						"<input id='groupDataId' name='groupDataId' type='radio' value='" + v.id + "' onclick='selectGroup(this)' " + defaultGroupChecked + "/>", 
@@ -362,6 +392,46 @@ function createDataGroup()
 	});
 }
 
+function updateDataGroup()
+{
+	if($('#title').val() == "")
+	{
+		$( "#dialog-message" ).dialog({
+			modal: true,
+			buttons: {
+				Ok: function() {
+					$( this ).dialog( "close" );
+				}
+			}
+		});
+		
+		return;
+	}
+	
+	var postData = {
+			id : defaultGroupId,
+			title : $('#title').val()
+	};
+	
+	$.ajax({
+		type : "POST",
+		url : "/funbackend/controller/Account/ManageMenu/GroupItem/Update",
+		data : postData,
+		success : function(data) {
+
+			showData(data);
+		
+			//$.unblockUI();
+
+			$('#title').val("");
+			
+			$("#dialog-form-Group").dialog("close");
+		},
+		dataType : "json",
+		traditional : true
+	});
+}
+
 function readDataMenu()
 {
 	
@@ -374,6 +444,20 @@ function deleteData()
 	
 	if(deleteFrom == "GroupItem")
 	{
+		if(menuItemKV.length > 0)
+		{
+			$( "#dialog-group-delete" ).dialog({
+				modal: true,
+				buttons: {
+					Ok: function() {
+						$( this ).dialog( "close" );
+					}
+				}
+			});
+			
+			return;
+		}
+		
 		postData = {
 				groupId : $('input[name=groupDataId]:checked').val()
 		};
@@ -399,7 +483,7 @@ function deleteData()
 		traditional : true
 	});
 	
-	$.unblockUI();
+	//$.unblockUI();
 }
 </script>
 </head>
@@ -465,7 +549,7 @@ function deleteData()
 		</td>
 	</tr>
 </table>
-   <div id="dialog-form-Group" title="新增群組">
+   <div id="dialog-form-Group" title="編輯群組">
     
     	<form action="" method="post">
         <fieldset>
@@ -482,7 +566,10 @@ function deleteData()
     <div id="dialog-message" title="訊息" style="display: none;">
 		<p>請輸入必要資料</p>
 	</div>
-	<div id="dialog-form-Item" title="新增功能項目">
+	<div id="dialog-group-delete" title="訊息" style="display: none;">
+		<p>存在功能項目無法刪除</p>
+	</div>
+	<div id="dialog-form-Item" title="編輯功能項目">
     
     	<form action="" method="post">
     	<input id="groupId" name="groupId" type="hidden" value="" />
@@ -491,7 +578,10 @@ function deleteData()
                 群組名稱
             </div>
             <div class="editor-field">
-            	<input id="groupName" name="groupName" type="text" value="" size="20" class="text ui-widget-content ui-corner-all"  readonly="readonly" style="border: 0px" />                
+            	<input id="groupName" name="groupName" type="text" value="" size="20" class="text ui-widget-content ui-corner-all"  readonly="readonly" style="border: 0px"  style="display: none" />
+            	<select id="groupNameSel" name="groupNameSel" style="display: none" >
+										
+				</select><br /><br />                
             </div>   
             <div class="editor-label">
                 功能名稱

@@ -63,6 +63,21 @@ public interface AccountService {
 	boolean createMenuItem(MenuItem menuItem);
 	
 	/**
+	 * 更新群組
+	 * @param menuGroup
+	 * @return
+	 */
+	boolean updateMenuGroup(MenuGroup menuGroup);
+	
+	/**
+	 * 更新功能項目
+	 * @param groupId
+	 * @param menuItem
+	 * @return
+	 */
+	boolean updateMenuItem(String groupId, MenuItem menuItem);
+	
+	/**
 	 * 取得指定的群組項目
 	 * @param groupId
 	 * @return

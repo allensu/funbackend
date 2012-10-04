@@ -292,7 +292,7 @@ public class AccountController {
 	 * 修改群組
 	 * 
 	 * @param userBean
-	 * @param userInfo
+	 * @param menuGroup
 	 * @return
 	 */
 	@RequestMapping(value = "/Account/ManageMenu/GroupItem/Update", method = RequestMethod.POST)
@@ -304,7 +304,37 @@ public class AccountController {
 		
 		try 
 		{
-			accountService.createMenuGroup(menuGroup);
+			accountService.updateMenuGroup(menuGroup);
+			
+			result = accountService.getMenuList(userBean.getAccountId());			
+		} 
+		catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * 修改功能項目
+	 * 
+	 * @param userBean
+	 * @param groupId
+	 * @param menuItem
+	 * @return
+	 */
+	@RequestMapping(value = "/Account/ManageMenu/MenuItem/Update", method = RequestMethod.POST)
+	public @ResponseBody List<MenuGroup> updateMenuItem(
+			@ModelAttribute("userBean") UserBean userBean,
+			@RequestParam(value="groupId") String groupId,
+			@ModelAttribute MenuItem menuItem) {
+
+		List<MenuGroup> result = new ArrayList<MenuGroup>();
+		
+		try 
+		{
+			accountService.updateMenuItem(groupId, menuItem);				
 			
 			result = accountService.getMenuList(userBean.getAccountId());			
 		} 
