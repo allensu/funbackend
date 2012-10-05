@@ -372,18 +372,19 @@ public class AccountModelImpl implements AccountModel {
 		try 
 		{
 			
-			DBCollection coll = funBackendMongo.getCollection(funBackendMongo.getCollectionName(MenuGroup.class));  			
+			//DBCollection coll = funBackendMongo.getCollection(funBackendMongo.getCollectionName(MenuGroup.class));  			
 			//BasicDBObject match = new BasicDBObject("_id", groupId);
 			
 			Query query = new Query(where("id").is(groupId));
-			Update update = new Update();
-			update.pull("content", )
+			//Update update = new Update();
 			
-			funBackendMongo.upsert(query, arg1, MenuGroup.class);
+			Update update = new Update().pull("content", new BasicDBObject("$id", itemId));
+			
+			funBackendMongo.upsert(query, update, MenuGroup.class);
 			
 			
-			BasicDBObject update = new BasicDBObject("content", new BasicDBObject("$id", itemId));
-			coll.update(match, new BasicDBObject("$pull", update));
+			//BasicDBObject update = new BasicDBObject("content", new BasicDBObject("$id", itemId));
+			//coll.update(match, new BasicDBObject("$pull", update));
 			result = true;
 		} 
 		catch(Exception ex)

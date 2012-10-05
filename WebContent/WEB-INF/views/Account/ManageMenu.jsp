@@ -136,7 +136,6 @@ $(function() {
 
 		$.each(menuGroupData, function (k, v) {
 			
-			//alert(defaultGroupTitle + " " + v.title);
 			if(defaultGroupTitle == v.title)
 				$('#groupNameSel').append('<option value="' + v.id + '" selected>' + v.title + '</option>');
 			else 
@@ -148,12 +147,10 @@ $(function() {
 	          var rowData = this.cells;
 	     	
 	          if(rowData[0].firstChild.checked == true)
-	       	  {
-	        	//alert(rowData[0].firstChild.value);	        	
+	       	  {	
 	       		$('#itemId').val(rowData[0].firstChild.value);
 	        	$('#itemTitle').val(rowData[2].firstChild.textContent);  
 	        	$('#itemUrl').val(rowData[3].firstChild.textContent);
-	        	
 	      	  }
 		});
 	});
@@ -233,6 +230,8 @@ $(function() {
 		else if(itemDialogStatus == "update")
 			updateDataMenuItem();		
 	});
+	
+	readDataGroup();
 });
 
 var menuGroupKV = [];
