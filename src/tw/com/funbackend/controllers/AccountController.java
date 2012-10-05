@@ -327,6 +327,7 @@ public class AccountController {
 	@RequestMapping(value = "/Account/ManageMenu/MenuItem/Update", method = RequestMethod.POST)
 	public @ResponseBody List<MenuGroup> updateMenuItem(
 			@ModelAttribute("userBean") UserBean userBean,
+			@RequestParam(value="orgGroupId") String orgGroupId,
 			@RequestParam(value="groupId") String groupId,
 			@ModelAttribute MenuItem menuItem) {
 
@@ -334,10 +335,10 @@ public class AccountController {
 		
 		try 
 		{
-			accountService.updateMenuItem(groupId, menuItem);				
+			accountService.updateMenuItem(orgGroupId, groupId, menuItem);				
 			
 			result = accountService.getMenuList(userBean.getAccountId());			
-		} 
+		}
 		catch(Exception ex)
 		{
 			logger.error(ex.getMessage());

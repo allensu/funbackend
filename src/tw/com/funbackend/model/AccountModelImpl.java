@@ -19,12 +19,16 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+
 import tw.com.funbackend.config.FunBackendMongoConfig;
 import tw.com.funbackend.enumeration.UserInfoCategory;
 import tw.com.funbackend.persistence.MenuGroup;
 import tw.com.funbackend.persistence.MenuItem;
 import tw.com.funbackend.persistence.MessageData;
 import tw.com.funbackend.persistence.UserInfo;
+import tw.com.funbackend.persistence.gopartyon.User;
 
 @Repository
 public class AccountModelImpl implements AccountModel {
@@ -335,6 +339,59 @@ public class AccountModelImpl implements AccountModel {
 			logger.error(ex.getMessage());
 		}
 				
+		return result;
+	}
+
+	@Override
+	public boolean removeMenuGroupRefContent(String itemId) {
+		// db.menuGroup.update({}, {$pull:{'content':{'$id':'test11'}}}, false, true)
+		boolean result = false;
+		
+		try 
+		{
+			DBCollection coll = funBackendMongo.getCollection(funBackendMongo.getCollectionName(MenuGroup.class));  			
+			BasicDBObject match = new BasicDBObject();
+			BasicDBObject update = new BasicDBObject("content", new BasicDBObject("$id", itemId));
+			coll.update(match, new BasicDBObject("$pull", update), false, true);
+			result = true;
+		} 
+		catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+	
+		
+		return result;
+	}
+
+	@Override
+	public boolean removeMenuGroupRefContent(String groupId, String itemId) {
+		// db.menuGroup.update({'_id':new Object('jksdf')}, {$pull:{'content':{'$id':'test11'}}}, false, true)
+		boolean result = false;
+		
+		try 
+		{
+			
+			DBCollection coll = funBackendMongo.getCollection(funBackendMongo.getCollectionName(MenuGroup.class));  			
+			//BasicDBObject match = new BasicDBObject("_id", groupId);
+			
+			Query query = new Query(where("id").is(groupId));
+			Update update = new Update();
+			update.pull("content", )
+			
+			funBackendMongo.upsert(query, arg1, MenuGroup.class);
+			
+			
+			BasicDBObject update = new BasicDBObject("content", new BasicDBObject("$id", itemId));
+			coll.update(match, new BasicDBObject("$pull", update));
+			result = true;
+		} 
+		catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+	
+		
 		return result;
 	}	
 }

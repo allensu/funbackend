@@ -63,6 +63,7 @@ $(function() {
 	}).click(function() {		
 		itemDialogStatus = "create";
 		$('#groupName').val(defaultGroupTitle);	
+		$('#groupId').val(defaultGroupId);
 		
 		$('#groupName').css("display", "");
 		$('#groupNameSel').css("display", "none");
@@ -121,9 +122,10 @@ $(function() {
 		}
 	}).click(function() {
 
+		itemDialogStatus = "update";
 		$('#groupName').css("display", "none");
 		$('#groupNameSel').css("display", "");
-		
+		$('#groupId').val(defaultGroupId);
 		
 		$("#dialog:ui-dialog").dialog( "destroy" );
 		$("#dialog-form-Item").dialog("open");	
@@ -132,40 +134,28 @@ $(function() {
 		//  移除全部的項目
 		$("#groupNameSel option").remove();
 
-		//menuGroupKV
 		$.each(menuGroupData, function (k, v) {
 			
-			//alert(v.id);
-			
+			//alert(defaultGroupTitle + " " + v.title);
 			if(defaultGroupTitle == v.title)
 				$('#groupNameSel').append('<option value="' + v.id + '" selected>' + v.title + '</option>');
 			else 
-				$('#groupNameSel').append('<option value="' + v.id + '">' + v.title + '</option>');
-			
-			//$("#groupNameSel").append($("").attr("value", v.id).text(v.title));
-			//alert(v.title);
-			//alert('aa');
-			//alert(v.title);
-			//alert('bb');     		
+				$('#groupNameSel').append('<option value="' + v.id + '">' + v.title + '</option>');     		
 		});
 		
 		
-		
-		//alert('bb');
 		$('#jtable-item tr').each(function() {    
 	          var rowData = this.cells;
 	     	
-	          alert(rowData[0].firstChild.checked);
-	          
 	          if(rowData[0].firstChild.checked == true)
 	       	  {
+	        	//alert(rowData[0].firstChild.value);	        	
 	       		$('#itemId').val(rowData[0].firstChild.value);
-	        	$('#itemTitle').val(rowData[2].firstChild.value);  
-	        	$('#itemUrl').val(rowData[3].firstChild.value);
+	        	$('#itemTitle').val(rowData[2].firstChild.textContent);  
+	        	$('#itemUrl').val(rowData[3].firstChild.textContent);
+	        	
 	      	  }
 		});
-		//alert('aa');
-		
 	});
 	
 	// Delete Btn
@@ -238,8 +228,10 @@ $(function() {
 	});
 	$("#createSubmitBtn-Item").button().click(function() {
 				
-		$('#groupId').val(defaultGroupId);	
-		createDataMenuItem();
+		if(itemDialogStatus == "create")
+			createDataMenuItem();
+		else if(itemDialogStatus == "update")
+			updateDataMenuItem();		
 	});
 });
 
@@ -371,6 +363,7 @@ function createDataMenuItem()
 	
 	var postData = {
 			groupId : $('#groupId').val(),
+			id : $('#itemId').val(),
 			title : $('#itemTitle').val(),
 			url : $('#itemUrl').val()
 	};
@@ -427,6 +420,37 @@ function createDataGroup()
 			$('#title').val("");
 			
 			$("#dialog-form-Group").dialog("close");
+		},
+		dataType : "json",
+		traditional : true
+	});
+}
+
+function updateDataMenuItem()
+{
+	var postData = {
+			orgGroupId : $('#groupId').val(),
+			groupId : $('#groupNameSel').val(),
+			id : $('#itemId').val(),
+			title : $('#itemTitle').val(),
+			url : $('#itemUrl').val()
+	};
+	
+	$.ajax({
+		type : "POST",
+		url : "/funbackend/controller/Account/ManageMenu/MenuItem/Update",
+		data : postData,
+		success : function(data) {
+
+			showData(data);
+
+			$('#groupId').val("");
+			$("#groupNameSel option").remove();
+			$('#itemId').val("");
+			$('#itemTitle').val("");
+			$('#itemUrl').val("");
+			
+			$("#dialog-form-Item").dialog("close");
 		},
 		dataType : "json",
 		traditional : true
@@ -612,8 +636,7 @@ function deleteData()
 	</div>
 	<div id="dialog-form-Item" title="編輯功能項目">
     
-    	<form action="" method="post">
-    	<input id="itemId" name="itemId" type="hidden" value="" />
+    	<form action="" method="post">    	
     	<input id="groupId" name="groupId" type="hidden" value="" />
         <fieldset>
             <div class="editor-label">
@@ -625,6 +648,12 @@ function deleteData()
 										
 				</select>             
             </div>   
+            <div class="editor-label">
+                功能ID
+            </div>
+            <div class="editor-field">
+            	<input id="itemId" name="itemId" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" />                       
+            </div> 
             <div class="editor-label">
                 功能名稱
             </div>

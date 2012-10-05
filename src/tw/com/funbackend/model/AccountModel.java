@@ -102,4 +102,19 @@ public interface AccountModel {
 	 * @return
 	 */
 	boolean removeMenuGroup(String groupId);
+	
+	/**
+	 * 刪除所有群組中的指定關連資料
+	 * @param itemId
+	 * @return
+	 */
+	boolean removeMenuGroupRefContent(String itemId);
+	
+	/**
+	 * 刪除指定的群組中的指定關連資料
+	 * @param groupId
+	 * @param itemId
+	 * @return
+	 */
+	boolean removeMenuGroupRefContent(String groupId, String itemId);
 }

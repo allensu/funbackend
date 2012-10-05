@@ -75,7 +75,7 @@ public interface AccountService {
 	 * @param menuItem
 	 * @return
 	 */
-	boolean updateMenuItem(String groupId, MenuItem menuItem);
+	boolean updateMenuItem(String orgGroupId, String groupId, MenuItem menuItem);
 	
 	/**
 	 * 取得指定的群組項目

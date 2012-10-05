@@ -124,9 +124,9 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public boolean removeMenuItem(String itemId) {
-
 		
-		
+		// remove MenuGroup Ref
+		accountModel.removeMenuGroupRefContent(itemId);		
 		return accountModel.removeMenuItem(itemId);
 	}
 
@@ -153,16 +153,28 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public boolean updateMenuItem(String groupId, MenuItem menuItem) {
+	public boolean updateMenuItem(String orgGroupId, String groupId, MenuItem menuItem) {
 		
 		boolean result = false;
 		
 		try {			
+			
 			accountModel.updateMenuItem(menuItem);
 			
-			MenuGroup orgMenuGroup = accountModel.getMenuGroup(groupId);
-			orgMenuGroup.getContent().add(menuItem);
-			result = accountModel.updateMenuGroup(orgMenuGroup);
+			MenuGroup orgMenuGroup = accountModel.getMenuGroup(orgGroupId);
+			
+			if(orgGroupId != groupId) {
+				// remove orgMenuGroup 
+				accountModel.removeMenuGroupRefContent(orgGroupId, menuItem.getId());
+								
+				MenuGroup menuGroup = accountModel.getMenuGroup(groupId);
+				menuGroup.getContent().add(menuItem);
+				
+				result = accountModel.updateMenuGroup(menuGroup);
+			} else {
+				result = true;
+			}
+			
 		} catch(Exception ex)
 		{
 			logger.error(ex.getMessage());
