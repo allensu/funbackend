@@ -210,6 +210,11 @@ public class User {
 	private int totalScore;
 	
 	/**
+	 * MQTT Register ID
+	 */
+	private String mqttRegId;
+	
+	/**
 	 * 最後計算排行榜時間
 	 */
 	public Date latestCalculatedRankingTime;
@@ -589,5 +594,13 @@ public class User {
 
 	public void setDeleted(boolean isDeleted) {
 		this.isDeleted = isDeleted;
+	}
+
+	public String getMqttRegId() {
+		return mqttRegId;
+	}
+
+	public void setMqttRegId(String mqttRegId) {
+		this.mqttRegId = mqttRegId;
 	}
 }

@@ -820,6 +820,17 @@ function showDetailEvent(id)
 					$("#deleted").attr("orgVal", data.deleted); //封存
 					$('#deleted').val(data.deleted.toString()); //封存
 				}
+				
+				if(data.mqttRegId == null)
+				{
+					$("#mqttRegId").attr("orgVal", ""); // MQTT Reg Id
+					$('#mqttRegId').val(""); // MQTT Reg Id
+				}
+				else 
+				{
+					$("#mqttRegId").attr("orgVal", data.mqttRegId); // MQTT Reg Id
+					$('#mqttRegId').val(data.mqttRegId); // MQTT Reg Id
+				}
 			
 				//照片管理				
 				$("#gallery").empty();
@@ -1335,8 +1346,8 @@ function initGrallery()
         				</td>
         			</tr>
         			<tr>
-        				<td valign="top" rowspan="9">最後定位點</td>
-        				<td valign="top" colspan="3" rowspan="9">
+        				<td valign="top" rowspan="10">最後定位點</td>
+        				<td valign="top" colspan="3" rowspan="10">
         					lat:<input id="location.lat" name="location.lat" type="text" value="" size="13" class="text ui-widget-content ui-corner-all" readonly="readonly" style="border: 0px" />
         					lon:<input id="location.lon" name="location.lon" type="text" value="" size="13" class="text ui-widget-content ui-corner-all" readonly="readonly" style="border: 0px" /><br/>
         					<div id="map_canvas" style="width: 300px; height:200px; border: 1px solid #000;"></div>
@@ -1384,6 +1395,10 @@ function initGrallery()
         			<tr>        				
         				<td>更新時間</td>
         				<td><input id="updateTime" name="updateTime" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" readonly="readonly" style="border: 0px" /></td>
+        			</tr> 
+        			<tr>        				
+        				<td>MQTTRegID</td>
+        				<td><input id="mqttRegId" name="mqttRegId" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" readonly="readonly" style="border: 0px" /></td>
         			</tr> 
         			<tr>
         				<td valign="top">說明</td>

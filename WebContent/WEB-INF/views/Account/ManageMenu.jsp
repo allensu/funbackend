@@ -68,6 +68,8 @@ $(function() {
 		$('#groupName').css("display", "");
 		$('#groupNameSel').css("display", "none");
 		
+		$('#itemId').removeAttr('disabled');
+		
 		$("#dialog:ui-dialog").dialog( "destroy" );
 		$("#dialog-form-Item").dialog("open");			
 	});
@@ -126,6 +128,8 @@ $(function() {
 		$('#groupName').css("display", "none");
 		$('#groupNameSel').css("display", "");
 		$('#groupId').val(defaultGroupId);
+		
+		$('#itemId').attr("disabled", true);
 		
 		$("#dialog:ui-dialog").dialog( "destroy" );
 		$("#dialog-form-Item").dialog("open");	
@@ -248,9 +252,7 @@ function readDataGroup()
 	// 資料
     $.getJSON('/funbackend/controller/Account/MenuList', function (data) {
 
-    	defaultGroupId = 0;
-		defaultGroupTitle = "";
-		defaultGroupChecked = "";
+    	
 		
 		menuGroupData = data;
 		
@@ -296,6 +298,9 @@ function showData(data)
 {
 	$('#jtable-group').dataTable().fnClearTable(true);
 	$('#jtable-item').dataTable().fnClearTable(true);
+	defaultGroupId = 0;
+	defaultGroupTitle = "";
+	defaultGroupChecked = "";
 	
     $.each(data, function (k, v) {
     	
@@ -324,6 +329,28 @@ function showData(data)
 	        	            						v.title,
 	        	            						v.url]);        		
 	});
+}
+
+function showDataItem(data)
+{
+	$('#jtable-item').dataTable().fnClearTable(true);
+	
+	
+	$.each(data, function (k, v) {
+    	
+    	menuGroupKV[v.id] = v.title;
+    	menuItemKV[v.id] = v.content;        	        
+    });
+	
+    $.each(menuItemKV[defaultGroupId], function (k, v) {
+		
+		$('#jtable-item').dataTable().fnAddData([
+	        	            						"<input id='itemDataId' name='itemDataId' type='radio' value='" + v.id + "'/>", 
+	        	            						defaultGroupTitle,
+	        	            						v.title,
+	        	            						v.url]);        		
+	});
+	
 }
 
 function selectGroup(thisObj) 
@@ -373,7 +400,11 @@ function createDataMenuItem()
 		data : postData,
 		success : function(data) {
 
-			showData(data);
+			//showData(data);
+			
+			showDataItem(data);
+			
+			
 		
 			//$.unblockUI();
 
@@ -441,8 +472,9 @@ function updateDataMenuItem()
 		data : postData,
 		success : function(data) {
 
-			showData(data);
-
+			//showData(data);
+			showDataItem(data);
+			
 			$('#groupId').val("");
 			$("#groupNameSel option").remove();
 			$('#itemId').val("");
