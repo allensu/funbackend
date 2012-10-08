@@ -3,8 +3,8 @@ package tw.com.funbackend.service;
 import java.util.List;
 import java.util.Map;
 
-import tw.com.funbackend.form.TableSchema.BlockUserRankTableSchema;
 import tw.com.funbackend.form.querycond.MemberDataQueryCondition;
+import tw.com.funbackend.form.tableschema.BlockUserRankTableSchema;
 import tw.com.funbackend.persistence.gopartyon.User;
 
 

@@ -529,8 +529,11 @@ function updateDataGroup()
 }
 
 function readDataMenu()
-{
-	
+{	
+	$.getJSON('/funbackend/controller/Account/MenuList', function (data) {
+		showDataItem(data);
+	});
+
 	$.unblockUI();
 }
 
@@ -571,8 +574,15 @@ function deleteData()
 		url : "/funbackend/controller/Account/ManageMenu/" + deleteFrom  + "/Remove",
 		data : postData,
 		success : function(data) {
-
-			showData(data);
+			
+			if(deleteFrom == "GroupItem")
+			{
+				showData(data);
+			} else if(deleteFrom == "MenuItem") 
+			{
+				showDataItem(data);
+			}
+							
 			$.unblockUI();
 		},
 		dataType : "json",

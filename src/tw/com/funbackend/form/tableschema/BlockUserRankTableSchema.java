@@ -1,4 +1,4 @@
-package tw.com.funbackend.form.TableSchema;
+package tw.com.funbackend.form.tableschema;
 
 public class BlockUserRankTableSchema {
 	static public String[] MapColumns = {

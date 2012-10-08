@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 
 import tw.com.funbackend.persistence.gopartyon.User;
 
-import tw.com.funbackend.form.TableSchema.BlockUserRankTableSchema;
 import tw.com.funbackend.form.querycond.MemberDataQueryCondition;
+import tw.com.funbackend.form.tableschema.BlockUserRankTableSchema;
 import tw.com.funbackend.model.FileModel;
 import tw.com.funbackend.model.MemberModel;
 

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
-import tw.com.funbackend.form.TableSchema.BlockUserRankTableSchema;
+import tw.com.funbackend.form.tableschema.BlockUserRankTableSchema;
 import tw.com.funbackend.pojo.UserBean;
 import tw.com.funbackend.service.MemberService;
 
