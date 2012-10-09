@@ -39,41 +39,17 @@ protected Logger logger = Logger.getLogger("model");
 		{
 			DBCollection graffitiWallItemColl = partyonMongo.getCollection(partyonMongo.getCollectionName(GraffitiWallItem.class));  
 			BasicDBObject parameter = new BasicDBObject();  
+						
+			if("All".equals(cond.getCategoryQ()) == false)
+				parameter.put("categoryQ", cond.getCategoryQ());
+			
+			if(StringUtility.isNotEmpty(cond.getWallOwnerQ()))
+				parameter.put("wallOwnerQ", cond.getWallOwnerQ());
+			
+			if(StringUtility.isNotEmpty(cond.getPosterQ()))
+				parameter.put("posterQ", cond.getPosterQ());
 			
 			count = (int) graffitiWallItemColl.count(parameter);
-//			if("All".equals(cond.getChatRoomStyleQ()) == false)
-//				parameter.put("chatRoomStyle", cond.getChatRoomStyleQ());
-//			
-//			if(StringUtility.isNotEmpty(cond.getUserNameQ()))
-//				parameter.put("users", cond.getUserNameQ());
-//			
-//			if("geo".equals(cond.getChatRoomStyleQ()) && cond.getKilometerQ() != "")
-//			{
-//				DBCursor dbCursor = chatroomColl.find(parameter);
-//				
-//				double lon = 0;
-//				double lat = 0;
-//				double distance = 0;
-//				GeoUtility geoUtility = new GeoUtility();
-//				while(dbCursor.hasNext())
-//				{
-//					DBObject dbObj = dbCursor.next();
-//					
-//					lon = Double.parseDouble(String.valueOf(((DBObject)dbObj.get("location")).get("lon")));
-//					lat = Double.parseDouble(String.valueOf(((DBObject)dbObj.get("location")).get("lat")));
-//					
-//					distance = geoUtility.GetDistance(lat, lon, 
-//							Double.parseDouble(cond.getLatitudeQ()), 
-//							Double.parseDouble(cond.getLongitudeQ()));
-//
-//					if(distance <= Double.parseDouble(cond.getKilometerQ()))
-//					{
-//						count++;
-//					}
-//				}
-//			} else {
-//				count = (int) chatroomColl.count(parameter);
-//			}
 		} 
 		catch(Exception ex)
 		{
@@ -94,17 +70,24 @@ protected Logger logger = Logger.getLogger("model");
 		{
 			Criteria criteria = null;
 	
-//			if("All".equals(cond.getChatRoomStyleQ()) == false)
-//				criteria = Criteria.where("chatRoomStyle").is(cond.getChatRoomStyleQ());
-//			
-//			
-//			if(StringUtility.isNotEmpty(cond.getUserNameQ()))
-//			{
-//				if(criteria == null)
-//					criteria = Criteria.where("users").is(cond.getUserNameQ());
-//				else 
-//					criteria = criteria.and("users").is(cond.getUserNameQ());
-//			}
+			if("All".equals(cond.getCategoryQ()) == false)
+				criteria = Criteria.where("categoryQ").is(cond.getCategoryQ());
+		
+			if(StringUtility.isNotEmpty(cond.getWallOwnerQ()))
+			{
+				if(criteria == null)
+					criteria = Criteria.where("wallOwnerQ").is(cond.getWallOwnerQ());
+				else 
+					criteria = criteria.and("wallOwnerQ").is(cond.getWallOwnerQ());
+			}
+			
+			if(StringUtility.isNotEmpty(cond.getPosterQ()))
+			{
+				if(criteria == null)
+					criteria = Criteria.where("posterQ").is(cond.getPosterQ());
+				else 
+					criteria = criteria.and("posterQ").is(cond.getPosterQ());
+			}	
 			
 			Query query = null;
 			if(criteria != null)
@@ -114,29 +97,6 @@ protected Logger logger = Logger.getLogger("model");
 			
 			result = partyonMongo.find(query, GraffitiWallItem.class);
 			resultFinal = result;
-			
-//			if("geo".equals(cond.getChatRoomStyleQ()) && cond.getKilometerQ() != "")
-//			{
-//				double lon = 0;
-//				double lat = 0;
-//				double distance = 0;
-//				GeoUtility geoUtility = new GeoUtility();
-//				for(Chatroom currChatroom : result)
-//				{
-//					lon = currChatroom.getLocation().get("lon");
-//					lat = currChatroom.getLocation().get("lat");
-//					distance = geoUtility.GetDistance(lat, lon, 
-//							Double.parseDouble(cond.getLatitudeQ()), 
-//							Double.parseDouble(cond.getLongitudeQ()));
-//					
-//					if(distance <= Double.parseDouble(cond.getKilometerQ()))
-//					{
-//						resultFinal.add(currChatroom);
-//					}
-//				}					
-//			} else {
-//				resultFinal = result;
-//			}
 		} 
 		catch(Exception ex)
 		{
@@ -158,16 +118,24 @@ protected Logger logger = Logger.getLogger("model");
 		{
 			Criteria criteria = null;
 			
-//			if("All".equals(cond.getChatRoomStyleQ()) == false)
-//				criteria = Criteria.where("chatRoomStyle").is(cond.getChatRoomStyleQ());
-//					
-//			if(StringUtility.isNotEmpty(cond.getUserNameQ()))
-//			{
-//				if(criteria == null)
-//					criteria = Criteria.where("users").is(cond.getUserNameQ());
-//				else 
-//					criteria = criteria.and("users").is(cond.getUserNameQ());
-//			}
+			if("All".equals(cond.getCategoryQ()) == false)
+				criteria = Criteria.where("categoryQ").is(cond.getCategoryQ());
+		
+			if(StringUtility.isNotEmpty(cond.getWallOwnerQ()))
+			{
+				if(criteria == null)
+					criteria = Criteria.where("wallOwnerQ").is(cond.getWallOwnerQ());
+				else 
+					criteria = criteria.and("wallOwnerQ").is(cond.getWallOwnerQ());
+			}
+			
+			if(StringUtility.isNotEmpty(cond.getPosterQ()))
+			{
+				if(criteria == null)
+					criteria = Criteria.where("posterQ").is(cond.getPosterQ());
+				else 
+					criteria = criteria.and("posterQ").is(cond.getPosterQ());
+			}	
 			
 			Query query = null;
 			
@@ -184,28 +152,7 @@ protected Logger logger = Logger.getLogger("model");
 			
 			result = partyonMongo.find(query, GraffitiWallItem.class);
 			resultFinal = result;
-//			if("geo".equals(cond.getChatRoomStyleQ()) && cond.getKilometerQ() != "")
-//			{
-//				double lon = 0;
-//				double lat = 0;
-//				double distance = 0;
-//				GeoUtility geoUtility = new GeoUtility();
-//				for(Chatroom currChatroom : result)
-//				{
-//					lon = currChatroom.getLocation().get("lon");
-//					lat = currChatroom.getLocation().get("lat");
-//					distance = geoUtility.GetDistance(lat, lon, 
-//							Double.parseDouble(cond.getLatitudeQ()), 
-//							Double.parseDouble(cond.getLongitudeQ()));
-//					
-//					if(distance <= Double.parseDouble(cond.getKilometerQ()))
-//					{
-//						resultFinal.add(currChatroom);
-//					}
-//				}					
-//			} else {
-//				resultFinal = result;
-//			}
+			
 		} 
 		catch(Exception ex)
 		{
