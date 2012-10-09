@@ -14,7 +14,9 @@ public class MenuAuth {
 	@Id
 	private String id;
 	
-	private String userName;
+	@Indexed
+	@DBRef
+	private UserInfo userInfo;
 	
 	private boolean newAuth;
 	
@@ -42,18 +44,12 @@ public class MenuAuth {
 		this.id = id;
 	}
 
-	/**
-	 * @return the userName
-	 */
-	public String getUserName() {
-		return userName;
+	public UserInfo getUserInfo() {
+		return userInfo;
 	}
 
-	/**
-	 * @param userName the userName to set
-	 */
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUserInfo(UserInfo userInfo) {
+		this.userInfo = userInfo;
 	}
 
 	/**

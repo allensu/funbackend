@@ -32,12 +32,22 @@ import org.springframework.web.servlet.view.json.JsonView;
 
 import com.mchange.v2.c3p0.stmt.GooGooStatementCache;
 
+import tw.com.funbackend.enumeration.OrderDirection;
 import tw.com.funbackend.enumeration.UserInfoCategory;
 import tw.com.funbackend.form.AccountLoginForm;
+import tw.com.funbackend.form.DataTableQueryParam;
+import tw.com.funbackend.form.querycond.GraffitiWallCondition;
+import tw.com.funbackend.form.querycond.ManageMenuAuthCondition;
+import tw.com.funbackend.form.result.GraffitiWallDataTableResult;
+import tw.com.funbackend.form.result.ManageMenuAuthDataTableResult;
+import tw.com.funbackend.form.tableschema.GraffitiWallTableSchema;
+import tw.com.funbackend.form.tableschema.ManageMenuAuthTableSchema;
+import tw.com.funbackend.persistence.MenuAuth;
 import tw.com.funbackend.persistence.MenuGroup;
 import tw.com.funbackend.persistence.MenuItem;
 import tw.com.funbackend.persistence.MessageData;
 import tw.com.funbackend.persistence.UserInfo;
+import tw.com.funbackend.persistence.gopartyon.GraffitiWallItem;
 import tw.com.funbackend.pojo.UserBean;
 import tw.com.funbackend.service.AccountService;
 import tw.com.funbackend.utility.Encrypt;
@@ -195,6 +205,18 @@ public class AccountController {
 		return new ModelAndView("/Account/ManageUser");
 	}
 
+	/**
+	 * 開啟使用者帳號權限管理頁面
+	 * 
+	 * @param userBean
+	 * @param userInfo
+	 * @return
+	 */
+	@RequestMapping(value = "/Account/ManageMenuAuth", method = RequestMethod.GET)
+	public ModelAndView manageMenuAuth(@ModelAttribute("userBean") UserBean userBean) {    
+		return new ModelAndView("/Account/ManageMenuAuth");
+	}
+	
 	/**
 	 * 開啟功能群組管理頁面
 	 * 
@@ -379,6 +401,63 @@ public class AccountController {
 			accountService.removeMenuGroup(groupId);
 					
 			result = accountService.getMenuList(userBean.getAccountId());			
+		} catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * 取得分頁帳號資料
+	 * @return
+	 */
+	@RequestMapping(value = "/Account/ManageMenuAuth/ReadPages")
+	public @ResponseBody ManageMenuAuthDataTableResult readPagesManageMenuAuth(
+			@ModelAttribute ManageMenuAuthCondition qCondition,
+			@ModelAttribute DataTableQueryParam tableParm) {
+		
+		ManageMenuAuthDataTableResult result = new ManageMenuAuthDataTableResult();
+		List<MenuAuth> menuAuthDataList = new ArrayList<MenuAuth>();
+		
+		try {
+			// 排序處理
+			String orderColName = ManageMenuAuthTableSchema.MapColumns[tableParm.getiSortCol_0()];
+			int sortDir = OrderDirection.asc.toString().equals(tableParm.getsSortDir_0()) ? 1 : -1;
+					
+
+			if("".equals(orderColName))
+				menuAuthDataList = graffitiWallService.readGraffitiWallPageByCond(qCondition, tableParm.getiDisplayStart(), tableParm.getiDisplayLength());
+			else 
+				menuAuthDataList = graffitiWallService.readGraffitiWallPageByCondSort(qCondition, tableParm.getiDisplayStart(), tableParm.getiDisplayLength(), orderColName, sortDir);
+			
+			if(menuAuthDataList == null || menuAuthDataList.size() == 0)
+			{
+				menuAuthDataList = new ArrayList<MenuAuth>();
+			}
+			
+			int totalCount = graffitiWallService.readGraffitiWallCountByCond(qCondition);
+			
+			List<ManageMenuAuthTableSchema> menuAuthDataTable = new ArrayList<ManageMenuAuthTableSchema>();
+			
+			for(MenuAuth currData : menuAuthDataList)
+			{
+				ManageMenuAuthTableSchema data = new ManageMenuAuthTableSchema();
+				data.setId(currData.getId());
+				data.setUserInfo(data.getUserInfo());
+				data.setMenuItem(currData.getMenuItem());
+				data.setNewAuth(currData.isNewAuth());
+				data.setUpdateAuth(currData.isUpdateAuth());
+				data.setDeleteAuth(currData.isDeleteAuth());
+				data.setQueryAuth(currData.isQueryAuth());
+				menuAuthDataTable.add(data);
+			}
+			
+			result.setAaData(menuAuthDataTable);
+			result.setsEcho(tableParm.getsEcho());
+			result.setiTotalDisplayRecords(totalCount);
+			result.setiTotalRecords(totalCount);
 		} catch(Exception ex)
 		{
 			logger.error(ex.getMessage());
