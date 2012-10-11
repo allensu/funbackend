@@ -9,12 +9,16 @@ import java.util.Locale;
 import java.util.SimpleTimeZone;
 import java.util.TimeZone;
 
+import javax.activity.ActivityRequiredException;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import tw.com.funbackend.enumeration.UserInfoCategory;
+import tw.com.funbackend.form.querycond.ManageMenuAuthCondition;
 import tw.com.funbackend.model.AccountModel;
+import tw.com.funbackend.persistence.MenuAuth;
 import tw.com.funbackend.persistence.MenuGroup;
 import tw.com.funbackend.persistence.MenuItem;
 import tw.com.funbackend.persistence.UserInfo;
@@ -83,6 +87,40 @@ public class AccountServiceImpl implements AccountService {
 	public UserInfo createUser(UserInfo userInfo) {
 		
 		UserInfo userInfoResult = accountModel.createUser(userInfo);
+		
+		List<MenuItem> menuItemList = accountModel.getMenuItemListAll();
+		
+		for(MenuItem currData : menuItemList)
+		{
+			MenuAuth menuAuth = new MenuAuth();
+			menuAuth.setUserInfo(userInfoResult);
+			
+			if(userInfoResult.getCategory() == UserInfoCategory.Admin)
+			{
+				menuAuth.setNewAuth(true);
+				menuAuth.setUpdateAuth(true);
+				menuAuth.setDeleteAuth(true);
+				menuAuth.setQueryAuth(true);
+			} 
+			else if(userInfoResult.getCategory() == UserInfoCategory.Normal)
+			{
+				menuAuth.setNewAuth(false);
+				menuAuth.setUpdateAuth(false);
+				menuAuth.setDeleteAuth(false);
+				menuAuth.setQueryAuth(true);
+			}
+			else 
+			{
+				menuAuth.setNewAuth(false);
+				menuAuth.setUpdateAuth(false);
+				menuAuth.setDeleteAuth(false);
+				menuAuth.setQueryAuth(false);
+			}
+			
+			menuAuth.setMenuItem(currData);
+			accountModel.createMenuAuth(menuAuth);
+		}
+		
 		return userInfoResult;
 	}
 
@@ -118,8 +156,54 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public boolean createMenuItem(MenuItem menuItem) {
-
-		return accountModel.createMenuItem(menuItem);
+		
+		boolean result = false;
+		try 
+		{
+			result = accountModel.createMenuItem(menuItem);
+			
+			List<UserInfo> userInfoList = accountModel.getUserInfoAll();
+			
+			for(UserInfo currData : userInfoList)
+			{
+				MenuAuth menuAuth = new MenuAuth();
+				menuAuth.setUserInfo(currData);
+				
+				if(currData.getCategory() == UserInfoCategory.Admin)
+				{
+					menuAuth.setNewAuth(true);
+					menuAuth.setUpdateAuth(true);
+					menuAuth.setDeleteAuth(true);
+					menuAuth.setQueryAuth(true);
+				} 
+				else if(currData.getCategory() == UserInfoCategory.Normal)
+				{
+					menuAuth.setNewAuth(false);
+					menuAuth.setUpdateAuth(false);
+					menuAuth.setDeleteAuth(false);
+					menuAuth.setQueryAuth(true);
+				}
+				else 
+				{
+					menuAuth.setNewAuth(false);
+					menuAuth.setUpdateAuth(false);
+					menuAuth.setDeleteAuth(false);
+					menuAuth.setQueryAuth(false);
+				}
+				
+				menuAuth.setMenuItem(menuItem);
+				accountModel.createMenuAuth(menuAuth);				
+			}
+			
+			result = true;
+		} 
+		catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+		
+		
+		return result;
 	}
 
 	@Override
@@ -181,5 +265,51 @@ public class AccountServiceImpl implements AccountService {
 		}
 				
 		return result;
+	}
+
+	@Override
+	public int readMenuAuthCountByCond(ManageMenuAuthCondition cond) {
+		
+		return accountModel.readMenuAuthCountByCond(cond);		
+	}
+
+	@Override
+	public List<MenuAuth> readMenuAuthPageByCondSort(
+			ManageMenuAuthCondition cond, int startIndex, int length,
+			String sortColName, int sortDir) {
+		
+		return accountModel.readMenuAuthPageByCondSort(cond, startIndex, length, sortColName, sortDir);		
+	}
+
+	@Override
+	public MenuAuth updateMenuAuth(String menuAuthId, boolean newAuth,
+			boolean updateAuth, boolean deleteAuth, boolean queryAuth) {
+		MenuAuth result = new MenuAuth();
+		
+		try 
+		{
+			MenuAuth menuAuth = accountModel.getMenuAuth(menuAuthId);
+			
+			menuAuth.setNewAuth(newAuth);
+			menuAuth.setUpdateAuth(updateAuth);
+			menuAuth.setDeleteAuth(deleteAuth);
+			menuAuth.setQueryAuth(queryAuth);
+						
+			accountModel.updateMenuAuth(menuAuth);
+			
+			result = menuAuth;
+		} 
+		catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+		
+		return result;
+	}
+
+	@Override
+	public MenuAuth getMenuAuth(String menuAuthId) {
+
+		return accountModel.getMenuAuth(menuAuthId);
 	}
 }

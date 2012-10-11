@@ -2,6 +2,8 @@ package tw.com.funbackend.service;
 
 import java.util.List;
 
+import tw.com.funbackend.form.querycond.ManageMenuAuthCondition;
+import tw.com.funbackend.persistence.MenuAuth;
 import tw.com.funbackend.persistence.MenuGroup;
 import tw.com.funbackend.persistence.MenuItem;
 import tw.com.funbackend.persistence.UserInfo;
@@ -34,6 +36,13 @@ public interface AccountService {
 	 * @return
 	 */
 	List<MenuGroup> getMenuList(String accountId);
+	
+	/**
+	 * 取得指定的功能權限項目
+	 * @param menuAuthId
+	 * @return
+	 */
+	MenuAuth getMenuAuth(String menuAuthId);
 	
 	/**
 	 * 取得所有帳號
@@ -78,6 +87,17 @@ public interface AccountService {
 	boolean updateMenuItem(String orgGroupId, String groupId, MenuItem menuItem);
 	
 	/**
+	 * 更新功能權限項目
+	 * @param menuAuthId
+	 * @param newAuth
+	 * @param updateAuth
+	 * @param deleteAuth
+	 * @param queryAuth
+	 * @return
+	 */
+	MenuAuth updateMenuAuth(String menuAuthId, boolean newAuth, boolean updateAuth, boolean deleteAuth, boolean queryAuth);
+	
+	/**
 	 * 取得指定的群組項目
 	 * @param groupId
 	 * @return
@@ -97,4 +117,23 @@ public interface AccountService {
 	 * @return
 	 */
 	boolean removeMenuGroup(String groupId);
+	
+	/**
+	 * 取得條件下的總帳號權限筆數 
+	 * @param cond 查詢條件
+	 * @return
+	 */
+	int readMenuAuthCountByCond(ManageMenuAuthCondition cond);
+	
+	/**
+	 * 取得條件及排序下分頁帳號權限
+	 * @param cond 查詢條件
+	 * @param startIndex 分頁啟始位置
+	 * @param length 分頁長度
+	 * @param sortColName 排序欄位名稱
+	 * @param sortDir 排序方向 (-1:asc, 1:desc)
+	 * @return
+	 */
+	List<MenuAuth> readMenuAuthPageByCondSort(ManageMenuAuthCondition cond, int startIndex, int length, String sortColName, int sortDir);
+	
 }

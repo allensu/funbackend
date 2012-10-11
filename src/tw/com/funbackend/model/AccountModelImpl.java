@@ -15,6 +15,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Order;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
@@ -24,11 +25,15 @@ import com.mongodb.DBCollection;
 
 import tw.com.funbackend.config.FunBackendMongoConfig;
 import tw.com.funbackend.enumeration.UserInfoCategory;
+import tw.com.funbackend.form.querycond.ManageMenuAuthCondition;
+import tw.com.funbackend.persistence.MenuAuth;
 import tw.com.funbackend.persistence.MenuGroup;
 import tw.com.funbackend.persistence.MenuItem;
 import tw.com.funbackend.persistence.MessageData;
 import tw.com.funbackend.persistence.UserInfo;
+import tw.com.funbackend.persistence.gopartyon.GraffitiWallItem;
 import tw.com.funbackend.persistence.gopartyon.User;
+import tw.com.funbackend.utility.StringUtility;
 
 @Repository
 public class AccountModelImpl implements AccountModel {
@@ -159,6 +164,12 @@ public class AccountModelImpl implements AccountModel {
 	        menuItem2_2.setId("ManageMenu");
 	        menuItem2_2.setUrl("/funbackend/controller/Account/ManageMenu");
 	        menuItemList2.add(menuItem2_2);
+	        MenuItem menuItem2_3 = new MenuItem();
+	        menuItem2_3.setTitle("功能權限管理");
+	        menuItem2_3.setId("ManageMenuAuth");
+	        menuItem2_3.setUrl("/funbackend/controller/Account/ManageMenuAuth");
+	        menuItemList2.add(menuItem2_3);
+	        
 	        menuGroup2.setContent(menuItemList2);
 	        menuGroup2.setTitle("系統管理");
 	        
@@ -174,6 +185,7 @@ public class AccountModelImpl implements AccountModel {
 	        funBackendMongo.save(menuItem1_7);
 	        funBackendMongo.save(menuItem2_1);
 	        funBackendMongo.save(menuItem2_2);
+	        funBackendMongo.save(menuItem2_3);
 	        funBackendMongo.save(menuGroup1);
 	        funBackendMongo.save(menuGroup2);
 		}
@@ -393,6 +405,190 @@ public class AccountModelImpl implements AccountModel {
 		}
 	
 		
+		return result;
+	}
+
+	@Override
+	public int readMenuAuthCountByCond(ManageMenuAuthCondition cond) {
+		int count = 0;
+		
+		try 
+		{
+			DBCollection menuAuthColl = funBackendMongo.getCollection(funBackendMongo.getCollectionName(MenuAuth.class));  
+			BasicDBObject parameter = new BasicDBObject();  
+						
+//			if("All".equals(cond.getCategoryQ()) == false)
+//				parameter.put("category", cond.getCategoryQ());
+			
+//			if(StringUtility.isNotEmpty(cond.getAccountNameQ()))
+//				parameter.put("accountName", cond.getAccountNameQ());
+			
+			count = (int) menuAuthColl.count(parameter);
+		} 
+		catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+		
+		return count;
+	}
+
+//	@Override
+//	public List<MenuAuth> readMenuAuthPageByCond(
+//			ManageMenuAuthCondition cond, int startIndex, int length) {
+//
+//		List<MenuAuth> result = new ArrayList<MenuAuth>();
+//		List<MenuAuth> resultFinal = new ArrayList<MenuAuth>();
+//		
+//		try 
+//		{
+//			Criteria criteria = null;
+//	
+//			if("All".equals(cond.getCategoryQ()) == false)
+//				criteria = Criteria.where("category").is(cond.getCategoryQ());
+//		
+//			if(StringUtility.isNotEmpty(cond.getAccountNameQ()))
+//			{
+//				if(criteria == null)
+//					criteria = Criteria.where("accountName").is(cond.getAccountNameQ());
+//				else 
+//					criteria = criteria.and("accountName").is(cond.getAccountNameQ());
+//			}
+////			
+////			if(StringUtility.isNotEmpty(cond.getPosterQ()))
+////			{
+////				if(criteria == null)
+////					criteria = Criteria.where("posterQ").is(cond.getPosterQ());
+////				else 
+////					criteria = criteria.and("posterQ").is(cond.getPosterQ());
+////			}	
+//			
+//			Query query = null;
+//			if(criteria != null)
+//				query = new Query(criteria).skip(startIndex).limit(length);
+//			else
+//				query = new Query().skip(startIndex).limit(length);
+//			
+//			result = partyonMongo.find(query, MenuAuth.class);
+//			resultFinal = result;
+//		} 
+//		catch(Exception ex)
+//		{
+//			logger.error(ex.getMessage());
+//		}
+//		
+//		return resultFinal;
+//	}
+
+	@Override
+	public List<MenuAuth> readMenuAuthPageByCondSort(
+			ManageMenuAuthCondition cond, int startIndex, int length,
+			String sortColName, int sortDir) {
+		List<MenuAuth> result = new ArrayList<MenuAuth>();
+		List<MenuAuth> resultFinal = new ArrayList<MenuAuth>();
+		
+		try 
+		{
+			Criteria criteria = null;
+	
+//			if("All".equals(cond.getCategoryQ()) == false)
+//				criteria = Criteria.where("category").is(cond.getCategoryQ());
+//		
+//			if(StringUtility.isNotEmpty(cond.getAccountNameQ()))
+//			{
+//				if(criteria == null)
+//					criteria = Criteria.where("accountName").is(cond.getAccountNameQ());
+//				else 
+//					criteria = criteria.and("accountName").is(cond.getAccountNameQ());
+//			}
+			
+			Query query = null;
+			if(criteria != null)
+				query = new Query(criteria).skip(startIndex).limit(length);
+			else
+				query = new Query().skip(startIndex).limit(length);
+			
+//			if(!"".equals(sortColName))
+//			{
+//				Order order = sortDir == 1 ? Order.ASCENDING : Order.DESCENDING;
+//				query.sort().on(sortColName, order);
+//			}
+			
+			result = funBackendMongo.find(query, MenuAuth.class);
+			resultFinal = result;
+		} 
+		catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+		
+		return resultFinal;
+	}
+
+	@Override
+	public MenuAuth createMenuAuth(MenuAuth menuAuth) {
+		
+		funBackendMongo.save(menuAuth);
+		
+		return menuAuth;
+	}
+
+	@Override
+	public List<MenuItem> getMenuItemListAll() {
+		List<MenuItem> result = new ArrayList<MenuItem>();
+		
+		try {
+			result = funBackendMongo.findAll(MenuItem.class);
+			
+		} catch(Exception ex) {
+			logger.error(ex.getMessage());
+		}
+			
+		return result;
+	}
+
+	@Override
+	public boolean updateMenuAuth(MenuAuth menuAuth) {
+		boolean result = false;
+		
+		try 
+		{
+			funBackendMongo.save(menuAuth);
+			result = true;
+		} 
+		catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+				
+		return result;
+	}
+
+	@Override
+	public MenuAuth getMenuAuth(String menuAuthId) {
+		MenuAuth result = new MenuAuth();
+		
+		try {
+			result = funBackendMongo.findOne(new Query(Criteria.where("id").is(menuAuthId)), MenuAuth.class);
+			
+		} catch(Exception ex) {
+			logger.error(ex.getMessage());
+		}
+			
+		return result;
+	}
+
+	@Override
+	public List<UserInfo> getUserInfoAll() {
+		List<UserInfo> result = new ArrayList<UserInfo>();
+		
+		try {
+			result = funBackendMongo.findAll(UserInfo.class);
+			
+		} catch(Exception ex) {
+			logger.error(ex.getMessage());
+		}
+			
 		return result;
 	}	
 }

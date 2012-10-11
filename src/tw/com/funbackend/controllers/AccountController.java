@@ -426,18 +426,19 @@ public class AccountController {
 			String orderColName = ManageMenuAuthTableSchema.MapColumns[tableParm.getiSortCol_0()];
 			int sortDir = OrderDirection.asc.toString().equals(tableParm.getsSortDir_0()) ? 1 : -1;
 					
-
-			if("".equals(orderColName))
-				menuAuthDataList = graffitiWallService.readGraffitiWallPageByCond(qCondition, tableParm.getiDisplayStart(), tableParm.getiDisplayLength());
-			else 
-				menuAuthDataList = graffitiWallService.readGraffitiWallPageByCondSort(qCondition, tableParm.getiDisplayStart(), tableParm.getiDisplayLength(), orderColName, sortDir);
+			menuAuthDataList = accountService.readMenuAuthPageByCondSort(qCondition, tableParm.getiDisplayStart(), tableParm.getiDisplayLength(), orderColName, sortDir);
+			
+//			if("".equals(orderColName))
+//				menuAuthDataList = graffitiWallService.readGraffitiWallPageByCond(qCondition, tableParm.getiDisplayStart(), tableParm.getiDisplayLength());
+//			else 
+//				menuAuthDataList = graffitiWallService.readGraffitiWallPageByCondSort(qCondition, tableParm.getiDisplayStart(), tableParm.getiDisplayLength(), orderColName, sortDir);
 			
 			if(menuAuthDataList == null || menuAuthDataList.size() == 0)
 			{
 				menuAuthDataList = new ArrayList<MenuAuth>();
 			}
 			
-			int totalCount = graffitiWallService.readGraffitiWallCountByCond(qCondition);
+			int totalCount = accountService.readMenuAuthCountByCond(qCondition);
 			
 			List<ManageMenuAuthTableSchema> menuAuthDataTable = new ArrayList<ManageMenuAuthTableSchema>();
 			
@@ -445,12 +446,12 @@ public class AccountController {
 			{
 				ManageMenuAuthTableSchema data = new ManageMenuAuthTableSchema();
 				data.setId(currData.getId());
-				data.setUserInfo(data.getUserInfo());
+				data.setUserInfo(currData.getUserInfo());
 				data.setMenuItem(currData.getMenuItem());
 				data.setNewAuth(currData.isNewAuth());
 				data.setUpdateAuth(currData.isUpdateAuth());
 				data.setDeleteAuth(currData.isDeleteAuth());
-				data.setQueryAuth(currData.isQueryAuth());
+				data.setQueryAuth(currData.isQueryAuth());				
 				menuAuthDataTable.add(data);
 			}
 			
@@ -459,6 +460,37 @@ public class AccountController {
 			result.setiTotalDisplayRecords(totalCount);
 			result.setiTotalRecords(totalCount);
 		} catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * 更新功能權限項目
+	 * 
+	 * @param userBean
+	 * @param groupId
+	 * @param menuItem
+	 * @return
+	 */
+	@RequestMapping(value = "/Account/ManageMenuAuth/Update", method = RequestMethod.POST)
+	public @ResponseBody MenuAuth updateMenuAuth(
+			@ModelAttribute("userBean") UserBean userBean,
+			@RequestParam(value="menuAuthId") String menuAuthId,
+			@RequestParam(value="newAuth") boolean newAuth,
+			@RequestParam(value="updateAuth") boolean updateAuth,
+			@RequestParam(value="deleteAuth") boolean deleteAuth,
+			@RequestParam(value="queryAuth") boolean queryAuth) {
+
+		MenuAuth result = new MenuAuth();
+		
+		try 
+		{
+			result = accountService.updateMenuAuth(menuAuthId, newAuth, updateAuth, deleteAuth, queryAuth);				
+		}
+		catch(Exception ex)
 		{
 			logger.error(ex.getMessage());
 		}

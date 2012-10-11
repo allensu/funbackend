@@ -41,14 +41,14 @@ protected Logger logger = Logger.getLogger("model");
 			BasicDBObject parameter = new BasicDBObject();  
 						
 			if("All".equals(cond.getCategoryQ()) == false)
-				parameter.put("categoryQ", cond.getCategoryQ());
+				parameter.put("category", cond.getCategoryQ());
 			
-			if(StringUtility.isNotEmpty(cond.getWallOwnerQ()))
-				parameter.put("wallOwnerQ", cond.getWallOwnerQ());
-			
-			if(StringUtility.isNotEmpty(cond.getPosterQ()))
-				parameter.put("posterQ", cond.getPosterQ());
-			
+//			if(StringUtility.isNotEmpty(cond.getWallOwnerQ()))
+//				parameter.put("wallOwnerQ", cond.getWallOwnerQ());
+//			
+//			if(StringUtility.isNotEmpty(cond.getPosterQ()))
+//				parameter.put("posterQ", cond.getPosterQ());
+//			
 			count = (int) graffitiWallItemColl.count(parameter);
 		} 
 		catch(Exception ex)
@@ -71,23 +71,23 @@ protected Logger logger = Logger.getLogger("model");
 			Criteria criteria = null;
 	
 			if("All".equals(cond.getCategoryQ()) == false)
-				criteria = Criteria.where("categoryQ").is(cond.getCategoryQ());
+				criteria = Criteria.where("category").is(cond.getCategoryQ());
 		
-			if(StringUtility.isNotEmpty(cond.getWallOwnerQ()))
-			{
-				if(criteria == null)
-					criteria = Criteria.where("wallOwnerQ").is(cond.getWallOwnerQ());
-				else 
-					criteria = criteria.and("wallOwnerQ").is(cond.getWallOwnerQ());
-			}
-			
-			if(StringUtility.isNotEmpty(cond.getPosterQ()))
-			{
-				if(criteria == null)
-					criteria = Criteria.where("posterQ").is(cond.getPosterQ());
-				else 
-					criteria = criteria.and("posterQ").is(cond.getPosterQ());
-			}	
+//			if(StringUtility.isNotEmpty(cond.getWallOwnerQ()))
+//			{
+//				if(criteria == null)
+//					criteria = Criteria.where("wallOwnerQ").is(cond.getWallOwnerQ());
+//				else 
+//					criteria = criteria.and("wallOwnerQ").is(cond.getWallOwnerQ());
+//			}
+//			
+//			if(StringUtility.isNotEmpty(cond.getPosterQ()))
+//			{
+//				if(criteria == null)
+//					criteria = Criteria.where("posterQ").is(cond.getPosterQ());
+//				else 
+//					criteria = criteria.and("posterQ").is(cond.getPosterQ());
+//			}	
 			
 			Query query = null;
 			if(criteria != null)
@@ -119,23 +119,23 @@ protected Logger logger = Logger.getLogger("model");
 			Criteria criteria = null;
 			
 			if("All".equals(cond.getCategoryQ()) == false)
-				criteria = Criteria.where("categoryQ").is(cond.getCategoryQ());
+				criteria = Criteria.where("category").is(cond.getCategoryQ());
 		
-			if(StringUtility.isNotEmpty(cond.getWallOwnerQ()))
-			{
-				if(criteria == null)
-					criteria = Criteria.where("wallOwnerQ").is(cond.getWallOwnerQ());
-				else 
-					criteria = criteria.and("wallOwnerQ").is(cond.getWallOwnerQ());
-			}
-			
-			if(StringUtility.isNotEmpty(cond.getPosterQ()))
-			{
-				if(criteria == null)
-					criteria = Criteria.where("posterQ").is(cond.getPosterQ());
-				else 
-					criteria = criteria.and("posterQ").is(cond.getPosterQ());
-			}	
+//			if(StringUtility.isNotEmpty(cond.getWallOwnerQ()))
+//			{
+//				if(criteria == null)
+//					criteria = Criteria.where("wallOwnerQ").is(cond.getWallOwnerQ());
+//				else 
+//					criteria = criteria.and("wallOwnerQ").is(cond.getWallOwnerQ());
+//			}
+//			
+//			if(StringUtility.isNotEmpty(cond.getPosterQ()))
+//			{
+//				if(criteria == null)
+//					criteria = Criteria.where("posterQ").is(cond.getPosterQ());
+//				else 
+//					criteria = criteria.and("posterQ").is(cond.getPosterQ());
+//			}	
 			
 			Query query = null;
 			
