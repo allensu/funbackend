@@ -70,6 +70,8 @@ $(function() {
         "sAjaxSource": '/funbackend/controller/Account/ManageMenuAuth/ReadPages',
         "fnServerParams": function ( aoData ) {
         	$.merge(aoData, $("#queryform").serializeArray());
+        	
+        	alert(aoData);
         }, 
         "aoColumns": [{ "mDataProp": "id", "bSortable": false, "bSearchable": false, "bVisible": false},
 				      { "mDataProp": "userInfo", "bSortable": false,
