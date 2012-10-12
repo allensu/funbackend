@@ -1,14 +1,37 @@
 package tw.com.funbackend.form.querycond;
 
 public class ManageMenuAuthCondition {
-	private String accountNameQ;
+
+	private String accountIdQ;
+	private String menuTitleQ;
 	
-	public String getAccountNameQ() {
-		return accountNameQ;
+	/**
+	 * @return the accountIdQ
+	 */
+	public String getAccountIdQ() {
+		return accountIdQ;
 	}
-	public void setAccountNameQ(String accountNameQ) {
-		this.accountNameQ = accountNameQ;
+
+	/**
+	 * @param accountIdQ the accountIdQ to set
+	 */
+	public void setAccountIdQ(String accountIdQ) {
+		this.accountIdQ = accountIdQ;
+	}
+
+	/**
+	 * @return the menuTitleQ
+	 */
+	public String getMenuTitleQ() {
+		return menuTitleQ;
+	}
+
+	/**
+	 * @param menuTitleQ the menuTitleQ to set
+	 */
+	public void setMenuTitleQ(String menuTitleQ) {
+		this.menuTitleQ = menuTitleQ;
 	}
 	
-	
+
 }

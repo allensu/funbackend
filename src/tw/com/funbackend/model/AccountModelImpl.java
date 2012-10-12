@@ -9,6 +9,7 @@ import java.util.Hashtable;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -489,18 +490,32 @@ public class AccountModelImpl implements AccountModel {
 		
 		try 
 		{
-			Criteria criteria = null;
+			Criteria criteria = new Criteria();
 	
+			
+			
 //			if("All".equals(cond.getCategoryQ()) == false)
 //				criteria = Criteria.where("category").is(cond.getCategoryQ());
 //		
-//			if(StringUtility.isNotEmpty(cond.getAccountNameQ()))
-//			{
-//				if(criteria == null)
-//					criteria = Criteria.where("accountName").is(cond.getAccountNameQ());
-//				else 
-//					criteria = criteria.and("accountName").is(cond.getAccountNameQ());
-//			}
+			if(StringUtility.isNotEmpty(cond.getAccountIdQ()))
+			{
+				UserInfo userInfo = getUserInfoByAccountName(cond.getAccountIdQ());
+				if(userInfo == null)
+					criteria = Criteria.where("userInfo.$id").is("");
+				else if(criteria == null)
+					criteria = Criteria.where("userInfo.$id").is(new ObjectId(userInfo.getId()));
+				else 
+					criteria = criteria.and("userInfo.$id").is(new ObjectId(userInfo.getId()));
+			}
+			
+			if(StringUtility.isNotEmpty(cond.getMenuTitleQ()))
+			{
+				MenuItem menuItem = getMenuitemByTitle(cond.getMenuTitleQ());
+				if(menuItem == null)
+					criteria = criteria.and("menuItem.$id").is("");
+				else 
+					criteria = criteria.and("menuItem.$id").is(menuItem.getId());							
+			}
 			
 			Query query = null;
 			if(criteria != null)
@@ -590,5 +605,38 @@ public class AccountModelImpl implements AccountModel {
 		}
 			
 		return result;
+	}
+
+	@Override
+	public UserInfo getUserInfoByAccountName(String accountName) {
+		UserInfo userInfo = null;
+		
+		try {
+			userInfo = funBackendMongo.findOne(new Query(Criteria.where("accountName").is(accountName)), UserInfo.class);	
+			
+		} 
+		catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+		
+		return userInfo;
+	}
+
+	@Override
+	public MenuItem getMenuitemByTitle(String title) {
+		
+		MenuItem menuItem = null;
+		
+		try {
+			menuItem = funBackendMongo.findOne(new Query(Criteria.where("title").is(title)), MenuItem.class);	
+			
+		} 
+		catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+		
+		return menuItem;
 	}	
 }

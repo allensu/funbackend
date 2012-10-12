@@ -9,12 +9,58 @@
 
 <script type="text/javascript">
 
+var disTable; //保留被DataTables enhanced 過的變數
 $.fx.speeds._default = 1000;
 $(function() {
 
 	$("#toolBar").buttonset();
 	
 	$("#categoryQ").combobox();
+	
+	// Create Btn
+	$("#createBtn").button({
+        icons: {
+            primary: "ui-icon-circle-plus"
+        }
+    }).click(function () {
+
+    });
+	
+	// Read Btn
+	$("#readBtn").button({
+        icons: {
+            primary: "ui-icon-search"
+        }
+    }).click(function () {
+
+    });
+	
+	// Update Btn
+	$("#updateBtn").button({
+        icons: {
+            primary: "ui-icon-wrench"
+        }
+    }).click(function () {
+
+    });
+	
+	// Delete Btn
+	$("#deleteBtn").button({
+        icons: {
+            primary: "ui-icon-circle-close"
+        }
+    }).click(function () {
+       
+    });
+	
+	$("#readSendBtn").button({
+        icons: {
+            primary: "ui-icon-search"
+        }
+    }).click(function () {
+        //$.blockUI({ message: '<div>載入資料中...</div>', overlayCSS: { backgroundColor: '#4297D7'} });
+        readData();
+    });
 	
 	disTable = $('#jtable').dataTable({
         "bJQueryUI": true,
@@ -105,6 +151,11 @@ $(function() {
 	});
 });
 
+function readData() {
+
+	disTable.fnDraw();
+}
+
 function saveEvent(id)
 {
 	var menuAuthId = "";
@@ -169,8 +220,10 @@ function saveEvent(id)
 		<legend>帳號查詢</legend>
 		<p />
 		<form id="queryform">
-			<label>帳號名稱:</label><input id="accountNameQ" name="accountNameQ" type="text" value="" size="20" class="text ui-widget-content ui-corner-all"/><br /><br /> 			
+			<label>帳號名稱:</label><input id="accountIdQ" name="accountIdQ" type="text" value="" size="20" class="text ui-widget-content ui-corner-all"/><br /><br />						
+			<label>功能項目名稱:</label><input id="menuTitleQ" name="menuTitleQ" type="text" value="" size="20" class="text ui-widget-content ui-corner-all"/><br /><br />
 		</form>
+		<button id="readSendBtn" name="readSendBtn">送出</button> 
 	</fieldset>	
 	<br/>
     <br/>

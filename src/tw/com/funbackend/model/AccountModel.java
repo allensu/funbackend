@@ -22,6 +22,13 @@ public interface AccountModel {
 	UserInfo getUserInfo(String accountId);
 	
 	/**
+	 * 取得帳號資訊
+	 * @param accountName
+	 * @return
+	 */
+	UserInfo getUserInfoByAccountName(String accountName);
+	
+	/**
 	 * 取得所有帳號
 	 * @return
 	 */
@@ -183,4 +190,12 @@ public interface AccountModel {
 	 * @return
 	 */
 	List<MenuItem> getMenuItemListAll();
+	
+	/**
+	 * 取得功能項目清單
+	 * @param title
+	 * @return
+	 */
+	MenuItem getMenuitemByTitle(String title);
+	
 }
