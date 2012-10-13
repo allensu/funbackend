@@ -14,7 +14,7 @@
 <script src="../../Script/jquery.blockUI.js" type="text/javascript"></script>
 <script src="../../Script/jquery.gcms.js" type="text/javascript"></script>
 <script src="../../Script/jquery.combobox.js" type="text/javascript"></script>
-<script src="../../Script/jquery.dataTables.js" type="text/javascript"></script>
+<script src="../../Script/jquery.dataTables.js" charset="utf-8"  type="text/javascript"></script>
 <script src="../../Script/gcms.function.js" type="text/javascript"></script>
 <script src="../../Script/gcms.dateformat.js" type="text/javascript"></script>
 

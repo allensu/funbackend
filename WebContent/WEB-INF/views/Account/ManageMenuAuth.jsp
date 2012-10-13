@@ -7,7 +7,7 @@
 <title>帳號功能權限設定</title>
 <jsp:include page="../../views/Common/CommonResource.jsp"></jsp:include>
 
-<script type="text/javascript">
+<script type="text/javascript" charset="utf-8">
 
 var disTable; //保留被DataTables enhanced 過的變數
 $.fx.speeds._default = 1000;
@@ -71,7 +71,8 @@ $(function() {
         "fnServerParams": function ( aoData ) {
         	$.merge(aoData, $("#queryform").serializeArray());
         	
-        	alert(aoData);
+        	//alert($("#queryform").serializeArray());
+        	//alert(aoData);
         }, 
         "aoColumns": [{ "mDataProp": "id", "bSortable": false, "bSearchable": false, "bVisible": false},
 				      { "mDataProp": "userInfo", "bSortable": false,
