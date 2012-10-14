@@ -95,7 +95,7 @@ public interface AccountService {
 	 * @param queryAuth
 	 * @return
 	 */
-	MenuAuth updateMenuAuth(String menuAuthId, boolean newAuth, boolean updateAuth, boolean deleteAuth, boolean queryAuth);
+	MenuAuth updateMenuAuth(String menuAuthId, boolean enabled, boolean newAuth, boolean updateAuth, boolean deleteAuth, boolean queryAuth);
 	
 	/**
 	 * 取得指定的群組項目
@@ -117,6 +117,13 @@ public interface AccountService {
 	 * @return
 	 */
 	boolean removeMenuGroup(String groupId);
+	
+	/**
+	 * 取得該帳號功能清單權限
+	 * @param userInfoId
+	 * @return
+	 */
+	List<MenuAuth> readMenuAuthByUserInfoId(String userInfoId);
 	
 	/**
 	 * 取得條件下的總帳號權限筆數 

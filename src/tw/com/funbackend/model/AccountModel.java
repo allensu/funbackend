@@ -58,7 +58,7 @@ public interface AccountModel {
 	 * @param accountId
 	 * @return
 	 */
-	List<MenuGroup> getMenuList(String accountId);
+	List<MenuGroup> getMenuList(UserInfo userInfo);
 	
 	/**
 	 * 記錄使用者登入時間
@@ -73,11 +73,11 @@ public interface AccountModel {
 	List<UserInfo> readUserAll();
 	
 	/**
-	 * 移除多筆帳號訊息
-	 * @param ids
+	 * 移除帳號
+	 * @param id
 	 * @return
 	 */
-	boolean removeUserInfo(List<String> ids);
+	boolean removeUserInfo(String id);
 	
 	/**
 	 * 建立群組
@@ -165,13 +165,11 @@ public interface AccountModel {
 	int readMenuAuthCountByCond(ManageMenuAuthCondition cond);
 	
 	/**
-	 * 取得條件下分頁帳號權限
-	 * @param cond 查詢條件
-	 * @param startIndex 分頁啟始位置
-	 * @param length 分頁長度
+	 * 取得帳號功能權限清單
+	 * @param userInfoId
 	 * @return
 	 */
-	//List<MenuAuth> readMenuAuthPageByCond(ManageMenuAuthCondition cond, int startIndex, int length);
+	List<MenuAuth> readMenuAuthByUserInfoId(String userInfoId);
 	
 	/**
 	 * 取得條件及排序下分頁帳號權限
@@ -197,5 +195,11 @@ public interface AccountModel {
 	 * @return
 	 */
 	MenuItem getMenuitemByTitle(String title);
-	
+
+	/**
+	 * 刪除帳號權限
+	 * @param userInfoId
+	 * @return
+	 */
+	boolean deleteMenuAuthByUserInfoId(String userInfoId);
 }

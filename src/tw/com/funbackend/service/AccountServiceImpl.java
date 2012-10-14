@@ -97,6 +97,7 @@ public class AccountServiceImpl implements AccountService {
 			
 			if(userInfoResult.getCategory() == UserInfoCategory.Admin)
 			{
+				menuAuth.setEnabled(true);
 				menuAuth.setNewAuth(true);
 				menuAuth.setUpdateAuth(true);
 				menuAuth.setDeleteAuth(true);
@@ -104,6 +105,7 @@ public class AccountServiceImpl implements AccountService {
 			} 
 			else if(userInfoResult.getCategory() == UserInfoCategory.Normal)
 			{
+				menuAuth.setEnabled(true);
 				menuAuth.setNewAuth(false);
 				menuAuth.setUpdateAuth(false);
 				menuAuth.setDeleteAuth(false);
@@ -111,6 +113,7 @@ public class AccountServiceImpl implements AccountService {
 			}
 			else 
 			{
+				menuAuth.setEnabled(false);
 				menuAuth.setNewAuth(false);
 				menuAuth.setUpdateAuth(false);
 				menuAuth.setDeleteAuth(false);
@@ -127,7 +130,9 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public List<MenuGroup> getMenuList(String accountId) {
 			
-		return accountModel.getMenuList(accountId);
+		UserInfo userInfo = accountModel.getUserInfo(accountId);
+		
+		return accountModel.getMenuList(userInfo);
 	}
 
 	@Override
@@ -139,7 +144,24 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public boolean removeUserInfo(List<String> ids) {
 	
-		return accountModel.removeUserInfo(ids);
+		boolean result = false;
+		
+		try 
+		{
+			for(String currId : ids)
+			{
+				accountModel.deleteMenuAuthByUserInfoId(currId);
+				accountModel.removeUserInfo(currId);
+			}
+			
+			result = true;
+		} 
+		catch(Exception ex)
+		{
+			logger.error(ex.getMessage());
+		}
+		
+		return result;
 	}
 
 	@Override
@@ -171,6 +193,7 @@ public class AccountServiceImpl implements AccountService {
 				
 				if(currData.getCategory() == UserInfoCategory.Admin)
 				{
+					menuAuth.setEnabled(true);
 					menuAuth.setNewAuth(true);
 					menuAuth.setUpdateAuth(true);
 					menuAuth.setDeleteAuth(true);
@@ -178,6 +201,7 @@ public class AccountServiceImpl implements AccountService {
 				} 
 				else if(currData.getCategory() == UserInfoCategory.Normal)
 				{
+					menuAuth.setEnabled(true);
 					menuAuth.setNewAuth(false);
 					menuAuth.setUpdateAuth(false);
 					menuAuth.setDeleteAuth(false);
@@ -185,6 +209,7 @@ public class AccountServiceImpl implements AccountService {
 				}
 				else 
 				{
+					menuAuth.setEnabled(false);
 					menuAuth.setNewAuth(false);
 					menuAuth.setUpdateAuth(false);
 					menuAuth.setDeleteAuth(false);
@@ -282,14 +307,14 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public MenuAuth updateMenuAuth(String menuAuthId, boolean newAuth,
+	public MenuAuth updateMenuAuth(String menuAuthId, boolean enabled, boolean newAuth,
 			boolean updateAuth, boolean deleteAuth, boolean queryAuth) {
 		MenuAuth result = new MenuAuth();
 		
 		try 
 		{
 			MenuAuth menuAuth = accountModel.getMenuAuth(menuAuthId);
-			
+			menuAuth.setEnabled(enabled);
 			menuAuth.setNewAuth(newAuth);
 			menuAuth.setUpdateAuth(updateAuth);
 			menuAuth.setDeleteAuth(deleteAuth);
@@ -311,5 +336,11 @@ public class AccountServiceImpl implements AccountService {
 	public MenuAuth getMenuAuth(String menuAuthId) {
 
 		return accountModel.getMenuAuth(menuAuthId);
+	}
+
+	@Override
+	public List<MenuAuth> readMenuAuthByUserInfoId(String userInfoId) {
+
+		return accountModel.readMenuAuthByUserInfoId(userInfoId);
 	}
 }

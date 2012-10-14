@@ -3,6 +3,7 @@ package tw.com.funbackend.pojo;
 import java.util.Date;
 
 public class UserBean {
+	private String userInfoId;
 	private String accountId;
 	private String accountName;
 	private String theme;
@@ -40,6 +41,14 @@ public class UserBean {
 
 	public void setTheme(String theme) {
 		this.theme = theme;
+	}
+
+	public String getUserInfoId() {
+		return userInfoId;
+	}
+
+	public void setUserInfoId(String userInfoId) {
+		this.userInfoId = userInfoId;
 	}
 	
 	

@@ -8,6 +8,7 @@ public class ManageMenuAuthTableSchema {
 	static public String[] MapColumns = {
 		"userInfo",
 		"menuItem",
+		"enabled",
 		"newAuth",
 		"updateAuth",
 		"deleteAuth",
@@ -18,6 +19,7 @@ public class ManageMenuAuthTableSchema {
 	private String id;
 	private UserInfo userInfo;
 	private MenuItem menuItem;
+	private boolean enabled;
 	private boolean newAuth;
 	private boolean updateAuth;
 	private boolean deleteAuth;
@@ -71,5 +73,11 @@ public class ManageMenuAuthTableSchema {
 	}
 	public void setSaveBtnCol(String saveBtnCol) {
 		this.saveBtnCol = saveBtnCol;
+	}
+	public boolean isEnabled() {
+		return enabled;
+	}
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 }

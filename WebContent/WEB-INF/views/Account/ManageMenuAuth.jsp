@@ -67,6 +67,7 @@ $(function() {
         "bServerSide":true,
         "sPaginationType":"full_numbers",
         "bProcessing": true, 
+        "sServerMethod": "POST",
         "sAjaxSource": '/funbackend/controller/Account/ManageMenuAuth/ReadPages',
         "fnServerParams": function ( aoData ) {
         	$.merge(aoData, $("#queryform").serializeArray());
@@ -85,6 +86,17 @@ $(function() {
 					          {					      				
 					      		return oObj.aData.menuItem.title;
 					         }},
+					  { "mDataProp": "enabled", "bSortable": false,
+							  "fnRender": function(oObj)
+							  {
+							  	var checked = "";
+							    if(oObj.aData.enabled)					        	
+							    	checked = "checked";					        	
+							    else 
+							    	checked = "";
+							        	
+							    return "<input id='enabled' name='enabled' type='checkbox' " + checked + " />";	
+							  }},	       
 					  { "mDataProp": "newAuth", "bSortable": false,
 					        "fnRender": function(oObj)
 					        {
@@ -162,6 +174,7 @@ function readData() {
 function saveEvent(id)
 {
 	var menuAuthId = "";
+	var enabled = false;
 	var newAuth = false;
 	var updateAuth = false;
 	var deleteAuth = false;
@@ -173,19 +186,21 @@ function saveEvent(id)
    		
    		//alert(rowData["newAuth"].firstChild.checked);
    		
-        if($(rowData[6].firstChild).attr("menuAuthId") == id)
+        if($(rowData[7].firstChild).attr("menuAuthId") == id)
         {
         	menuAuthId = id;
-        	newAuth = rowData[2].firstChild.checked;
-        	updateAuth = rowData[3].firstChild.checked;
-        	deleteAuth = rowData[4].firstChild.checked;
-        	queryAuth = rowData[5].firstChild.checked;
+        	enabled = rowData[2].firstChild.checked;
+        	newAuth = rowData[3].firstChild.checked;
+        	updateAuth = rowData[4].firstChild.checked;
+        	deleteAuth = rowData[5].firstChild.checked;
+        	queryAuth = rowData[6].firstChild.checked;
         }
 	});
 	
 	
 	var postData = {
 			menuAuthId : menuAuthId,
+			enabled : enabled,
 			newAuth : newAuth,
 			updateAuth : updateAuth,
 			deleteAuth : deleteAuth,
@@ -235,8 +250,9 @@ function saveEvent(id)
     	<thead>
     	<tr>
     		<th>MenuAuthId</th>
-           	<th>帳號名稱</th>
+           	<th>帳號</th>
           	<th>功能項目名稱</th>
+          	<th>有效</th>
            	<th>新增</th>
            	<th>修改</th>
           	<th>刪除</th>
@@ -249,6 +265,7 @@ function saveEvent(id)
       		<td></td>
         	<td></td>
           	<td></td>   
+        	<td></td>   
         	<td></td>  
             <td></td>  
             <td></td>  

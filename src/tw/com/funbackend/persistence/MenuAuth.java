@@ -18,6 +18,8 @@ public class MenuAuth {
 	@DBRef
 	private UserInfo userInfo;
 	
+	private boolean enabled;
+	
 	private boolean newAuth;
 	
 	private boolean updateAuth;
@@ -120,6 +122,14 @@ public class MenuAuth {
 	 */
 	public void setMenuItem(MenuItem menuItem) {
 		this.menuItem = menuItem;
+	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 	
 }

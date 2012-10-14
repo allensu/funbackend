@@ -140,6 +140,7 @@ $(function() {
         "bServerSide":true,
         "sPaginationType":"full_numbers",
         "bProcessing": true, 
+        "sServerMethod": "POST",
         "sAjaxSource": '/funbackend/controller/Member/MemberDataQuery/ReadPages',
         "fnServerParams": function ( aoData ) {
         	$.merge(aoData, $("#queryform").serializeArray());

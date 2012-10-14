@@ -40,7 +40,7 @@ $(function() {
 		modal : true
 	});
 
-	$("#combobox").combobox();
+	$("#category").combobox();
 	$("#createSubmitBtn").button();
 
 	// Create Btn
@@ -285,10 +285,9 @@ function deleteData() {
                 帳號類別 
             </div>
             <div class="editor-field">
-                <select id="combobox">
-					<option value="">Select one...</option>
+                <select id="category" name="category">
+					<option value="Guest" selected>訪客</option>
 					<option value="Normal">一般</option>
-					<option value="Guest">訪客</option>
 					<option value="Admin">管理者</option>
 				</select>
             </div><br />

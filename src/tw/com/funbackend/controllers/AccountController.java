@@ -1,6 +1,7 @@
  package tw.com.funbackend.controllers;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -94,6 +95,7 @@ public class AccountController {
 		{
 			return new ModelAndView("/Account/Login");
 		} else {
+			userBean.setUserInfoId(userInfo.getId());
 			userBean.setAccountId(userInfo.getAccountId());
 			userBean.setAccountName(userInfo.getAccountName());
 			userBean.setTheme(form.getTheme());
@@ -134,9 +136,7 @@ public class AccountController {
 			@ModelAttribute("userBean") UserBean userBean,
 			@ModelAttribute UserInfo userInfo) {
 
-		userInfo.setAccountPass(Encrypt.encodePassword(userInfo
-				.getAccountPass()));
-		userInfo.setCategory(UserInfoCategory.Admin);
+		userInfo.setAccountPass(Encrypt.encodePassword(userInfo.getAccountPass()));
 		userInfo.setCreateDateTime(new Date());
 
 		UserInfo userInfoResult = accountService.createUser(userInfo);
@@ -242,7 +242,28 @@ public class AccountController {
 		// 取得使用帳號的權限
 		List<MenuGroup> menuGroupListResult = accountService
 				.getMenuList(userBean.getAccountId());
-
+		
+		List<MenuAuth> menuAuthList = accountService.readMenuAuthByUserInfoId(userBean.getUserInfoId());
+		
+		Hashtable<String, MenuAuth> menuAuthKV = new Hashtable<String, MenuAuth>();
+		
+		for(MenuAuth currMAData : menuAuthList) {
+			menuAuthKV.put(currMAData.getMenuItem().getId(), currMAData);
+		}
+		
+		for(MenuGroup currData : menuGroupListResult) {
+			List<MenuItem> enabledMenuItemList = new ArrayList<MenuItem>();
+			
+			for(MenuItem currMIData : currData.getContent()) {
+				if(menuAuthKV.get(currMIData.getId()).isEnabled())
+				{
+					enabledMenuItemList.add(currMIData);
+				}
+			}
+			
+			currData.setContent(enabledMenuItemList);
+		}
+		
 		return menuGroupListResult;
 	}
 	
@@ -413,7 +434,7 @@ public class AccountController {
 	 * 取得分頁帳號資料
 	 * @return
 	 */
-	@RequestMapping(value = "/Account/ManageMenuAuth/ReadPages")
+	@RequestMapping(value = "/Account/ManageMenuAuth/ReadPages", method = RequestMethod.POST)
 	public @ResponseBody ManageMenuAuthDataTableResult readPagesManageMenuAuth(
 			@ModelAttribute ManageMenuAuthCondition qCondition,
 			@ModelAttribute DataTableQueryParam tableParm) {
@@ -421,7 +442,9 @@ public class AccountController {
 		ManageMenuAuthDataTableResult result = new ManageMenuAuthDataTableResult();
 		List<MenuAuth> menuAuthDataList = new ArrayList<MenuAuth>();
 		
+		
 		try {
+			
 			// 排序處理
 			String orderColName = ManageMenuAuthTableSchema.MapColumns[tableParm.getiSortCol_0()];
 			int sortDir = OrderDirection.asc.toString().equals(tableParm.getsSortDir_0()) ? 1 : -1;
@@ -448,6 +471,7 @@ public class AccountController {
 				data.setId(currData.getId());
 				data.setUserInfo(currData.getUserInfo());
 				data.setMenuItem(currData.getMenuItem());
+				data.setEnabled(currData.isEnabled());
 				data.setNewAuth(currData.isNewAuth());
 				data.setUpdateAuth(currData.isUpdateAuth());
 				data.setDeleteAuth(currData.isDeleteAuth());
@@ -479,6 +503,7 @@ public class AccountController {
 	public @ResponseBody MenuAuth updateMenuAuth(
 			@ModelAttribute("userBean") UserBean userBean,
 			@RequestParam(value="menuAuthId") String menuAuthId,
+			@RequestParam(value="enabled") boolean enabled,
 			@RequestParam(value="newAuth") boolean newAuth,
 			@RequestParam(value="updateAuth") boolean updateAuth,
 			@RequestParam(value="deleteAuth") boolean deleteAuth,
@@ -488,7 +513,7 @@ public class AccountController {
 		
 		try 
 		{
-			result = accountService.updateMenuAuth(menuAuthId, newAuth, updateAuth, deleteAuth, queryAuth);				
+			result = accountService.updateMenuAuth(menuAuthId, enabled, newAuth, updateAuth, deleteAuth, queryAuth);				
 		}
 		catch(Exception ex)
 		{

@@ -10,6 +10,10 @@ import tw.com.funbackend.enumeration.UserInfoCategory;
 @Document
 public class UserInfo {
 	
+	public static String admin = "Admin";
+	public static String normal = "Normal";
+	public static String guest = "Guest";
+	
 	/**
 	 * Mongo Id
 	 */
