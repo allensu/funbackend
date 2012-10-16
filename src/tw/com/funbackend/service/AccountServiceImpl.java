@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import tw.com.funbackend.enumeration.FunctionalType;
 import tw.com.funbackend.enumeration.UserInfoCategory;
 import tw.com.funbackend.form.querycond.ManageMenuAuthCondition;
 import tw.com.funbackend.model.AccountModel;
@@ -342,5 +343,34 @@ public class AccountServiceImpl implements AccountService {
 	public List<MenuAuth> readMenuAuthByUserInfoId(String userInfoId) {
 
 		return accountModel.readMenuAuthByUserInfoId(userInfoId);
+	}
+
+	@Override
+	public boolean hasFuncationalAuth(FunctionalType functionalType,
+			String userInfoId, String menuItemId) {
+
+		boolean result = false;
+		
+		try {			
+			
+			MenuAuth menuAuth = accountModel.getMenuAuth(userInfoId, menuItemId);
+			
+			if(menuAuth == null)
+				result = false;
+			else {
+				if(functionalType == FunctionalType.NewAuth)
+					result = menuAuth.isNewAuth();
+				else if(functionalType == FunctionalType.UpdateAuth)
+					result = menuAuth.isUpdateAuth();
+				else if(functionalType == FunctionalType.DeleteAuth)
+					result = menuAuth.isDeleteAuth();
+				else if(functionalType == FunctionalType.QueryAuth)
+					result = menuAuth.isQueryAuth();
+			}
+		} catch(Exception ex) {
+			logger.error(ex.getMessage());
+		}
+		
+		return result;
 	}
 }

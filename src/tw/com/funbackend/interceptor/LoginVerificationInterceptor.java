@@ -34,6 +34,11 @@ public class LoginVerificationInterceptor extends HandlerInterceptorAdapter {
 				return false;
 			} else {
 				logger.info(userBean.getAccountId() + " : " + pathInfo);
+				
+				
+				
+				
+				
 				return super.preHandle(request, response, handler);
 			}
 		}

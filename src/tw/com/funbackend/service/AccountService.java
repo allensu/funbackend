@@ -2,6 +2,7 @@ package tw.com.funbackend.service;
 
 import java.util.List;
 
+import tw.com.funbackend.enumeration.FunctionalType;
 import tw.com.funbackend.form.querycond.ManageMenuAuthCondition;
 import tw.com.funbackend.persistence.MenuAuth;
 import tw.com.funbackend.persistence.MenuGroup;
@@ -143,4 +144,12 @@ public interface AccountService {
 	 */
 	List<MenuAuth> readMenuAuthPageByCondSort(ManageMenuAuthCondition cond, int startIndex, int length, String sortColName, int sortDir);
 	
+	/**
+	 * 取得帳號是否有功能項目權限
+	 * @param functionalType
+	 * @param userInfoId
+	 * @param menuItemId
+	 * @return
+	 */
+	boolean hasFuncationalAuth(FunctionalType functionalType, String userInfoId, String menuItemId);
 }

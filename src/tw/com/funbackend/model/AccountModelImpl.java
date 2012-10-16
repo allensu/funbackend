@@ -675,6 +675,24 @@ public class AccountModelImpl implements AccountModel {
 		}
 		
 		return false;
+	}
+
+	@Override
+	public MenuAuth getMenuAuth(String userInfoId, String menuItemId) {
+		
+		MenuAuth result = new MenuAuth();
+		
+		try {
+			Criteria criteria = new Criteria();
+			criteria = Criteria.where("userInfo.$id").is(new ObjectId(userInfoId));
+			criteria = criteria.and("menuItem.$id").is(menuItemId);										
+			Query query = new Query(criteria);				
+			result = funBackendMongo.findOne(query, MenuAuth.class);
+		} catch(Exception ex) {
+			logger.error(ex.getMessage());
+		}
+			
+		return result;
 	}	
 	
 	

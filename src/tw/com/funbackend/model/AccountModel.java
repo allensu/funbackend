@@ -202,4 +202,12 @@ public interface AccountModel {
 	 * @return
 	 */
 	boolean deleteMenuAuthByUserInfoId(String userInfoId);
+	
+	/**
+	 * 取得帳號功能權限
+	 * @param userInfoId
+	 * @param menuItemId
+	 * @return
+	 */
+	MenuAuth getMenuAuth(String userInfoId, String menuItemId);
 }
