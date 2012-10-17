@@ -104,6 +104,11 @@ $(function() {
             primary: "ui-icon-wrench"
         }
     }).click(function () {
+    	
+    	hasFunAuth();
+    	
+    	
+    	
     	$.blockUI({ message: '<div>儲存資料中...</div>', overlayCSS: { backgroundColor: '#4297D7'} });
     	updateData(); 
     });
@@ -310,6 +315,25 @@ $(function() {
 	
 	changeField("queryFormField");
 });
+
+
+function hasFunAuth()
+{
+	var postData = {
+			authType : "UpdateAuth",
+			menuItemId : "MemberDataQuery"
+    	};
+    	  
+        $.ajax({
+      		type : "GET",
+      		url : "/funbackend/controller/Account/ManageMenuAuth/HasFunAuth",
+      		data : postData,
+      		success : function(data) {
+      					
+				alert(data.resultCode); 			      				
+      		}
+        });	
+}
 
 function reloadPhoto()
 {

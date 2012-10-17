@@ -33,10 +33,12 @@ import org.springframework.web.servlet.view.json.JsonView;
 
 import com.mchange.v2.c3p0.stmt.GooGooStatementCache;
 
+import tw.com.funbackend.enumeration.FunctionalType;
 import tw.com.funbackend.enumeration.OrderDirection;
 import tw.com.funbackend.enumeration.UserInfoCategory;
 import tw.com.funbackend.form.AccountLoginForm;
 import tw.com.funbackend.form.DataTableQueryParam;
+import tw.com.funbackend.form.SimpleResult;
 import tw.com.funbackend.form.querycond.GraffitiWallCondition;
 import tw.com.funbackend.form.querycond.ManageMenuAuthCondition;
 import tw.com.funbackend.form.result.GraffitiWallDataTableResult;
@@ -517,6 +519,39 @@ public class AccountController {
 		}
 		catch(Exception ex)
 		{
+			logger.error(ex.getMessage());
+		}
+		
+		return result;
+	}
+	
+	@RequestMapping(value = "/Account/ManageMenuAuth/HasFunAuth", method = RequestMethod.GET)
+	public @ResponseBody SimpleResult hasFunAuth(
+			@ModelAttribute("userBean") UserBean userBean,
+			@RequestParam(value="authType") String authType,
+			@RequestParam(value="menuItemId") String menuItemId) {
+
+		SimpleResult result = new SimpleResult();
+		
+		try {
+			
+			boolean funAuthResult = false;
+					
+			if(FunctionalType.NewAuth.toString().equals(authType))
+				funAuthResult = accountService.hasFuncationalAuth(FunctionalType.NewAuth, userBean.getUserInfoId(), menuItemId);
+			else if(FunctionalType.UpdateAuth.toString().equals(authType))
+				funAuthResult = accountService.hasFuncationalAuth(FunctionalType.UpdateAuth, userBean.getUserInfoId(), menuItemId);
+			else if(FunctionalType.DeleteAuth.toString().equals(authType))
+				funAuthResult = accountService.hasFuncationalAuth(FunctionalType.DeleteAuth, userBean.getUserInfoId(), menuItemId);
+			else if(FunctionalType.QueryAuth.toString().equals(authType))
+				funAuthResult = accountService.hasFuncationalAuth(FunctionalType.QueryAuth, userBean.getUserInfoId(), menuItemId);
+			
+			if(funAuthResult)
+				result.setResultCode(0);
+			else 
+				result.setResultCode(-1);
+			
+		} catch(Exception ex) {
 			logger.error(ex.getMessage());
 		}
 		
