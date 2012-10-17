@@ -41,7 +41,7 @@ $(function() {
 		}
 	}).click(function() {
 
-		createData();
+		executeFun("NewAuth");
 	});
 
 	// Read Btn
@@ -65,15 +65,8 @@ $(function() {
 			primary : "ui-icon-circle-close"
 		}
 	}).click(function() {
-		var checkedCount = $('#jtable input:checked').length;
-
-		if (checkedCount > 0)
-			$.blockUI({
-				message : $('#question'),
-				css : {
-					width : '275px'
-				}
-			});
+		
+		executeFun("DeleteAuth");
 	});
 
 	$('#yes').button().click(function() {
@@ -113,6 +106,45 @@ $(function() {
 		}
 	});
 });
+
+function executeFun(authType)
+{
+	var postData = {
+			authType : authType,
+			menuItemId : "MqttManage"
+    	};
+    	  
+        $.ajax({
+      		type : "GET",
+      		url : "/funbackend/controller/Account/ManageMenuAuth/HasFunAuth",
+      		data : postData,
+      		success : function(data) {
+      					
+				//alert(data.resultCode); 
+				
+				if(data.resultCode == -1)
+				{
+					alert("使用者無此權限");
+				}
+				else if(authType == "NewAuth")
+				{
+					createData();
+				}
+				else if(authType == "DeleteAuth")
+				{
+					var checkedCount = $('#jtable input:checked').length;
+
+					if (checkedCount > 0)
+						$.blockUI({
+							message : $('#question'),
+							css : {
+								width : '275px'
+							}
+						});
+				}	
+      		}
+        });	
+}
 
 function dataEachRowAdd(data)
 {

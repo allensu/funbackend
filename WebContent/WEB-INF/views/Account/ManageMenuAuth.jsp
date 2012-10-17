@@ -166,13 +166,39 @@ $(function() {
 	});
 });
 
+function ExecuteFun(authType)
+{
+	var postData = {
+			authType : authType,
+			menuItemId : "ManageMenuAuth"
+    	};
+    	  
+        $.ajax({
+      		type : "GET",
+      		url : "/funbackend/controller/Account/ManageMenuAuth/HasFunAuth",
+      		data : postData,
+      		success : function(data) {
+
+				if(data.resultCode == -1)
+				{
+					alert("使用者無此權限");
+				}
+				else if(authType == "UpdateAuth")
+				{
+					updateData();
+				}		
+      		}
+        });	
+}
+
 function readData() {
 
 	disTable.fnDraw();
 }
 
-function saveEvent(id)
+function updateData()
 {
+
 	var menuAuthId = "";
 	var enabled = false;
 	var newAuth = false;
@@ -219,7 +245,11 @@ function saveEvent(id)
 		dataType : "json",
 		traditional : true
 	});
-		
+}
+
+function saveEvent(id)
+{
+	ExecuteFun("UpdateAuth");
 }
 
 

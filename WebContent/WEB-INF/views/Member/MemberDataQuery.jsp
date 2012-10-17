@@ -105,12 +105,7 @@ $(function() {
         }
     }).click(function () {
     	
-    	hasFunAuth();
-    	
-    	
-    	
-    	$.blockUI({ message: '<div>儲存資料中...</div>', overlayCSS: { backgroundColor: '#4297D7'} });
-    	updateData(); 
+    	executeFun("UpdateAuth");
     });
 	
 	$('#uploadBtn').button({
@@ -317,10 +312,10 @@ $(function() {
 });
 
 
-function hasFunAuth()
+function executeFun(authType)
 {
 	var postData = {
-			authType : "UpdateAuth",
+			authType : authType,
 			menuItemId : "MemberDataQuery"
     	};
     	  
@@ -330,7 +325,17 @@ function hasFunAuth()
       		data : postData,
       		success : function(data) {
       					
-				alert(data.resultCode); 			      				
+				//alert(data.resultCode); 
+				
+				if(data.resultCode == -1)
+				{
+					alert("使用者無此權限");
+				}
+				else if(authType == "UpdateAuth")
+				{
+			    	$.blockUI({ message: '<div>儲存資料中...</div>', overlayCSS: { backgroundColor: '#4297D7'} });
+			    	updateData(); 	
+				}	
       		}
         });	
 }

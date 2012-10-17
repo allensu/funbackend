@@ -50,10 +50,8 @@ $(function() {
 			primary : "ui-icon-circle-plus"
 		}
 	}).click(function() {		
-		groupDialogStatus = "create";
-		$('#title').val('');
-		$("#dialog:ui-dialog").dialog( "destroy" );
-		$("#dialog-form-Group").dialog("open");
+		groupExecuteFun("NewAuth");
+		
 	});
 	// Create Btn
 	$("#createBtn-item").button({
@@ -61,17 +59,8 @@ $(function() {
 			primary : "ui-icon-circle-plus"
 		}
 	}).click(function() {		
-		itemDialogStatus = "create";
-		$('#groupName').val(defaultGroupTitle);	
-		$('#groupId').val(defaultGroupId);
 		
-		$('#groupName').css("display", "");
-		$('#groupNameSel').css("display", "none");
-		
-		$('#itemId').removeAttr('disabled');
-		
-		$("#dialog:ui-dialog").dialog( "destroy" );
-		$("#dialog-form-Item").dialog("open");			
+		itemExecuteFun("NewAuth");
 	});
 	
 	// Read Btn
@@ -110,12 +99,8 @@ $(function() {
 		}
 	}).click(function() {
 		
-		groupDialogStatus = "update";
-		$('#title').val(defaultGroupTitle);
-		
-		$("#dialog:ui-dialog").dialog("destroy");
-		$("#dialog-form-Group").dialog("open");
-		return false;		
+		groupExecuteFun("UpdateAuth");
+		//return false;		
 	});
 	// Update Btn
 	$("#updateBtn-item").button({
@@ -124,39 +109,7 @@ $(function() {
 		}
 	}).click(function() {
 
-		itemDialogStatus = "update";
-		$('#groupName').css("display", "none");
-		$('#groupNameSel').css("display", "");
-		$('#groupId').val(defaultGroupId);
-		
-		$('#itemId').attr("disabled", true);
-		
-		$("#dialog:ui-dialog").dialog( "destroy" );
-		$("#dialog-form-Item").dialog("open");	
-		
-		//$("#groupNameSel").combobox();
-		//  移除全部的項目
-		$("#groupNameSel option").remove();
-
-		$.each(menuGroupData, function (k, v) {
-			
-			if(defaultGroupTitle == v.title)
-				$('#groupNameSel').append('<option value="' + v.id + '" selected>' + v.title + '</option>');
-			else 
-				$('#groupNameSel').append('<option value="' + v.id + '">' + v.title + '</option>');     		
-		});
-		
-		
-		$('#jtable-item tr').each(function() {    
-	          var rowData = this.cells;
-	     	
-	          if(rowData[0].firstChild.checked == true)
-	       	  {	
-	       		$('#itemId').val(rowData[0].firstChild.value);
-	        	$('#itemTitle').val(rowData[2].firstChild.textContent);  
-	        	$('#itemUrl').val(rowData[3].firstChild.textContent);
-	      	  }
-		});
+		itemExecuteFun("UpdateAuth");
 	});
 	
 	// Delete Btn
@@ -165,16 +118,8 @@ $(function() {
 			primary : "ui-icon-circle-close"
 		}
 	}).click(function() {
-		var checkedCount = $('#jtable-group input:checked').length;
-		deleteFrom = "GroupItem";
-		
-		if (checkedCount > 0)
-			$.blockUI({
-				message : $('#question'),
-				css : {
-					width : '275px'
-				}
-			});
+
+		groupExecuteFun("DeleteAuth");
 	});
 	// Delete Btn
 	$("#deleteBtn-item").button({
@@ -182,16 +127,9 @@ $(function() {
 			primary : "ui-icon-circle-close"
 		}
 	}).click(function() {
-		var checkedCount = $('#jtable-item input:checked').length;
-		deleteFrom = "MenuItem";
 		
-		if (checkedCount > 0)
-			$.blockUI({
-				message : $('#question'),
-				css : {
-					width : '275px'
-				}
-			});
+		itemExecuteFun("DeleteAuth");
+		
 	});
 	
 	$('#yes').button().click(function() {
@@ -224,19 +162,154 @@ $(function() {
 		
 		if(groupDialogStatus == "create")
 			createDataGroup();
+			//groupExecuteFun("NewAuth");
 		else if(groupDialogStatus == "update")
 			updateDataGroup();
+			//groupExecuteFun("UpdateAuth");
 	});
 	$("#createSubmitBtn-Item").button().click(function() {
 				
 		if(itemDialogStatus == "create")
 			createDataMenuItem();
+			//itemExecuteFun("NewAuth");
 		else if(itemDialogStatus == "update")
-			updateDataMenuItem();		
+			updateDataMenuItem();
+			//itemExecuteFun("UpdateAuth");
 	});
 	
 	readDataGroup();
 });
+
+function groupExecuteFun(authType)
+{
+	var postData = {
+			authType : authType,
+			menuItemId : "ManageMenu"
+    	};
+    	  
+        $.ajax({
+      		type : "GET",
+      		url : "/funbackend/controller/Account/ManageMenuAuth/HasFunAuth",
+      		data : postData,
+      		success : function(data) {
+
+				if(data.resultCode == -1)
+				{
+					alert("使用者無此權限");
+				}
+				else if(authType == "NewAuth")
+				{
+					groupDialogStatus = "create";
+					$('#title').val('');
+					$("#dialog:ui-dialog").dialog( "destroy" );
+					$("#dialog-form-Group").dialog("open");
+				}
+				else if(authType == "DeleteAuth")
+				{
+					var checkedCount = $('#jtable-group input:checked').length;
+					deleteFrom = "GroupItem";
+					
+					if (checkedCount > 0)
+						$.blockUI({
+							message : $('#question'),
+							css : {
+								width : '275px'
+							}
+						});
+				}
+				else if(authType == "UpdateAuth")
+				{
+					groupDialogStatus = "update";
+					$('#title').val(defaultGroupTitle);
+					$("#dialog:ui-dialog").dialog("destroy");
+					$("#dialog-form-Group").dialog("open");
+				}		
+      		}
+        });	
+}
+
+function itemExecuteFun(authType)
+{
+	var postData = {
+			authType : authType,
+			menuItemId : "ManageMenu"
+    	};
+    	  
+        $.ajax({
+      		type : "GET",
+      		url : "/funbackend/controller/Account/ManageMenuAuth/HasFunAuth",
+      		data : postData,
+      		success : function(data) {
+
+				if(data.resultCode == -1)
+				{
+					alert("使用者無此權限");
+				}
+				else if(authType == "NewAuth")
+				{
+					//createDataMenuItem();
+					itemDialogStatus = "create";
+					$('#groupName').val(defaultGroupTitle);	
+					$('#groupId').val(defaultGroupId);
+					$('#groupName').css("display", "");
+					$('#groupNameSel').css("display", "none");
+					$('#itemId').removeAttr('disabled');
+					$("#dialog:ui-dialog").dialog( "destroy" );
+					$("#dialog-form-Item").dialog("open");	
+				}
+				else if(authType == "DeleteAuth")
+				{
+					var checkedCount = $('#jtable-item input:checked').length;
+					deleteFrom = "MenuItem";
+					
+					if (checkedCount > 0)
+						$.blockUI({
+							message : $('#question'),
+							css : {
+								width : '275px'
+							}
+						});
+				}
+				else if(authType == "UpdateAuth")
+				{
+					//updateDataMenuItem();
+					itemDialogStatus = "update";
+					$('#groupName').css("display", "none");
+					$('#groupNameSel').css("display", "");
+					$('#groupId').val(defaultGroupId);
+					
+					$('#itemId').attr("disabled", true);
+					
+					$("#dialog:ui-dialog").dialog( "destroy" );
+					$("#dialog-form-Item").dialog("open");	
+					
+					//$("#groupNameSel").combobox();
+					//  移除全部的項目
+					$("#groupNameSel option").remove();
+
+					$.each(menuGroupData, function (k, v) {
+						
+						if(defaultGroupTitle == v.title)
+							$('#groupNameSel').append('<option value="' + v.id + '" selected>' + v.title + '</option>');
+						else 
+							$('#groupNameSel').append('<option value="' + v.id + '">' + v.title + '</option>');     		
+					});
+					
+					
+					$('#jtable-item tr').each(function() {    
+				          var rowData = this.cells;
+				     	
+				          if(rowData[0].firstChild.checked == true)
+				       	  {	
+				       		$('#itemId').val(rowData[0].firstChild.value);
+				        	$('#itemTitle').val(rowData[2].firstChild.textContent);  
+				        	$('#itemUrl').val(rowData[3].firstChild.textContent);
+				      	  }
+					});
+				}		
+      		}
+        });	
+}
 
 var menuGroupKV = [];
 var menuItemKV = [];
