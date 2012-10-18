@@ -1,9 +1,11 @@
 package tw.com.funbackend.form.querycond;
 
 public class GraffitiWallCondition {
-	public String categoryQ;
-	public String wallOwnerQ;
-	public String posterQ;
+	private String categoryQ;
+	private String wallOwnerId;
+	private String wallOwnerQ;
+	private String posterId;
+	private String posterQ;
 	
 	/**
 	 * @return the categoryQ
@@ -40,5 +42,29 @@ public class GraffitiWallCondition {
 	 */
 	public void setPosterQ(String posterQ) {
 		this.posterQ = posterQ;
+	}
+	/**
+	 * @return the wallOwnerId
+	 */
+	public String getWallOwnerId() {
+		return wallOwnerId;
+	}
+	/**
+	 * @param wallOwnerId the wallOwnerId to set
+	 */
+	public void setWallOwnerId(String wallOwnerId) {
+		this.wallOwnerId = wallOwnerId;
+	}
+	/**
+	 * @return the posterId
+	 */
+	public String getPosterId() {
+		return posterId;
+	}
+	/**
+	 * @param posterId the posterId to set
+	 */
+	public void setPosterId(String posterId) {
+		this.posterId = posterId;
 	}	
 }

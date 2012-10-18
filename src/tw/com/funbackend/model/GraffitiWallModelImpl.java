@@ -19,6 +19,7 @@ import com.mongodb.DBObject;
 import tw.com.funbackend.form.querycond.GraffitiWallCondition;
 import tw.com.funbackend.persistence.gopartyon.Chatroom;
 import tw.com.funbackend.persistence.gopartyon.GraffitiWallItem;
+import tw.com.funbackend.pojo.GraffitiWallRank;
 import tw.com.funbackend.utility.GeoUtility;
 import tw.com.funbackend.utility.StringUtility;
 
@@ -43,12 +44,12 @@ protected Logger logger = Logger.getLogger("model");
 			if("All".equals(cond.getCategoryQ()) == false)
 				parameter.put("category", cond.getCategoryQ());
 			
-//			if(StringUtility.isNotEmpty(cond.getWallOwnerQ()))
-//				parameter.put("wallOwnerQ", cond.getWallOwnerQ());
-//			
-//			if(StringUtility.isNotEmpty(cond.getPosterQ()))
-//				parameter.put("posterQ", cond.getPosterQ());
-//			
+			if(StringUtility.isNotEmpty(cond.getWallOwnerId()))
+				parameter.put("wallOwner.$id", cond.getWallOwnerId());
+			
+			if(StringUtility.isNotEmpty(cond.getPosterId()))
+				parameter.put("poster.$id", cond.getPosterId());
+			
 			count = (int) graffitiWallItemColl.count(parameter);
 		} 
 		catch(Exception ex)
@@ -73,21 +74,21 @@ protected Logger logger = Logger.getLogger("model");
 			if("All".equals(cond.getCategoryQ()) == false)
 				criteria = Criteria.where("category").is(cond.getCategoryQ());
 		
-//			if(StringUtility.isNotEmpty(cond.getWallOwnerQ()))
-//			{
-//				if(criteria == null)
-//					criteria = Criteria.where("wallOwnerQ").is(cond.getWallOwnerQ());
-//				else 
-//					criteria = criteria.and("wallOwnerQ").is(cond.getWallOwnerQ());
-//			}
-//			
-//			if(StringUtility.isNotEmpty(cond.getPosterQ()))
-//			{
-//				if(criteria == null)
-//					criteria = Criteria.where("posterQ").is(cond.getPosterQ());
-//				else 
-//					criteria = criteria.and("posterQ").is(cond.getPosterQ());
-//			}	
+			if(StringUtility.isNotEmpty(cond.getWallOwnerId()))
+			{
+				if(criteria == null)
+					criteria = Criteria.where("wallOwner.$id").is(cond.getWallOwnerId());
+				else 
+					criteria = criteria.and("wallOwner.$id").is(cond.getWallOwnerId());
+			}
+			
+			if(StringUtility.isNotEmpty(cond.getPosterId()))
+			{
+				if(criteria == null)
+					criteria = Criteria.where("poster.$id").is(cond.getPosterId());
+				else 
+					criteria = criteria.and("poster.$id").is(cond.getPosterId());
+			}	
 			
 			Query query = null;
 			if(criteria != null)
@@ -121,21 +122,21 @@ protected Logger logger = Logger.getLogger("model");
 			if("All".equals(cond.getCategoryQ()) == false)
 				criteria = Criteria.where("category").is(cond.getCategoryQ());
 		
-//			if(StringUtility.isNotEmpty(cond.getWallOwnerQ()))
-//			{
-//				if(criteria == null)
-//					criteria = Criteria.where("wallOwnerQ").is(cond.getWallOwnerQ());
-//				else 
-//					criteria = criteria.and("wallOwnerQ").is(cond.getWallOwnerQ());
-//			}
-//			
-//			if(StringUtility.isNotEmpty(cond.getPosterQ()))
-//			{
-//				if(criteria == null)
-//					criteria = Criteria.where("posterQ").is(cond.getPosterQ());
-//				else 
-//					criteria = criteria.and("posterQ").is(cond.getPosterQ());
-//			}	
+			if(StringUtility.isNotEmpty(cond.getWallOwnerId()))
+			{
+				if(criteria == null)
+					criteria = Criteria.where("wallOwner.$id").is(cond.getWallOwnerId());
+				else 
+					criteria = criteria.and("wallOwner.$id").is(cond.getWallOwnerId());
+			}
+			
+			if(StringUtility.isNotEmpty(cond.getPosterId()))
+			{
+				if(criteria == null)
+					criteria = Criteria.where("poster.$id").is(cond.getPosterId());
+				else 
+					criteria = criteria.and("poster.$id").is(cond.getPosterId());
+			}	
 			
 			Query query = null;
 			
@@ -160,6 +161,29 @@ protected Logger logger = Logger.getLogger("model");
 		}
 		
 		return resultFinal;
+	}
+
+	@Override
+	public List<GraffitiWallRank> readGraffitiWallRanking() {
+
+		List<GraffitiWallRank> result = new ArrayList<GraffitiWallRank>();
+		
+		try {
+//			PRIMARY> db.graffitiWallItem.group ({key:{"poster.$id":true},
+//			... initial:{totalCount:0,postMessage:0,wantTo:0,checkIn:0},
+//			... reduce:function(doc,out){out.totalCount++;if(doc.category=="post-message"){out.postMessage++;}
+//			... else if(doc.category=="want-to"){out.wantTo++;}
+//			... else if(doc.category=="check-in"){out.checkIn++;}},
+//			... finalize:function(out){}});
+		
+			
+			
+		} catch(Exception ex) {
+			logger.error(ex.getMessage());
+		}
+			
+
+		return result;
 	}
 
 }
