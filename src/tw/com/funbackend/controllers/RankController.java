@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import tw.com.funbackend.form.tableschema.BlockUserRankTableSchema;
+import tw.com.funbackend.form.tableschema.GraffitiWallRankTableSchema;
 import tw.com.funbackend.pojo.UserBean;
+import tw.com.funbackend.service.GraffitiWallService;
 import tw.com.funbackend.service.MemberService;
 
 @SessionAttributes("userBean")
@@ -24,6 +26,9 @@ public class RankController {
 	
 	@Autowired
 	private MemberService memberService;
+	
+	@Autowired
+	private GraffitiWallService graffitiWallService;
 	
 	/**
 	 * 會員黑名單
@@ -74,6 +79,20 @@ public class RankController {
 	public @ResponseBody List<BlockUserRankTableSchema> getBlockUserRank(@ModelAttribute("userBean") UserBean userBean) {
 		
 		List<BlockUserRankTableSchema> result = memberService.getBlockUserRank();
+		
+		
+		return result;
+	}
+	
+	/**
+	 * 取得Po文排行榜
+	 * @param userBean
+	 * @return
+	 */
+	@RequestMapping(value = "/GraffitiWallRank/Read", method = RequestMethod.GET)
+	public @ResponseBody List<GraffitiWallRankTableSchema> getGraffitiWallRank(@ModelAttribute("userBean") UserBean userBean) {
+		
+		List<GraffitiWallRankTableSchema> result = graffitiWallService.readGraffitiWallRanking();
 		
 		
 		return result;

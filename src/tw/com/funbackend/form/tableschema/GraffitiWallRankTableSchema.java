@@ -1,9 +1,21 @@
-package tw.com.funbackend.pojo;
+package tw.com.funbackend.form.tableschema;
 
-public class GraffitiWallRank {
-
+public class GraffitiWallRankTableSchema {
+	
+	static public String[] MapColumns = {
+		///"",
+		"posterName",
+		"posterDisplayName",
+		"totalCount",
+		"postMessage",
+		"wantTo",
+		"checkIn",
+		//""
+		};
+	
 	private String posterId;
 	private String posterName;
+	private String posterDisplayName;
 	private int totalCount;
 	private int postMessage;
 	private int wantTo;
@@ -80,6 +92,12 @@ public class GraffitiWallRank {
 	 */
 	public void setCheckIn(int checkIn) {
 		this.checkIn = checkIn;
+	}
+	public String getPosterDisplayName() {
+		return posterDisplayName;
+	}
+	public void setPosterDisplayName(String posterDisplayName) {
+		this.posterDisplayName = posterDisplayName;
 	}
 	
 	

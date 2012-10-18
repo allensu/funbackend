@@ -1,5 +1,6 @@
 package tw.com.funbackend.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import tw.com.funbackend.form.querycond.GraffitiWallCondition;
+import tw.com.funbackend.form.tableschema.GraffitiWallRankTableSchema;
 import tw.com.funbackend.model.ChatroomModel;
 import tw.com.funbackend.model.GraffitiWallModel;
 import tw.com.funbackend.model.MemberModel;
@@ -26,7 +28,7 @@ public class GraffitiWallServiceImpl implements GraffitiWallService {
 	@Override
 	public int readGraffitiWallCountByCond(GraffitiWallCondition cond) {
 		
-		if(cond.getCategoryQ() != null && !"".equals(cond.getCategoryQ()))
+		if(cond.getPosterQ() != null && !"".equals(cond.getPosterQ()))
 		{
 			User posterUser = memberModel.readUserByUserName(cond.getPosterQ());
 			cond.setPosterId(posterUser.getId());
@@ -45,7 +47,7 @@ public class GraffitiWallServiceImpl implements GraffitiWallService {
 	public List<GraffitiWallItem> readGraffitiWallPageByCond(
 			GraffitiWallCondition cond, int startIndex, int length) {	
 		
-		if(cond.getCategoryQ() != null && !"".equals(cond.getCategoryQ()))
+		if(cond.getPosterQ() != null && !"".equals(cond.getPosterQ()))
 		{
 			User posterUser = memberModel.readUserByUserName(cond.getPosterQ());
 			cond.setPosterId(posterUser.getId());
@@ -65,7 +67,7 @@ public class GraffitiWallServiceImpl implements GraffitiWallService {
 			GraffitiWallCondition cond, int startIndex, int length,
 			String sortColName, int sortDir) {
 
-		if(cond.getCategoryQ() != null && !"".equals(cond.getCategoryQ()))
+		if(cond.getPosterQ() != null && !"".equals(cond.getPosterQ()))
 		{
 			User posterUser = memberModel.readUserByUserName(cond.getPosterQ());
 			cond.setPosterId(posterUser.getId());
@@ -78,6 +80,28 @@ public class GraffitiWallServiceImpl implements GraffitiWallService {
 		}
 		
 		return graffitiWallModel.readGraffitiWallPageByCondSort(cond, startIndex, length, sortColName, sortDir);
+	}
+
+	@Override
+	public List<GraffitiWallRankTableSchema> readGraffitiWallRanking() {
+		
+		List<GraffitiWallRankTableSchema> result = new ArrayList<GraffitiWallRankTableSchema>();
+		
+		try {
+			result = graffitiWallModel.readGraffitiWallRanking();
+			
+			for(GraffitiWallRankTableSchema currData : result)
+			{
+				User user = memberModel.readUser(currData.getPosterId());		
+				currData.setPosterName(user.getUserName());
+				currData.setPosterDisplayName(user.getDisplayName());
+			}
+			
+		} catch(Exception ex) {
+			logger.error(ex.getMessage());
+		}
+		
+		return result;
 	}
 	
 	

@@ -4,9 +4,9 @@ import java.util.List;
 
 import tw.com.funbackend.form.querycond.ChatroomMessageRecordCondition;
 import tw.com.funbackend.form.querycond.GraffitiWallCondition;
+import tw.com.funbackend.form.tableschema.GraffitiWallRankTableSchema;
 import tw.com.funbackend.persistence.gopartyon.Chatroom;
 import tw.com.funbackend.persistence.gopartyon.GraffitiWallItem;
-import tw.com.funbackend.pojo.GraffitiWallRank;
 
 public interface GraffitiWallModel {
 	/**
@@ -40,5 +40,5 @@ public interface GraffitiWallModel {
 	 * 取得Po文排行榜資料
 	 * @return
 	 */
-	List<GraffitiWallRank> readGraffitiWallRanking();
+	List<GraffitiWallRankTableSchema> readGraffitiWallRanking();
 }

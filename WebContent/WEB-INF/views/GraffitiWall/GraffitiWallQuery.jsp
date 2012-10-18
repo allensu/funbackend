@@ -218,6 +218,8 @@ function readData() {
 		<legend>塗鴉牆查詢</legend>
 		<p />
 		<form id="queryform">
+			<input id="wallOwnerId" name="wallOwnerId" type="hidden"/>
+			<input id="posterId" name="posterId" type="hidden"/>
 			<label>類別 :</label>
 				<select id="categoryQ" name="categoryQ" >
 					<option value="All">全部</option>

@@ -3,6 +3,7 @@ package tw.com.funbackend.service;
 import java.util.List;
 
 import tw.com.funbackend.form.querycond.GraffitiWallCondition;
+import tw.com.funbackend.form.tableschema.GraffitiWallRankTableSchema;
 import tw.com.funbackend.persistence.gopartyon.GraffitiWallItem;
 
 public interface GraffitiWallService {
@@ -33,4 +34,9 @@ public interface GraffitiWallService {
 	 */
 	List<GraffitiWallItem> readGraffitiWallPageByCondSort(GraffitiWallCondition cond, int startIndex, int length, String sortColName, int sortDir);
 	
+	/**
+	 * 塗鴉牆排行榜
+	 * @return
+	 */
+	List<GraffitiWallRankTableSchema> readGraffitiWallRanking();
 }
