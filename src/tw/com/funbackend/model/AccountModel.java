@@ -210,4 +210,11 @@ public interface AccountModel {
 	 * @return
 	 */
 	MenuAuth getMenuAuth(String userInfoId, String menuItemId);
+	
+	/**
+	 * 更新帳號資訊
+	 * @param userInfo
+	 * @return
+	 */
+	boolean updateUser(UserInfo userInfo);
 }

@@ -10,6 +10,9 @@
 <!-- <script src="../../ViewScript/ManageUserScript.js" type="text/javascript"></script> -->
 <script type="text/javascript">
 
+var categoryU = $('#categoryU').combobox();
+//var dialogformupdate = null;
+
 $.fx.speeds._default = 1000;
 $(function() {
 	$("#toolBar").buttonset();
@@ -40,9 +43,44 @@ $(function() {
 		modal : true
 	});
 
+	$("#dialog-form-update").dialog({
+		autoOpen : false,
+		modal : true
+	});
+	
 	$("#category").combobox();
 	$("#createSubmitBtn").button();
+	$("#updateSubmitBtn").button().click(function() {
+		
+		var postData = {
+				accountId : $('#accountIdU').val(),
+				accountPass : $('#accountPassU').val(),
+				accountName : $('#accountNameU').val(),
+				category : $('#categoryU').val()
+	    };
+		
+		$("#dialog-form-update").dialog('close');
+		$.blockUI({
+			message : '<div>儲存資料中...</div>',
+			overlayCSS : {
+				backgroundColor : '#4297D7'
+			}
+		});
+		$.ajax({
+			type : "POST",
+			url : "/funbackend/controller/Account/UpdateUser",
+			data : postData,
+			success : function(data) {
 
+				$.unblockUI();
+				readData();
+			},
+			dataType : "json",
+			traditional : true
+		});
+		
+	});
+	
 	// Create Btn
 	$("#createBtn").button({
 		icons : {
@@ -74,6 +112,8 @@ $(function() {
 			primary : "ui-icon-wrench"
 		}
 	}).click(function() {
+		
+		executeFun("UpdateAuth");
 
 	});
 
@@ -164,7 +204,27 @@ function executeFun(authType)
 								width : '275px'
 							}
 						});
-				}	
+				}
+				else if(authType == "UpdateAuth")
+				{
+					$("#dialog:ui-dialog").dialog( "destroy" );
+					$('#jtable tr').each(function() {
+						
+				          var rowData = this.cells;
+				          if(rowData[0].firstChild.checked == true)
+				       	  {	
+				       		$('#accountIdU').val(rowData[1].firstChild.textContent);
+				        	$('#accountPassU').val("");  
+				        	$('#accountNameU').val(rowData[2].firstChild.textContent);				        	
+				        	$('#categoryU').val(rowData[3].firstChild.textContent);
+
+				        	categoryU.combobox("destroy");
+				        	categoryU = $('#categoryU').combobox();
+				      	  }
+					});
+					
+					$("#dialog-form-update").dialog("open");
+				}
       		}
         });	
 }
@@ -263,7 +323,7 @@ function deleteData() {
 	<div id="toolBar">
 		<button id="createBtn" name="createBtn">新增</button>	
 	    <button id="readBtn" name="readBtn">查詢</button>
-	    <button id="updateBtn" name="updateBtn" disabled="disabled">修改</button>
+	    <button id="updateBtn" name="updateBtn">修改</button>
 	    <button id="deleteBtn" name="deleteBtn">刪除</button>
 	</div>	
     <br/>
@@ -326,6 +386,42 @@ function deleteData() {
             <input id="createSubmitBtn" type="submit" value="存檔" />
         </fieldset>
         </form>
+    </div>
+    <div id="dialog-form-update" title="修改帳號">
+    
+    	<form action="UpdateUser" method="post">
+        <fieldset>
+            <div class="editor-label">
+                帳號
+            </div>
+            <div class="editor-field">
+            	<input id="accountIdU" name="accountIdU" type="text" value="" size="20" class="text ui-widget-content ui-corner-all"  readonly="readonly" style="border: 0px" />                
+            </div>
+            <div class="editor-label">
+                密碼
+            </div>
+            <div class="editor-field">
+            	<input id="accountPassU" name="accountPassU" type="password" value="" size="20" class="text ui-widget-content ui-corner-all" />                
+            </div>
+            <div class="editor-label">
+                名稱
+            </div>
+            <div class="editor-field">
+            	<input id="accountNameU" name="accountNameU" type="text" value="" size="20" class="text ui-widget-content ui-corner-all" />               
+            </div>
+            <div class="editor-label">
+                帳號類別 
+            </div>
+            <div class="editor-field">
+                <select id="categoryU" name="categoryU">
+					<option value="Guest">訪客</option>
+					<option value="Normal">一般</option>
+					<option value="Admin">管理者</option>
+				</select>
+            </div><br />
+        </fieldset>
+        </form>
+        <input id="updateSubmitBtn" type="button" value="存檔" />
     </div>
     <div id="question" style="display: none; cursor: default">
         <h1 id="msgCnt">

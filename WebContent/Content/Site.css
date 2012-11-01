@@ -172,3 +172,11 @@ a:active
     right: auto;
     top: auto;
 }
+
+#example-menu {
+    display: none;
+    position: absolute;
+    padding: 2px;
+    background-color: #ddd;
+    border: 1px solid #000;
+}

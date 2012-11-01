@@ -693,6 +693,21 @@ public class AccountModelImpl implements AccountModel {
 		}
 			
 		return result;
+	}
+
+	@Override
+	public boolean updateUser(UserInfo userInfo) {
+		
+		boolean result = false;
+		
+		try {
+			funBackendMongo.save(userInfo);
+			result = true;
+		} catch(Exception ex) {
+			logger.error(ex.getMessage());
+		}
+		
+		return result;
 	}	
 	
 	

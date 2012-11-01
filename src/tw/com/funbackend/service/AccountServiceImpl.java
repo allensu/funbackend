@@ -30,13 +30,15 @@ import tw.com.funbackend.utility.Encrypt;
 public class AccountServiceImpl implements AccountService {
 	protected Logger logger = Logger.getLogger("service");
 	
+	private String timeZone = "GMT";
+	
 	@Autowired
 	private AccountModel accountModel;
 
 	@Override
 	public UserInfo userLogin(String accountId, String accountPass) {
 		
-		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone(timeZone));
 		UserInfo userInfo = null;
 		
 		try {
@@ -367,6 +369,42 @@ public class AccountServiceImpl implements AccountService {
 				else if(functionalType == FunctionalType.QueryAuth)
 					result = menuAuth.isQueryAuth();
 			}
+		} catch(Exception ex) {
+			logger.error(ex.getMessage());
+		}
+		
+		return result;
+	}
+
+	@Override
+	public boolean updateUser(UserInfo userInfo) {
+		
+		boolean result = false;
+		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone(timeZone));
+		
+		try {
+			UserInfo orgUserInfo = accountModel.getUserInfo(userInfo.getAccountId());
+			
+			orgUserInfo.setAccountName(userInfo.getAccountName());
+			orgUserInfo.setCategory(userInfo.getCategory());
+			orgUserInfo.setAccountPass(Encrypt.encodePassword(userInfo.getAccountPass()));
+			orgUserInfo.setLastLoginDateTime(cal.getTime());
+			
+			accountModel.updateUser(orgUserInfo);
+			result = true;
+		} catch(Exception ex) {
+			logger.error(ex.getMessage());
+		}
+		
+		return result;
+	}
+
+	@Override
+	public UserInfo readUser(String accountId) {
+		UserInfo result = null;
+		
+		try {
+			result = accountModel.getUserInfo(accountId);
 		} catch(Exception ex) {
 			logger.error(ex.getMessage());
 		}

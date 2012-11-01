@@ -52,6 +52,13 @@ public interface AccountService {
 	List<UserInfo> readUserAll();
 	
 	/**
+	 * 取得帳號資料
+	 * @param accountId
+	 * @return
+	 */
+	UserInfo readUser(String accountId);
+	
+	/**
 	 * 刪除帳號資料
 	 * @param ids
 	 * @return
@@ -152,4 +159,11 @@ public interface AccountService {
 	 * @return
 	 */
 	boolean hasFuncationalAuth(FunctionalType functionalType, String userInfoId, String menuItemId);
+	
+	/**
+	 * 更新帳號資訊
+	 * @param userInfo
+	 * @return
+	 */
+	boolean updateUser(UserInfo userInfo);
 }

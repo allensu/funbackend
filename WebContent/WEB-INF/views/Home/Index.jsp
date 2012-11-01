@@ -7,7 +7,9 @@
 <title>會員管理系統</title>
 
 <jsp:include page="../../views/Common/CommonResource.jsp"></jsp:include>
- 
+<link href="../../Content/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
+<script src="../../Script/jquery.contextMenu.js" type="text/javascript"></script>
+
 <script type="text/javascript" language="javascript">
 
         $(function () {
@@ -50,9 +52,16 @@
            
         });
 
-        
+        var url = null;
+    	var title = null;
         $(function () {
+	
+        	$('#newWinBtn').button().click(function() {		
 
+        		$("#example-menu").hide();
+        		 window.open(url, title);
+        	});
+        	
             //至 Server 端取得 Accordion 資料
             $.getJSON('/funbackend/controller/Account/MenuList', function (data) {
 
@@ -62,7 +71,7 @@
 
                     if (v.content != '') {
                         $.each(v.content, function (x, y) {
-                            content += "<button class='gcms-ui-corner-all' iId='" + y.id + "' url='" + y.url + "'>" + y.title + "</button><br/>";
+                            content += "<button name='menuItemBtn' class='gcms-ui-corner-all' iId='" + y.id + "' url='" + y.url + "'>" + y.title + "</button><br/>";
                         });
                     }
 
@@ -73,7 +82,40 @@
                     autoHeight: false,
                     navigation: true
                 });
+              
+                $("[name='menuItemBtn']").bind("contextmenu", function(e) {
+                	
+                	//alert('http://localhost:8080' + $(this).attr('url'));
+                	//alert($(this).text());
+                	
+                	url = 'http://localhost:8080' + $(this).attr('url');
+                	title = $(this).text();
+                	
+                	$('#example-menu').css({
+                        top: e.pageY+'px',
+                        left: e.pageX+'px'
+                    }).show();
 
+                	
+                    return false;
+                });
+                
+                //$('[name=menuItemBtn]').contextMenu({ menu: 'myMenu' }, 
+                //        function(action, el, pos) { contextMenuWork(action, el, pos); });
+
+                
+                /* $('[name=menuItemBtn]').mousedown(function(event) {
+                    switch (event.which) {
+                        case 3:
+                            //alert($(this).attr('url'));
+                            
+                            window.open('http://localhost:8080' + $(this).attr('url'), 'window name', 'window settings');
+                            break;
+                    }
+                	
+                    event.preventDefault();
+                }); */
+                
                 $("button.gcms-ui-corner-all").button().click(function () {
                     var currTabCount = $("#tabs").tabs("length");
                     var iId = $(this).attr("iId");
@@ -110,15 +152,33 @@
                         if (this.readyState == "complete") {
                             $("#tabs-" + currTabCount).unblock();
                         }
-                    }
+                    };
                     iframeObj.onload = function () {
                         $("#tabs-" + currTabCount).unblock();
-                    }
+                    };
 
                 });
             });
         });
         
+        function contextMenuWork(action, el, pos) {
+	
+        	alert('aa');
+            switch (action) {
+                case "#newWin":
+                    {
+                        //Popup Delete Confirmation - included in demo and in download
+                        break;
+                    }
+            }
+       }
+        
+        $("#example-menu").click(function() {
+            $(this).hide();
+        });
+        $(document).click(function() {
+            $("#example-menu").hide();
+        });
     </script>
     
 </head>
@@ -155,5 +215,9 @@
 			</table>
 		</div>
 	</div>
+
+<div id="example-menu">
+<button id='newWinBtn' name='newWinBtn'>新開視窗</button>
+</div>
 </body>
 </html>

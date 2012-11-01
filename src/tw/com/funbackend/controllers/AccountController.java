@@ -146,6 +146,31 @@ public class AccountController {
 		return new ModelAndView("/Account/ManageUser");
 	}
 	
+	/**
+	 * 修改使用者帳號資訊
+	 * @param userBean
+	 * @param userInfo
+	 * @return
+	 */
+	@RequestMapping(value = "/Account/UpdateUser", method = RequestMethod.POST)
+	public @ResponseBody UserInfo updateUser(
+			@ModelAttribute("userBean") UserBean userBean,
+			@ModelAttribute UserInfo userInfo) {
+
+		boolean result = false;
+		
+		try {
+			result = accountService.updateUser(userInfo);
+		} catch(Exception ex) {
+			logger.error(ex.getMessage());
+		}
+		
+		if(result)
+			return userInfo;
+		else 
+			return new UserInfo();
+	}
+	
 	@RequestMapping(value = "/Account/ReadUser")
 	public @ResponseBody List<UserInfo> readUser() {
 		List<UserInfo> userInfoList = new ArrayList<UserInfo>();
