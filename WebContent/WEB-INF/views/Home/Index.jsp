@@ -88,7 +88,7 @@
                 	//alert('http://localhost:8080' + $(this).attr('url'));
                 	//alert($(this).text());
                 	
-                	url = 'http://tpe01.gofuncube.com.tw:8080' + $(this).attr('url');
+                	url = 'http://dev2.gopartyon.com' + $(this).attr('url');
                 	title = $(this).text();
                 	
                 	$('#example-menu').css({

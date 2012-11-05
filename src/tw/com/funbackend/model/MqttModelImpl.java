@@ -41,7 +41,7 @@ public class MqttModelImpl implements MqttModel {
 		goPartyonMessageMongo.save(messageData);
 		
 //		MessageMongoDB mmdb = new MessageMongoDB();
-//		mmdb.start("118.233.100.117:27017", "gopartyon_message");
+//		mmdb.start("dev.gopartyon.com:27017,dev2.gopartyon.com:27017", "gopartyon_message");
 //		boolean insertResult = mmdb.insert(messageData.getTarget(), messageData.getMessage());
 //		if(insertResult) {
 //			logger.info("success");
@@ -67,7 +67,7 @@ public class MqttModelImpl implements MqttModel {
 		       
 		       result = new MessageData();
 		       result.setId(parameter.get("_id").toString());
-		       result.setSerial((Integer)parameter.get("serial"));
+		       result.setSerial(((Integer)parameter.get("serial")).intValue());
 		       result.setTarget(parameter.get("target").toString());
 		       result.setMessage(parameter.get("message").toString());		       
 		    } 
