@@ -67,7 +67,7 @@ public class MqttModelImpl implements MqttModel {
 		       
 		       result = new MessageData();
 		       result.setId(parameter.get("_id").toString());
-		       result.setSerial(parameter.get("serial").toString());
+		       result.setSerial((Integer)parameter.get("serial"));
 		       result.setTarget(parameter.get("target").toString());
 		       result.setMessage(parameter.get("message").toString());		       
 		    } 

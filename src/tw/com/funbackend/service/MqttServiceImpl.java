@@ -27,10 +27,10 @@ public class MqttServiceImpl implements MqttService {
 			
 			if(lastMessageData != null)
 			{
-				newSerial = Integer.parseInt(lastMessageData.getSerial()) + 1;
+				newSerial = lastMessageData.getSerial() + 1;
 			}
 			
-			messageData.setSerial(String.valueOf(newSerial));
+			messageData.setSerial(newSerial);
 			
 			result = mqttModel.createMessage(messageData);
 		} catch(Exception ex)
