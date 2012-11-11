@@ -792,8 +792,8 @@ function showDetailEvent(id)
 				}
 				else 
 				{
-					$("#updateTime").attr("orgVal", data.updateTime); //更新時間
-					$("#updateTime").val(data.updateTime); //更新時間
+					$("#updateTime").attr("orgVal", jsonDate2Format(data.updateTime,"yyyy/m/d TT hh:MM")); //更新時間
+					$("#updateTime").val(jsonDate2Format(data.updateTime,"yyyy/m/d TT hh:MM")); //更新時間
 				}
 							
 				if(data.monthScore == null)
@@ -1198,6 +1198,8 @@ function initGrallery()
 					<option value="F">女</option>					
 				</select><br /><br />
 			<label>電話:</label><input id="phoneNoQ" name="phoneNoQ" type="text" value="" size="20" class="text ui-widget-content ui-corner-all"/><br /><br />
+			<label>MQTT Reg ID:</label><input id="mqttRegIdQ" name="mqttRegIdQ" type="text" value="" size="30" class="text ui-widget-content ui-corner-all"/><br /><br />
+			
 		</form>			
 		<button id="readSendBtn" name="readSendBtn">送出</button>
 	</fieldset>

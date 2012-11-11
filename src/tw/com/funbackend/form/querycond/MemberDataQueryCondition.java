@@ -6,6 +6,7 @@ public class MemberDataQueryCondition {
 	private String displayNameQ;
 	private String genderQ;
 	private String phoneNoQ;
+	private String mqttRegIdQ;
 	
 	public String getUserNameQ() {
 		return userNameQ;
@@ -30,6 +31,12 @@ public class MemberDataQueryCondition {
 	}
 	public void setPhoneNoQ(String phoneNoQ) {
 		this.phoneNoQ = phoneNoQ;
+	}
+	public String getMqttRegIdQ() {
+		return mqttRegIdQ;
+	}
+	public void setMqttRegIdQ(String mqttRegIdQ) {
+		this.mqttRegIdQ = mqttRegIdQ;
 	}
 	
 	

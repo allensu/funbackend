@@ -143,6 +143,9 @@ public class MemberModelImpl implements MemberModel {
 			if(StringUtility.isNotEmpty(cond.getPhoneNoQ()))
 				parameter.put("phoneNo", cond.getPhoneNoQ());
 				
+			if(StringUtility.isNotEmpty(cond.getMqttRegIdQ()))
+				parameter.put("mqttRegId", cond.getMqttRegIdQ());
+			
 			count = (int) userColl.count(parameter);
 		} 
 		catch(Exception ex)
@@ -194,6 +197,14 @@ public class MemberModelImpl implements MemberModel {
 					criteria = criteria.and("phoneNo").is(cond.getPhoneNoQ());
 			}
 			
+			if(StringUtility.isNotEmpty(cond.getMqttRegIdQ()))
+			{	
+				if(criteria == null)
+					criteria = Criteria.where("mqttRegId").is(cond.getMqttRegIdQ());
+				else 
+					criteria = criteria.and("mqttRegId").is(cond.getMqttRegIdQ());
+			}
+			
 			Query query = null;
 			if(criteria != null)
 				query = new Query(criteria).skip(startIndex).limit(length);
@@ -242,6 +253,22 @@ public class MemberModelImpl implements MemberModel {
 				}
 			}
 			 
+			if(StringUtility.isNotEmpty(cond.getPhoneNoQ()))
+			{	
+				if(criteria == null)
+					criteria = Criteria.where("phoneNo").is(cond.getPhoneNoQ());
+				else 
+					criteria = criteria.and("phoneNo").is(cond.getPhoneNoQ());
+			}
+			
+			if(StringUtility.isNotEmpty(cond.getMqttRegIdQ()))
+			{	
+				if(criteria == null)
+					criteria = Criteria.where("mqttRegId").is(cond.getMqttRegIdQ());
+				else 
+					criteria = criteria.and("mqttRegId").is(cond.getMqttRegIdQ());
+			}
+			
 			Query query = null;
 			
 			if(criteria != null)
