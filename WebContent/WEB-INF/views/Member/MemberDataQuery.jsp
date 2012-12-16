@@ -726,8 +726,8 @@ function showDetailEvent(id)
 				}
 				else 
 				{
-					$('#locationDateTime').attr("orgVal", data.locationDateTime); //最後定位時間
-					$("#locationDateTime").val(data.locationDateTime); //最後定位時間
+					$('#locationDateTime').attr("orgVal", jsonDate2Format(data.locationDateTime,"yyyy/m/d TT hh:MM")); //最後定位時間
+					$("#locationDateTime").val(jsonDate2Format(data.locationDateTime,"yyyy/m/d TT hh:MM")); //最後定位時間
 				}
 				
 				if(data.placeName == null)
@@ -936,7 +936,7 @@ function showDetailEvent(id)
 				$.each(data.likeUsers, function (k, v) {
 					
 					$('#likeUsersTable').dataTable().fnAddData([                             					    
-					    v.createDateTime,
+					    jsonDate2Format(v.createDateTime, "yyyy/m/d TT hh:MM"),
 					    v.userName
 					]); 
 					
