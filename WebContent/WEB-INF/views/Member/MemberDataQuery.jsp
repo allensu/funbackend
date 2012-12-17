@@ -925,7 +925,7 @@ function showDetailEvent(id)
 				$.each(data.visitors, function (k, v) {
 					
 					$('#visitorsTable').dataTable().fnAddData([                             					    
-					    v.createDateTime,
+					    jsonDate2Format(v.createDateTime, "yyyy/m/d TT hh:MM"),
 					    v.userName
 					]); 
 					
